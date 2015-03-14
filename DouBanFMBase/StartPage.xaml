@@ -1,0 +1,72 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="DouBanFMBase.StartPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True"
+    Loaded="StartPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/DouBanFMBase;component/Style/ButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <!--LayoutRoot 是包含所有页面内容的根网格-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Image x:Name="bgImg" Visibility="Collapsed" Source="/Images/db.png" Stretch="Fill"></Image>
+        <Grid x:Name="firstStartGrid" Visibility="Visible">
+            <phone:Pivot SelectionChanged="Pivot_SelectionChanged" x:Name="pivotItems" SelectedIndex="0">
+                <phone:PivotItem Margin="0" >
+                    <phone:PivotItem.Background>
+                        <ImageBrush ImageSource="/Images/db.png" Stretch="Fill"></ImageBrush>
+                    </phone:PivotItem.Background>
+                </phone:PivotItem>
+                <phone:PivotItem Margin="0" >
+                    <phone:PivotItem.Background>
+                        <ImageBrush ImageSource="/Images/pivot1.png" Stretch="Fill"></ImageBrush>
+                    </phone:PivotItem.Background>
+                </phone:PivotItem>
+                <phone:PivotItem Margin="0">
+                    <phone:PivotItem.Background>
+                        <ImageBrush ImageSource="/Images/pivot2.jpg" Stretch="Fill"></ImageBrush>
+                    </phone:PivotItem.Background>
+                </phone:PivotItem>
+                <phone:PivotItem Margin="0">
+                    <phone:PivotItem.Background>
+                        <ImageBrush ImageSource="/Images/db.png" Stretch="Fill"></ImageBrush>
+                    </phone:PivotItem.Background>
+                    <Grid>
+                        <Button Content="开始体验" Background="#FFAFE4D4" Width="250" Height="100" FontSize="50" Margin="100,451,106,179" FontWeight="Bold" Style="{StaticResource S_Button}" Click="ExperienceBtn_Click">
+                        </Button>
+                        <Button Content="登录" Background="#FFAFE4D4" Width="200" Height="100" FontSize="50" Margin="125,556,131,74" FontWeight="Bold" Style="{StaticResource S_Button}" Click="LoginBtn_Click"></Button>
+                    </Grid>
+                </phone:PivotItem>
+            </phone:Pivot>
+            <Grid VerticalAlignment="Bottom" Margin="50,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse Name="ellipse0" Grid.Column="0" Fill="Gray" Height="13" Width="13" Tag="0"/>
+                    <Ellipse Name="ellipse1" Grid.Column="1" Fill="#FFEF6B6B" Height="13" Tag="1" Width="13"/>
+                    <Ellipse Name="ellipse2" Grid.Column="2" Fill="Gray" Height="13" Tag="2" Width="13"/>
+                    <Ellipse Name="ellipse3" Grid.Column="3" Fill="Gray" Height="13" Tag="3" Width="13"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</phone:PhoneApplicationPage>

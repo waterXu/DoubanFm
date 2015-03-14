@@ -1,0 +1,9 @@
+﻿<Deployment xmlns="http://schemas.microsoft.com/client/2007/deployment" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" EntryPointAssembly="DouBanFMBase" EntryPointType="DouBanFMBase.App" RuntimeVersion="4.7.50308.0">
+  <Deployment.Parts>
+    <AssemblyPart x:Name="DouBanFMBase" Source="DouBanFMBase.dll" />
+    <AssemblyPart x:Name="DbAudioStreamAgent" Source="DbAudioStreamAgent.dll" />
+    <AssemblyPart x:Name="DouBanAudioAgent" Source="DouBanAudioAgent.dll" />
+    <AssemblyPart x:Name="Microsoft.Phone.Controls.Toolkit" Source="Microsoft.Phone.Controls.Toolkit.dll" />
+    <AssemblyPart x:Name="Newtonsoft.Json" Source="Newtonsoft.Json.dll" />
+  </Deployment.Parts>
+</Deployment>
