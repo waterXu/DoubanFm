@@ -42,7 +42,6 @@
         </Setter>
     </Style>
     <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
-        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="Gray"/>
         <Setter Property="Padding" Value="0"/>
@@ -52,7 +51,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="LayoutRoot" Height="75" BorderThickness="0" Margin="15,5"  Background="AliceBlue" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                    <Border x:Name="LayoutRoot" Height="75" BorderThickness="0" Margin="15,5"  Background="#FFE4EAEB" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>
@@ -66,7 +65,7 @@
                             <VisualStateGroup x:Name="SelectionStates">
                                 <VisualState x:Name="Unselected">
                                     <Storyboard>
-
+                                        <DoubleAnimation Duration="0" Storyboard.TargetName="BorderStyle" Storyboard.TargetProperty="Opacity" To="0"></DoubleAnimation>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Selected">
@@ -85,12 +84,12 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0">
-                                <Border  x:Name="BorderStyle" Background="#FFB0DBE3" BorderThickness="0" Opacity="0">
+                                <Border  x:Name="BorderStyle" Background="#FF5CBEA6" BorderThickness="0" Opacity="0">
                                     <Image Height="30" Width="30" Source="Images/exit.png" HorizontalAlignment="Right" VerticalAlignment="Top"/>
                                 </Border>
                                 <ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" d:LayoutOverrides="Width, Height" Grid.Column="1" VerticalAlignment="Center"/>
                             </Grid>
-                            <Border  x:Name="CbBorderStyle" Grid.Column="1" Background="#FFB0DBE3" Opacity="0"/>
+                            <Border  x:Name="CbBorderStyle" Grid.Column="1" Background="#FF5CBEA6" Opacity="0"/>
                             <CB:ChangeButton Grid.Column="1" IsChecked="{Binding IsChecked, Mode=TwoWay}" DefaultImage="/Images/star.png" SeletedImage="/Images/stary.png" HorizontalAlignment="Right"></CB:ChangeButton>
                         </Grid>
                     </Border>

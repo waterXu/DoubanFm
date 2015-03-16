@@ -51,7 +51,7 @@ namespace DouBanFMBase
                 {
                     string username = WpStorage.GetIsoSetting(DbFMCommonData.UserName).ToString();
                     string password = WpStorage.GetIsoSetting(DbFMCommonData.Password).ToString();
-                    string loginUrlInfo = DbFMCommonData.LoginUrl + "?app_name=radio_desktop_win&version=100";
+                    string loginUrlInfo = DbFMCommonData.LoginUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
                     loginUrlInfo += "&email=" + username + "&password=" + password;
                     System.Diagnostics.Debug.WriteLine("登录请求url：" + loginUrlInfo);
                     HttpHelper.httpGet(loginUrlInfo, new AsyncCallback((ar) =>
@@ -136,29 +136,17 @@ namespace DouBanFMBase
             //this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/UserLogin.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        public void LoginResult(string msg)
+        public void LoginResult(bool isSuccess)
         {
-            Dictionary<string, string> loginResult = JsonConvert.DeserializeObject<Dictionary<string, string>>(msg);
             this.Dispatcher.BeginInvoke(() => 
             {
-                if (loginResult.ContainsKey("code"))
+                if (isSuccess)
                 {
-                    if (loginResult["code"] == "0")
-                    {
-                        this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
-                    }
-                    else
-                    {
-                        if (loginResult.ContainsKey("err"))
-                        {
-                            MessageBox.Show(loginResult["err"]);
-                        }
-                        else
-                        {
-                            MessageBox.Show("登录失败请检查网络设置");
-                            this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
-                        }
-                    }
+                    this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
+                }
+                else
+                {
+                     this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
                 }
                 PopupManager.OffPopUp();
             });

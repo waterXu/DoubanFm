@@ -51,7 +51,7 @@ namespace DouBanFMBase
                         });
                     }
                     IsLoaded = true;
-                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadedData,"Loaded");
+                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadedData, IsLoaded);
                 }
                 else
                 {

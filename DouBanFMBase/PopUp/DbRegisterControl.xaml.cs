@@ -60,7 +60,7 @@ namespace DouBanFMBase.PopUp
                 MessageBox.Show("密码不一致");
                 return;
             }
-            string registerUrl = DbFMCommonData.RegisterUrl + "?app_name=radio_desktop_win&version=100";
+            string registerUrl = DbFMCommonData.RegisterUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
              registerUrl +="&user_name=" + userName;
             registerUrl += "&password=" + password + "&confirm_password=" + repassword;
             registerUrl += "&agreement=on";
@@ -69,8 +69,6 @@ namespace DouBanFMBase.PopUp
         }
         private void RegisterResult(IAsyncResult ar)
         {
-            Dictionary<string, string> backInfo = new Dictionary<string, string>();
-            string resultMsg = null;
             this.Dispatcher.BeginInvoke(() =>
             {
                 try
@@ -79,10 +77,8 @@ namespace DouBanFMBase.PopUp
                     {
                         WpStorage.SetIsoSetting(DbFMCommonData.UserName, userName);
                         WpStorage.SetIsoSetting(DbFMCommonData.Password, password);
-                        backInfo.Add("code", "0");
-                        resultMsg = JsonConvert.SerializeObject(backInfo);
                         DbFMCommonData.loginSuccess = true;
-                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, resultMsg);
+                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, true);
                     }
                     else
                     {
@@ -92,10 +88,8 @@ namespace DouBanFMBase.PopUp
                 }
                 catch
                 {
-                    backInfo.Add("code", "-1");
-                    backInfo.Add("err", "登录失败，请检查网络设置");
-                    resultMsg = JsonConvert.SerializeObject(backInfo);
-                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, resultMsg);
+                    MessageBox.Show("登录失败，请检查网络设置");
+                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, false);
                     //MessageBox.Show("登录失败，请检查网络设置");
                 }
             });

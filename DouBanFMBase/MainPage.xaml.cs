@@ -76,8 +76,18 @@ namespace DouBanFMBase
                 Binding collectChannels = new Binding();
                 collectChannels.Path = new PropertyPath("CollectChannels");
                 CollectChannels.SetBinding(ListBox.ItemsSourceProperty, collectChannels);
+                if (App.ViewModel.Channels.Count > 0)
+                {
+                    AllChannels.SelectedIndex = 0;
+                }
             });
            
+        }
+        public void DataContextLoadedFail()
+        {
+            //添加 重新加载按钮
+            //。。。。
+            throw new NotImplementedException();
         }
         ImageBrush ellipseBrush = new ImageBrush();
         ImageBrush bgBrush = new ImageBrush();
@@ -91,7 +101,15 @@ namespace DouBanFMBase
             DbFMCommonData.MainPageLoaded = true;
             if (App.ViewModel.IsLoaded)
             {
-                DataContextLoaded();
+                if (DbFMCommonData.DownLoadSuccess)
+                {
+                    DataContextLoaded();
+                }
+                else
+                {
+                    DataContextLoadedFail();
+
+                }
             }
             //if (string.IsNullOrEmpty(DbFMCommonData.UserName))
             //{
@@ -196,11 +214,29 @@ namespace DouBanFMBase
 
         private void All_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             ListBox lb = sender as ListBox;
             ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
-
+            //获取新歌曲
+            HttpHelper.GetChannelSongs("n",cv.ChannelId);
             System.Diagnostics.Debug.WriteLine("Hz名称：" + cv.Name+ " Hz 是否收藏"+cv.IsChecked.ToString());
+        }
+        public void GetSongSuccess(int playIndex)
+        {
+            SongGrid.DataContext = DbFMCommonData.PlayingSongs[playIndex];
+        }
+        public void GetSongFail()
+        {
+            //....show err
+            //SongGrid.DataContext = DbFMCommonData.PlayingSongs[playIndex];
+        }
+        private void Forward_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void SongInfo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MusicPage.xaml", UriKind.RelativeOrAbsolute));
         }
      
         // 用于生成本地化 ApplicationBar 的示例代码
@@ -218,5 +254,7 @@ namespace DouBanFMBase
         //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
         //    ApplicationBar.MenuItems.Add(appBarMenuItem);
         //}
+
+     
     }
 }

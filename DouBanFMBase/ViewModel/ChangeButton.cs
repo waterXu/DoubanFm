@@ -62,9 +62,10 @@ namespace DouBanFMBase
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            this.Click += new RoutedEventHandler((s, e) => 
+            this.Tap += new EventHandler<System.Windows.Input.GestureEventArgs>((s, e) =>
             {
                 IsChecked = !IsChecked;
+                e.Handled = true;
             });
             SetState(this);
         }

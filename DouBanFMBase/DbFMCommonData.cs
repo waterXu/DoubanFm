@@ -22,7 +22,19 @@ namespace DouBanFMBase
         /// </summary>
         public static string ChannelListUrl { get { return "http://www.douban.com/j/app/radio/channels"; } }
         public static string CollChannelListUrl { get { return "http://www.douban.com/j/app/radio/channels/collect"; } }
+        /// <summary>
+        /// 获取歌曲列表url
+        /// </summary>
+        public static string ChannelSongsUrl { get { return "http://www.douban.com/j/app/radio/people"; } }
 
+        /// <summary>
+        /// 请求appname
+        /// </summary>
+        public static string AppName { get { return "radio_desktop_win"; } }
+        /// <summary>
+        /// 请求version
+        /// </summary>
+        public static string Version { get { return "100"; } }
         /// <summary>
         /// 是否第一次使用该App
         /// </summary>
@@ -51,6 +63,10 @@ namespace DouBanFMBase
         /// 豆瓣昵称
         /// </summary>
         public static string NickName { set; get; }
+        /// <summary>
+        /// userId
+        /// </summary>
+        public static string UserID { set; get; }
         /// <summary>
         /// 豆瓣绑定邮箱
         /// </summary>
@@ -84,7 +100,8 @@ namespace DouBanFMBase
         public enum CallbackType
         {
             Login = 1,
-            LoadedData = 2
+            LoadedData = 2,
+            LoadSongBack = 3
         }
         public static bool loginSuccess = false;
        
@@ -93,7 +110,7 @@ namespace DouBanFMBase
         /// </summary>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public delegate void InformCallback(int action, string msg);
+        public delegate void InformCallback(int action, bool isSuccess);
         /// <summary>
         /// 回调函数
         /// </summary>
@@ -109,5 +126,13 @@ namespace DouBanFMBase
         /// MainPage页面是否load完成
         /// </summary>
         public static bool MainPageLoaded = false;
+        /// <summary>
+        /// 是否获取所有hz成功
+        /// </summary>
+        public static bool DownLoadSuccess = false;
+        /// <summary>
+        /// 记录当前内存中的歌曲信息
+        /// </summary>
+        public static List<SongInfo> PlayingSongs { get; set; }
     }
 }

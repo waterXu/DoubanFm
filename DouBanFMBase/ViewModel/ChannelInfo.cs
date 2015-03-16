@@ -31,6 +31,21 @@ namespace DouBanFMBase
         public string abbr_en { get; set; }
       
     }
+    public class SongResult
+    {
+        /// <summary>
+        /// 返回code
+        /// </summary>
+        public int r { get; set; }
+        /// <summary>
+        /// r为1时值有效，错误信息
+        /// </summary>
+        public string err { get; set; }
+        /// <summary>
+        /// 歌曲信息列表
+        /// </summary>
+        public List<SongInfo> song { get; set; }
+    }
     public class SongInfo
     {
         public string aid { get; set; }

@@ -34,7 +34,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="2.6*"/>
             <RowDefinition Height="10*"/>
-            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1.2*"/>
         </Grid.RowDefinitions>
         <Canvas Grid.Row="0" Background="#FFB0DBE3" Opacity=".5"></Canvas>
         <Grid Grid.RowSpan="2" Grid.Row="0" >
@@ -69,7 +69,8 @@
                     <phone:PivotItem.Header>
                         <TextBlock Text="全部赫兹" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
-                    <ListBox x:Name="AllChannels" SelectionChanged="All_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+                    <ListBox x:Name="AllChannels" 
+                            ItemsSource="{Binding Channels}" SelectionChanged="All_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30"  Text="{Binding Name}"/>
@@ -93,17 +94,26 @@
                     <phone:PivotItem.Header>
                         <TextBlock Text="个人中心" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
-
                 </phone:PivotItem>
             </phone:Pivot>
         </Grid>
-        <Grid Grid.Row="2" Background="#FF83807A" Opacity=".5">
+        <Grid Grid.Row="2" Background="#FF83807A" Opacity=".5" x:Name="SongGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-          
+            <Border BorderBrush="Black" BorderThickness="3"  Height="70" Width="70" CornerRadius="60"  Padding="15">
+                <CB:ChangeButton DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png"></CB:ChangeButton>
+            </Border>
+            <StackPanel  Grid.Column="1" Margin="10,0,0,0"  Tap="SongInfo_Tap">
+                <TextBlock Text="{Binding artist}" FontSize="35" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
+                <TextBlock Text="{Binding title}"></TextBlock>
+            </StackPanel>
+
+            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="3"  Height="70" Width="70" CornerRadius="60"  Padding="15">
+                <Image Source="/Images/forward.png" Tap="Forward_Tap"></Image>
+            </Border>
         </Grid>
     </Grid>
 

@@ -56,6 +56,7 @@ namespace DouBanFMBase
                     DbFMCommonData.Expire = loginresult.expire;
                     DbFMCommonData.NickName = loginresult.user_name;
                     DbFMCommonData.Email = loginresult.email;
+                    DbFMCommonData.UserID = loginresult.user_id;
                 }else if(loginresult.r == 1)
                 {
                     MessageBox.Show(loginresult.err);
@@ -93,6 +94,7 @@ namespace DouBanFMBase
         }
         public static void GetChannelList()
         {
+            App.ViewModel.IsLoaded = false;
             System.Diagnostics.Debug.WriteLine("获取频道列表url：" + DbFMCommonData.ChannelListUrl);
             try
             {
@@ -103,16 +105,86 @@ namespace DouBanFMBase
                     {
                         DbFMCommonData.ChannelList = JsonConvert.DeserializeObject<ChannelList>(result);
                         App.ViewModel.LoadData();
+                        DbFMCommonData.DownLoadSuccess = true;
+                    }
+                    else
+                    {
+                        App.ViewModel.IsLoaded = true;
+                        //加载失败
+                    }
+                }));
+            }catch(Exception e){
+                System.Diagnostics.Debug.WriteLine("GetChannelList Exception：" + e.Message);
+                App.ViewModel.IsLoaded = true;
+            }
+        }
+        /// <summary>
+        /// 操作歌曲/获取歌曲信息
+        /// </summary>
+        /// <param name="type"> 报告类型b=bye e=end s=skip r=rate u=urate以上需要songid n=new p=playing</param>
+        /// <param name="channelId">hz id</param>
+        /// /// <param name="songId">要操作的歌曲id</param>
+        public static void GetChannelSongs(string type, string channelId, string songId = null)
+        {
+            bool loadSuccess = false;
+            
+            try
+            {
+                string getChannelSongsUrl = DbFMCommonData.ChannelSongsUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
+                if (!string.IsNullOrEmpty(DbFMCommonData.UserID))
+                {
+                    getChannelSongsUrl += "&user_id=" + DbFMCommonData.UserID;
+                }
+                if (!string.IsNullOrEmpty(DbFMCommonData.Expire))
+                {
+                    getChannelSongsUrl += "&expire=" + DbFMCommonData.Expire;
+                }
+                if (!string.IsNullOrEmpty(DbFMCommonData.Token))
+                {
+                    getChannelSongsUrl += "&token=" + DbFMCommonData.Token;
+                }
+                if (songId != null)
+                {
+                    getChannelSongsUrl += "&sid=" + songId;
+                }
+                if (channelId != null)
+                {
+                    getChannelSongsUrl += "&channel=" + channelId;
+                }
+                getChannelSongsUrl += "&type="+type;
+                System.Diagnostics.Debug.WriteLine("操作歌曲url：" + getChannelSongsUrl);
+                HttpHelper.httpGet(getChannelSongsUrl, new AsyncCallback((ar) =>
+                {
+                    string result = SyncResultTostring(ar);
+                    if (!string.IsNullOrEmpty(result))
+                    {
+
+                        SongResult songresult = JsonConvert.DeserializeObject<SongResult>(result);
+                        if (songresult.r == 0)
+                        {
+                            DbFMCommonData.PlayingSongs = songresult.song;
+                            loadSuccess = true;
+                        }
+                        else if(songresult.r == 1)
+                        {
+                            MessageBox.Show(songresult.err);
+                        }
+                        else
+                        {
+                            MessageBox.Show(songresult.err);
+                        }
                     }
                     else
                     {
                         //加载失败
                     }
                 }));
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 System.Diagnostics.Debug.WriteLine("GetChannelList Exception：" + e.Message);
             }
-            
+            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadSongBack, loadSuccess);
         }
         public static void GetCollectChannelList()
         {
