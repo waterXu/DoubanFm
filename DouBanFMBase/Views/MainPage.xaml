@@ -47,17 +47,21 @@
                     <ImageBrush ImageSource="/Images/defaultuser.png" Stretch="UniformToFill" />
                 </Ellipse.Fill>
             </Ellipse>
+            
             <TextBlock Name="showUserName" Text="请先登录" Foreground="Black" Margin="75,25,127,25" VerticalAlignment="Center"/>
             <Ellipse Width="40" Height="40" Stroke="White" StrokeThickness="3" HorizontalAlignment="Right">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="/Images/theme.png" Stretch="Uniform"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <Ellipse Name="ShowModeEllipse" Width="40" Height="40" Stroke="White" Margin="0,0,63,0" StrokeThickness="3" HorizontalAlignment="Right" RenderTransformOrigin="-0.125,0.375" Tag="on" Tap="Ellipse_Tap">
+            <!--<Ellipse Name="ShowModeEllipse" Width="40" Height="40" Stroke="White" Margin="0,0,63,0" StrokeThickness="3" HorizontalAlignment="Right" RenderTransformOrigin="-0.125,0.375" Tag="on" Tap="Ellipse_Tap">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="/Images/moon.png" Stretch="Uniform"/>
                 </Ellipse.Fill>
-            </Ellipse>
+            </Ellipse>-->
+            <Border BorderBrush="White" BorderThickness="3" Margin="0,0,63,0" HorizontalAlignment="Right"   Height="40" Width="40" CornerRadius="60"  >
+                <CB:ChangeButton x:Name="ToggleBtn" Click="ToggleBtn_Click" DefaultImage="/Images/moon.png" SeletedImage="/Images/sun.png" VerticalAlignment="Top"></CB:ChangeButton>
+            </Border>
             <phone:Pivot Grid.Row="1" x:Name="MainPiovt" Foreground="Black" SelectedIndex="1">
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>

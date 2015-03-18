@@ -31,7 +31,7 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="13*"/>
-            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
        
         <Canvas Grid.Column="0" Grid.Row="0" Background="White" Opacity=".5">
@@ -51,7 +51,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
 
-                    <Image x:Name="AlbumArtImage" Grid.Row="0" Source="/Images/theme/theme5.jpg" Stretch="UniformToFill"></Image>
+                    <Image x:Name="AlbumArtImage" Grid.Row="0" Source="/Images/theme/theme5.jpg" ImageOpened="AlbumArtImage_ImageOpened" Opacity="0" Stretch="UniformToFill"></Image>
                     <Grid  Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0*"/>
@@ -84,12 +84,13 @@
         <Grid Grid.Row="3"  Background="#FFB0DBE3" Opacity=".5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="3*"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Ellipse HorizontalAlignment="Center"  Name="ellipse0" Grid.Column="1" Grid.Row="0" Fill="#FFEF6B6B" Height="13" Width="13" Tag="0" Margin="-25,0,0,0"/>
             <Ellipse Name="ellipse1" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center"  Fill="Gray"   Height="13" Tag="1" Width="13" Margin="0,0,-25,0"/>

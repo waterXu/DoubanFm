@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 
 namespace DouBanFMBase.PopUp
 {
+    #region PopUp Collect assertion
     /// <summary>
     /// 管理所有的弹出框中的用户控件
     /// </summary>
@@ -125,46 +126,7 @@ namespace DouBanFMBase.PopUp
          //    }
          //}
 
-         //private static AccountManageControl _accountManageControl;
-         ///// <summary>
-         ///// 账号管理UserControl
-         ///// </summary>
-         //public static AccountManageControl AccountManage
-         //{
-         //    set
-         //    {
-         //        _accountManageControl = value;
-         //    }
-         //    get
-         //    {
-         //        if (_accountManageControl == null)
-         //        {
-         //            _accountManageControl = new AccountManageControl();
-         //            _accountManageControl.Width = screenWidth;
-         //            _accountManageControl.Height = screenHeight;
-         //        }
-         //        return _accountManageControl;
-         //    }
-         //}
-         
-         //private static LicenseInfoControl _licenseInfoControl;
-         ///// <summary>
-         ///// 账号管理UserControl
-         ///// </summary>
-         //public static LicenseInfoControl LicenseInfoControl
-         //{
-         //    get
-         //    {
-         //        if (_licenseInfoControl == null)
-         //        {
-         //            _licenseInfoControl = new LicenseInfoControl();
-         //            _licenseInfoControl.Width = screenWidth;
-         //            _licenseInfoControl.Height = screenHeight;
-         //        }
-         //        return _licenseInfoControl;
-         //    }
-         //}
-
+    #endregion
          public static Popup _popUp;
          /// <summary>
          /// 获取应用程序区域宽度
@@ -184,7 +146,7 @@ namespace DouBanFMBase.PopUp
                  Width = screenHeight,
              };
          }
-
+         #region Popup Method
          /// <summary>
          /// 初始化用户控件 加载相应组件
          /// </summary>
@@ -210,18 +172,58 @@ namespace DouBanFMBase.PopUp
                      System.Diagnostics.Debug.WriteLine("找不到该弹出框{"+ type.ToString()+ "}");
                      break;
              }
+             _popUp.Loaded += new RoutedEventHandler((s, e) =>
+             {
+                 PopupShowAnimation();
+             });
              _popUp.IsOpen = true;
+             _popUp.Child.Opacity = 0;
+
+         }
+
+         private static SlideTransition st;
+         private static void PopupShowAnimation()
+         {
+             if (st == null)
+             {
+                 st = new SlideTransition();
+             }
+             st.Mode = SlideTransitionMode.SlideUpFadeIn;
+             ITransition transition = st.GetTransition(_popUp.Child);
+             transition.Completed += delegate {
+                 transition.Stop();
+             };
+             transition.Begin();
+             _popUp.Child.Opacity = 1;
+
+         }
+         private static void PopupOffAnimation()
+         {
+             if (st == null)
+             {
+                 st = new SlideTransition();
+             }
+             st.Mode = SlideTransitionMode.SlideUpFadeOut;
+             ITransition transition = st.GetTransition(_popUp.Child);
+             transition.Completed += delegate
+             {
+                 transition.Stop();
+                 _popUp.Child.Opacity = 0;
+                 if (_popUp != null)
+                 {
+                     _popUp.Child = null;
+                     _popUp = null;
+                 }
+             };
+             transition.Begin();
          }
         /// <summary>
         /// 移除弹出框
         /// </summary>
          public static void OffPopUp() 
          {
-             if (_popUp != null)
-             {
-                 _popUp.Child = null;
-                 _popUp = null;
-             }
+             PopupOffAnimation();
+             
          }
          private static int _keyboardPortraitHeight = 0;
          private static int _keyboardLandscapeHeight = 0;
@@ -353,5 +355,6 @@ namespace DouBanFMBase.PopUp
             var layoutRootTranslate = layoutRoot.RenderTransform as CompositeTransform;
             layoutRootTranslate.TranslateY = 0;
         }
+        #endregion
     }
 }

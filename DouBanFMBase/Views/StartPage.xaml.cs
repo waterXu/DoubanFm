@@ -64,7 +64,6 @@ namespace DouBanFMBase
                         }
                         this.Dispatcher.BeginInvoke(() =>
                         {
-                            PopupManager.OffPopUp();
                             this.NavigationService.Navigate(new Uri(DbFMCommonData.MianPageUrl, UriKind.RelativeOrAbsolute));
                         });
                     }));

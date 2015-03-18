@@ -24,98 +24,12 @@ namespace DouBanFMBase
         {
             InitializeComponent();
             BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
-           
-            //显示模式  默认为 day
-            string showMode = "day";
-            string themeBgPath = DbFMCommonData.DefaultDayTheme;
-            if (WpStorage.GetIsoSetting(DbFMCommonData.ThemePath) != null)
-            {
-                themeBgPath = WpStorage.GetIsoSetting(DbFMCommonData.ThemePath).ToString();
-            }
-            //获取显示模式 day or night
-            if (WpStorage.GetIsoSetting(DbFMCommonData.ShowMode) != null)
-            {
-                showMode = WpStorage.GetIsoSetting(DbFMCommonData.ShowMode).ToString();
-            }
-            ImageSource image = new BitmapImage(new Uri(DbFMCommonData.MoonPngPath, UriKind.RelativeOrAbsolute));
-            ImageSource bgImage;
-            switch (showMode)
-            {
-                case "day":
-                    if (!themeBgPath.Equals(DbFMCommonData.DefaultDayTheme))
-                    {
-                        bgImage = new BitmapImage(new Uri(themeBgPath, UriKind.RelativeOrAbsolute));
-                        bgBrush.ImageSource = bgImage;
-                        LayoutRoot.Background = bgBrush;
-                    }
-                    break;
-                case "night":
-                    image = new BitmapImage(new Uri(DbFMCommonData.SunPngPath, UriKind.RelativeOrAbsolute));
-                    //判断是否自定义主题
-                    //todo
-                    bgImage = new BitmapImage(new Uri(DbFMCommonData.DefaultNightTheme, UriKind.RelativeOrAbsolute));
-                    bgBrush.ImageSource = bgImage;
-                    LayoutRoot.Background = bgBrush;
-                    break;
-                default:
-                    break;
-            }
-            ellipseBrush.Stretch = Stretch.Uniform;
-            ellipseBrush.ImageSource = image;
-            ShowModeEllipse.Tag = showMode;
-            ShowModeEllipse.Fill = ellipseBrush;
-            // 用于本地化 ApplicationBar 的示例代码
-            //BuildLocalizedApplicationBar();
+            UpdateTheme();
         }
-
-        private void Instance_PlayStateChanged(object sender, EventArgs e)
-        {
-            this.Dispatcher.BeginInvoke(()=>
-            {
-                 if (BackgroundAudioPlayer.Instance.Track != null)
-                {
-                    // show soung 
-                    SongName.Text = BackgroundAudioPlayer.Instance.Track.Title;
-                    SongArtist.Text = BackgroundAudioPlayer.Instance.Track.Artist;
-                    if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
-                    {
-                        PlayBtn.IsChecked = false;
-                    }
-                    else
-                    {
-                        PlayBtn.IsChecked = true;
-                    }
-                }
-            });
-        }
-
-        public void DataContextLoaded()
-        {
-            this.Dispatcher.BeginInvoke(() => 
-            {
-                DataContext = App.ViewModel;
-                Binding channels = new Binding();
-                channels.Path = new PropertyPath("Channels");
-                AllChannels.SetBinding(ListBox.ItemsSourceProperty,channels);
-                Binding collectChannels = new Binding();
-                collectChannels.Path = new PropertyPath("CollectChannels");
-                CollectChannels.SetBinding(ListBox.ItemsSourceProperty, collectChannels);
-                if (App.ViewModel.Channels.Count > 0)
-                {
-                    AllChannels.SelectedIndex = 0;
-                }
-            });
-           
-        }
-        public void DataContextLoadedFail()
-        {
-            //添加 重新加载按钮
-            //。。。。
-        }
-        ImageBrush ellipseBrush = new ImageBrush();
-        ImageBrush bgBrush = new ImageBrush();
+        #region Page EventHandler Method
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+
             if (!string.IsNullOrEmpty(DbFMCommonData.NickName))
             {
                 showUserName.Text = DbFMCommonData.NickName;
@@ -149,56 +63,41 @@ namespace DouBanFMBase
                 }
             }
         }
-    
-        /// <summary>
-        /// 切换夜间/白天模式
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Ellipse_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            ImageSource image;
-            ImageSource bgImage;
-            string showMode = ShowModeEllipse.Tag.ToString();
-            switch (showMode)
+            if (PopupManager._popUp != null)
             {
-                case "day":
-                    image = new BitmapImage(new Uri(DbFMCommonData.SunPngPath, UriKind.RelativeOrAbsolute));
-                    showMode = "night";
-                    //判断是否自定义主题
-                    //todo
-                    bgImage = new BitmapImage(new Uri(DbFMCommonData.DefaultNightTheme, UriKind.RelativeOrAbsolute));
-                    bgBrush.ImageSource = bgImage;
-                    LayoutRoot.Background = bgBrush;
-                    break;
-                case "night":
-                    image = new BitmapImage(new Uri(DbFMCommonData.MoonPngPath, UriKind.RelativeOrAbsolute));
-                    showMode = "day";
-                    bgImage = new BitmapImage(new Uri(DbFMCommonData.DefaultDayTheme, UriKind.RelativeOrAbsolute));
-                    bgBrush.ImageSource = bgImage;
-                    LayoutRoot.Background = bgBrush;
-                    break;
-                default:
-                    image = new BitmapImage(new Uri(DbFMCommonData.SunPngPath, UriKind.RelativeOrAbsolute));
-                    break;
+                PopupManager.OffPopUp();
+                e.Cancel = true;
             }
-            ellipseBrush.ImageSource = image;
-            ShowModeEllipse.Fill = ellipseBrush;
-            ShowModeEllipse.Tag = showMode;
-            WpStorage.SetIsoSetting(DbFMCommonData.ShowMode,showMode);
+            else
+            {
+                if (MessageBox.Show("确定要退出应用？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                {
+                    Application.Current.Terminate();
+                }
+            }
         }
+        #endregion
 
+        #region Control EnventHandler
+        private void ToggleBtn_Click(object sender, RoutedEventArgs e)
+        {
+            bool showMode = ToggleBtn.IsChecked ? false : true;
+            WpStorage.SetIsoSetting(DbFMCommonData.ShowMode, showMode);
+            UpdateTheme();
+        }
         private void All_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox lb = sender as ListBox;
             ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
-            System.Diagnostics.Debug.WriteLine("Hz名称：" + cv.Name+ " Hz 是否收藏"+cv.IsChecked.ToString());
+            System.Diagnostics.Debug.WriteLine("Hz名称：" + cv.Name + " Hz 是否收藏" + cv.IsChecked.ToString());
 
             WpStorage.SetIsoSetting("ChangeChannels", true);
             object o = WpStorage.GetIsoSetting("ChangeChannels");
             if (DbFMCommonData.IsFirstLoadSongs)
             {
-                HttpHelper.GetChannelSongs("n",cv.ChannelId);
+                HttpHelper.GetChannelSongs("n", cv.ChannelId);
                 DbFMCommonData.SetSongsUrl("n", cv.ChannelId);
                 DbFMCommonData.IsFirstLoadSongs = false;
             }
@@ -208,7 +107,7 @@ namespace DouBanFMBase
                 HttpHelper.GetChannelSongs("n", cv.ChannelId);
                 DbFMCommonData.SetSongsUrl("n", cv.ChannelId);
             }
-          
+
         }
         private void Collect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -219,15 +118,6 @@ namespace DouBanFMBase
             HttpHelper.GetChannelSongs("n", cv.ChannelId);
             DbFMCommonData.SetSongsUrl("n", cv.ChannelId);
         }
-        public void GetSongSuccess(int p)
-        {
-            BackgroundAudioPlayer.Instance.Play();
-        }
-        public void GetSongFail()
-        {
-            //....show err
-            //SongGrid.DataContext = DbFMCommonData.PlayingSongs[playIndex];
-        }
         private void Forward_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             BackgroundAudioPlayer.Instance.SkipNext();
@@ -235,7 +125,10 @@ namespace DouBanFMBase
 
         private void SongInfo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(DbFMCommonData.MusicPageUrl, UriKind.RelativeOrAbsolute));
+            if (BackgroundAudioPlayer.Instance.Track != null)
+            {
+                this.NavigationService.Navigate(new Uri(DbFMCommonData.MusicPageUrl, UriKind.RelativeOrAbsolute));
+            }
         }
 
         private void ChangeButton_Click(object sender, RoutedEventArgs e)
@@ -254,6 +147,98 @@ namespace DouBanFMBase
         {
             PopupManager.ShowUserControl(PopupManager.UserControlType.LoginControl);
         }
+        #endregion
+        #region Audio Method
+
+        private void Instance_PlayStateChanged(object sender, EventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(()=>
+            {
+                 if (BackgroundAudioPlayer.Instance.Track != null)
+                {
+                    // show soung 
+                    SongName.Text = BackgroundAudioPlayer.Instance.Track.Title;
+                    SongArtist.Text = BackgroundAudioPlayer.Instance.Track.Artist;
+                    if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
+                    {
+                        PlayBtn.IsChecked = false;
+                    }
+                    else
+                    {
+                        PlayBtn.IsChecked = true;
+                    }
+                }
+            });
+        }
+        #endregion
+
+        #region hleper Method
+
+        public void UpdateTheme()
+        {
+            ImageBrush bgBrush = new ImageBrush();
+            //获取主题路径
+            string themeBgPath = DbFMCommonData.DefaultDayTheme;
+            if (WpStorage.GetIsoSetting(DbFMCommonData.ThemePath) != null)
+            {
+                themeBgPath = WpStorage.GetIsoSetting(DbFMCommonData.ThemePath).ToString();
+            }
+
+            ImageSource bgImage;
+            bool showMode = false;
+
+            //获取显示模式 true 为夜间模式
+            if (WpStorage.GetIsoSetting(DbFMCommonData.ShowMode) != null)
+            {
+                showMode = (bool)WpStorage.GetIsoSetting(DbFMCommonData.ShowMode);
+            }
+
+            if (showMode)
+            {
+                bgImage = new BitmapImage(new Uri(DbFMCommonData.DefaultNightTheme, UriKind.RelativeOrAbsolute));
+                bgBrush.ImageSource = bgImage;
+                LayoutRoot.Background = bgBrush;
+            }
+            else
+            {
+                bgImage = new BitmapImage(new Uri(themeBgPath, UriKind.RelativeOrAbsolute));
+                bgBrush.ImageSource = bgImage;
+                LayoutRoot.Background = bgBrush;
+            }
+        }
+        public void DataContextLoaded()
+        {
+            this.Dispatcher.BeginInvoke(() => 
+            {
+                DataContext = App.ViewModel;
+                Binding channels = new Binding();
+                channels.Path = new PropertyPath("Channels");
+                AllChannels.SetBinding(ListBox.ItemsSourceProperty,channels);
+                Binding collectChannels = new Binding();
+                collectChannels.Path = new PropertyPath("CollectChannels");
+                CollectChannels.SetBinding(ListBox.ItemsSourceProperty, collectChannels);
+                if (App.ViewModel.Channels.Count > 0)
+                {
+                    AllChannels.SelectedIndex = 0;
+                }
+            });
+           
+        }
+        public void DataContextLoadedFail()
+        {
+            //添加 重新加载按钮
+            //。。。。
+        }
+
+        public void GetSongSuccess(int p)
+        {
+            BackgroundAudioPlayer.Instance.Play();
+        }
+        public void GetSongFail()
+        {
+            //....show err
+            //SongGrid.DataContext = DbFMCommonData.PlayingSongs[playIndex];
+        }
         /// <summary>
         /// 登录成功
         /// </summary>
@@ -268,24 +253,11 @@ namespace DouBanFMBase
                     PopupManager.OffPopUp();
                 });
             }
-           
+
         }
 
-        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (PopupManager._popUp != null)
-            {
-                PopupManager.OffPopUp();
-                e.Cancel = true;
-            }
-            else
-            {
-                if (MessageBox.Show("确定要退出应用？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-                {
-                    Application.Current.Terminate();
-                }
-            }
-        }
+        #endregion
+
         // 用于生成本地化 ApplicationBar 的示例代码
         //private void BuildLocalizedApplicationBar()
         //{
@@ -301,8 +273,6 @@ namespace DouBanFMBase
         //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
         //    ApplicationBar.MenuItems.Add(appBarMenuItem);
         //}
-
-
 
     }
 }
