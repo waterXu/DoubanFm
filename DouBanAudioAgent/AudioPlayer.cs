@@ -2,11 +2,20 @@
 using System.Diagnostics;
 using System.Windows;
 using Microsoft.Phone.BackgroundAudio;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.IO.IsolatedStorage;
 
 namespace DouBanAudioAgent
 {
     public class AudioPlayer : AudioPlayerAgent
     {
+        private static List<AudioTrack> playList;
+        public static List<SongInfo> songList ;
+        private static int currentSongIndex = 0;
+        private static string serverUrl { get; set; }
+        public static bool _classInitialized = false;
+        public static bool AllowPrev = false;
         /// <remarks>
         /// AudioPlayer 实例可共享同一进程。
         /// 静态字段可用于 AudioPlayer 实例之间共享状态
@@ -14,13 +23,23 @@ namespace DouBanAudioAgent
         /// </remarks>
         static AudioPlayer()
         {
-            // 订阅托管异常处理程序
-            Deployment.Current.Dispatcher.BeginInvoke(delegate
+            if (!_classInitialized)
             {
-                Application.Current.UnhandledException += UnhandledException;
-            });
+                _classInitialized = true;
+                songList = new List<SongInfo>();
+                playList = new List<AudioTrack>();
+                // Subscribe to the managed exception handler
+                Deployment.Current.Dispatcher.BeginInvoke(delegate
+                {
+                    Application.Current.UnhandledException += UnhandledException;
+                });
+            }
         }
-
+        
+        public static void SetSongLIst(List<SongInfo> songs)
+        {
+            songList = songs;
+        }
         /// 出现未处理的异常时执行的代码
         private static void UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
@@ -61,6 +80,7 @@ namespace DouBanAudioAgent
                     // TODO: 在此处理关机状态(例如保存状态)
                     break;
                 case PlayState.Unknown:
+                    player.Track = GetNextTrack();
                     break;
                 case PlayState.Stopped:
                     break;
@@ -101,9 +121,41 @@ namespace DouBanAudioAgent
             switch (action)
             {
                 case UserAction.Play:
-                    if (player.PlayerState != PlayState.Playing)
+                    if (WpStorage.GetIsoSetting("ChangeChannels") != null)
                     {
-                        player.Play();
+                        WpStorage.SetIsoSetting("ChangeChannels", null);
+
+                        // load play list from isolated storage 
+                        LoadPlayListFromIsolatedStorage();
+
+                        // start playing
+                        if (playList.Count == 0)
+                        {
+                            System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
+                            return;
+                        }
+                        PlayTrack(player);
+                    }
+                    else
+                    {
+                        if (player.PlayerState == PlayState.Paused)
+                        {
+                            // start playing again
+                            player.Play();
+                        }
+                        else if (player.PlayerState != PlayState.Playing)
+                        {
+                            // load play list from isolated storage 
+                            LoadPlayListFromIsolatedStorage();
+
+                            // start playing
+                            if (playList.Count == 0)
+                            {
+                                System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
+                                return;
+                            }
+                            PlayTrack(player);
+                        }
                     }
                     break;
                 case UserAction.Stop:
@@ -135,7 +187,73 @@ namespace DouBanAudioAgent
 
             NotifyComplete();
         }
+        // load all playlist from isoloated storage
+        private void LoadPlayListFromIsolatedStorage()
+        {
+            // clear previous playlist
+            if (WpStorage.GetIsoSetting("SongsLoaded") != null)
+            {
+                if (WpStorage.GetIsoSetting("Songs") != null)
+                {
+                    string songsResult = WpStorage.GetIsoSetting("Songs").ToString();
+                    SongResult songresult = JsonConvert.DeserializeObject<SongResult>(songsResult);
+                    if (songresult.r == 0)
+                    {
+                        songList = songresult.song;
+                    }
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
+                return;
+            }
+            if (songList.Count > 0)
+            {
+                playList.Clear();
+                SongInfo songInfo;
+                // Find songs details
+                for (int i = 0; i < songList.Count; i++)
+                {
+                    songInfo = songList[i];
+                    System.Diagnostics.Debug.WriteLine("SONG = " + songInfo.url + songInfo.albumtitle);
+                    // Create a new AudioTrack object
+                    AudioTrack audioTrack = new AudioTrack(
+                        new Uri(songInfo.url, UriKind.Absolute), // URL
+                        songInfo.title,         // MP3 Music Title
+                        songInfo.artist,        // MP3 Music Artist
+                        songInfo.albumtitle,         // MP3 Music Album name
+                        new Uri(songInfo.picture, UriKind.Absolute)    // MP3 Music Artwork URL
+                        );
+                    // add song to PlayList
+                    playList.Add(audioTrack);
+                }
+            }
+            else
+            {
+                // no AudioTracks from Isolated Storage
+            }
 
+        }
+        private void PlayTrack(BackgroundAudioPlayer player)
+        {
+            if (PlayState.Paused == player.PlayerState)
+            {
+                // If we're paused, we already have 
+                // the track set, so just resume playing.
+                player.Play();
+            }
+            else
+            {
+                // Set which track to play. When the TrackReady state is received 
+                // in the OnPlayStateChanged handler, call player.Play().
+
+                player.Track = playList[currentSongIndex];
+                // start playing
+                player.Play();
+            }
+
+        }
         /// <summary>
         /// 实现逻辑以获取下一个 AudioTrack 实例。
         /// 在播放列表中，源可以是文件、Web 请求，等等。
@@ -149,11 +267,28 @@ namespace DouBanAudioAgent
         /// <returns>AudioTrack 实例，或如果播放完毕，则返回 null</returns>
         private AudioTrack GetNextTrack()
         {
-            // TODO:  添加逻辑以获取下一条音轨
+            System.Diagnostics.Debug.WriteLine("GetNextTrack");
 
             AudioTrack track = null;
 
-            // 指定曲目
+            currentSongIndex++;
+            if (currentSongIndex > playList.Count - 1) 
+            {
+                if (WpStorage.GetIsoSetting("SongsLoaded") != null)
+                {
+                    LoadPlayListFromIsolatedStorage();
+                }
+                currentSongIndex = 0;
+            }
+            else if (currentSongIndex == 1)
+            {
+                //预加载其他歌曲保存
+                GetHttpSongs.GetChannelSongs();
+            }
+            System.Diagnostics.Debug.WriteLine("Current now = " + currentSongIndex);
+            System.Diagnostics.Debug.WriteLine("Playlist count = " + playList.Count);
+            track = playList[currentSongIndex];
+            // specify the track
 
             return track;
         }
@@ -170,13 +305,29 @@ namespace DouBanAudioAgent
         /// <returns>AudioTrack 实例，或如果不允许前一曲目，则返回 null</returns>
         private AudioTrack GetPreviousTrack()
         {
-            // TODO:  添加逻辑以获取前一条音轨
+            if (WpStorage.GetIsoSetting("AllowPrev") != null)
+            {
+                AllowPrev = (bool)WpStorage.GetIsoSetting("AllowPrev");
+            }
+            if (AllowPrev)
+            {
+                System.Diagnostics.Debug.WriteLine("GetPreviousrack");
 
-            AudioTrack track = null;
+                AudioTrack track = null;
 
-            // 指定曲目
+                currentSongIndex--;
+                if (currentSongIndex < 0) currentSongIndex = playList.Count - 1;
+                track = playList[currentSongIndex];
 
-            return track;
+                // specify the track
+
+                return track;
+            }
+            else
+            {
+                return null;
+            }
+           
         }
 
         /// <summary>
@@ -214,5 +365,7 @@ namespace DouBanAudioAgent
         {
 
         }
+
+
     }
 }

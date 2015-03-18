@@ -38,7 +38,7 @@ namespace DouBanFMBase
            
         }
         /// <summary>
-        /// 巨人移动账号请求  服务器返回统一code解析
+        /// 豆瓣登录账号请求  服务器返回统一code解析
         /// </summary>
         /// <param name="syncResult"></param>
         /// <returns></returns>
@@ -104,8 +104,9 @@ namespace DouBanFMBase
                     if (!string.IsNullOrEmpty(result))
                     {
                         DbFMCommonData.ChannelList = JsonConvert.DeserializeObject<ChannelList>(result);
-                        App.ViewModel.LoadData();
                         DbFMCommonData.DownLoadSuccess = true;
+                        App.ViewModel.LoadData();
+
                     }
                     else
                     {
@@ -127,7 +128,7 @@ namespace DouBanFMBase
         public static void GetChannelSongs(string type, string channelId, string songId = null)
         {
             bool loadSuccess = false;
-            
+            WpStorage.SetIsoSetting("SongsLoaded", null);
             try
             {
                 string getChannelSongsUrl = DbFMCommonData.ChannelSongsUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
@@ -156,35 +157,30 @@ namespace DouBanFMBase
                 HttpHelper.httpGet(getChannelSongsUrl, new AsyncCallback((ar) =>
                 {
                     string result = SyncResultTostring(ar);
+                    WpStorage.SetIsoSetting("SongsLoaded", true);
+
                     if (!string.IsNullOrEmpty(result))
                     {
-
+                        WpStorage.SetIsoSetting("Songs", result);
                         SongResult songresult = JsonConvert.DeserializeObject<SongResult>(result);
                         if (songresult.r == 0)
                         {
                             DbFMCommonData.PlayingSongs = songresult.song;
                             loadSuccess = true;
                         }
-                        else if(songresult.r == 1)
-                        {
-                            MessageBox.Show(songresult.err);
-                        }
-                        else
-                        {
-                            MessageBox.Show(songresult.err);
-                        }
                     }
                     else
                     {
                         //加载失败
                     }
+                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadSongBack, loadSuccess);
                 }));
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("GetChannelList Exception：" + e.Message);
+                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadSongBack, loadSuccess);
             }
-            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadSongBack, loadSuccess);
         }
         public static void GetCollectChannelList()
         {
@@ -204,7 +200,25 @@ namespace DouBanFMBase
             {
                 System.Diagnostics.Debug.WriteLine("GetChannelList Exception：" + e.Message);
             }
-
+        }
+        /// <summary>
+        /// 下载歌曲到本地
+        /// </summary>
+        /// <param name="musicUrl"></param>
+        /// <param name="pictrueUrl"></param>
+        /// <param name="tile"></param>
+        /// <param name="artist"></param>
+        /// <param name="songId"></param>
+        /// <param name="album"></param>
+        public static void DownLoadMusic(string musicUrl, string pictrueUrl, string tile, string artist, string songId,string album)
+        {
+        }
+        /// <summary>
+        /// 更改歌曲是否红心状态
+        /// </summary>
+        /// <param name="status"></param>
+        public static void SetSongLoveStatus(bool status)
+        {
         }
         /// <summary>
         /// HttpGet功能函数
@@ -218,5 +232,7 @@ namespace DouBanFMBase
             req.AllowAutoRedirect = true;
             IAsyncResult token = req.BeginGetResponse(asyncCallback, req);
         }
-     }
+
+
+    }
 }

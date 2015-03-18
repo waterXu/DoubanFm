@@ -15,7 +15,15 @@ namespace DouBanFMBase
             switch (action)
             {
                 case (int)DbFMCommonData.CallbackType.Login:
-                    Startpage.LoginResult(isSuccess);
+                    //判断在哪个page调用login接口
+                    if (DbFMCommonData.MainPageLoaded)
+                    {
+                        Mainpage.UserLoginSuccess(isSuccess);
+                    }
+                    else
+                    {
+                        Startpage.LoginResult(isSuccess);
+                    }
                     break;
                 case (int)DbFMCommonData.CallbackType.LoadedData:
                     if (DbFMCommonData.MainPageLoaded)
@@ -30,15 +38,15 @@ namespace DouBanFMBase
                         }
                     }
                     break;
-                       case (int)DbFMCommonData.CallbackType.LoadSongBack:
-                        if (isSuccess)
-                        {
-                            Mainpage.GetSongSuccess(0);
-                        }
-                        else
-                        {
-                            Mainpage.GetSongFail();
-                        }
+                case (int)DbFMCommonData.CallbackType.LoadSongBack:
+                    if (isSuccess)
+                    {
+                        Mainpage.GetSongSuccess(0);
+                    }
+                    else
+                    {
+                        Mainpage.GetSongFail();
+                    }
                     break;
                     
                 default:

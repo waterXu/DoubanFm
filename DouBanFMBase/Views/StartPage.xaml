@@ -9,6 +9,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True"
+    shell:SystemTray.Opacity="0"
     Loaded="StartPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <UserControl.Resources>
         <ResourceDictionary>

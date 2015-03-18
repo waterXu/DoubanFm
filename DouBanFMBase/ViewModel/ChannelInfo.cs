@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DouBanAudioAgent;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,52 +47,5 @@ namespace DouBanFMBase
         /// </summary>
         public List<SongInfo> song { get; set; }
     }
-    public class SongInfo
-    {
-        public string aid { get; set; }
-        /// <summary>
-        /// 专辑位置
-        /// </summary>
-        public string album { get; set; }
-        /// <summary>
-        /// 专辑名称
-        /// </summary>
-        public string albumtitle { get; set; }
-        /// <summary>
-        /// 歌手
-        /// </summary>
-        public string artist { get; set; }
-        /// <summary>
-        /// 公司
-        /// </summary>
-        public string company { get; set; }
-        /// <summary>
-        /// 千位每秒
-        /// </summary>
-        public string kbps { get; set; }
-        /// <summary>
-        /// 播放长度 s
-        /// </summary>
-        public string length { get; set; }
-        /// <summary>
-        /// 是否红心？
-        /// </summary>
-        public string like { get; set; }
-        /// <summary>
-        /// 歌曲图片
-        /// </summary>
-        public string picture { get; set; }
-        /// <summary>
-        /// 歌曲名字
-        /// </summary>
-        public string title { get; set; }
-        /// <summary>
-        /// 歌曲地址
-        /// </summary>
-        public string url { get; set; }
-        /// <summary>
-        /// 发行时间
-        /// </summary>
-        public string public_time { get; set; }
-    }
+   
 }

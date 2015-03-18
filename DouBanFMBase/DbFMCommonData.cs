@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using DouBanAudioAgent;
 
 namespace DouBanFMBase
 {
@@ -27,6 +28,8 @@ namespace DouBanFMBase
         /// </summary>
         public static string ChannelSongsUrl { get { return "http://www.douban.com/j/app/radio/people"; } }
 
+        public static string MianPageUrl { get { return "/Views/MainPage.xaml"; } }
+        public static string MusicPageUrl { get { return "/Views/MusicPage.xaml"; } }
         /// <summary>
         /// 请求appname
         /// </summary>
@@ -134,5 +137,46 @@ namespace DouBanFMBase
         /// 记录当前内存中的歌曲信息
         /// </summary>
         public static List<SongInfo> PlayingSongs { get; set; }
+
+        public static bool IsFirstLoadSongs = true;
+
+        public static bool allowPrev;
+        public static bool AllowPrev
+        {
+            get { return allowPrev; }
+            set 
+            { 
+                if (allowPrev != value) {
+                    allowPrev = value;
+                    WpStorage.SetIsoSetting("AllowPrev",allowPrev);
+                }
+            }
+        }
+        public static void SetSongsUrl(string type, string channelId, string songId = null)
+        {
+            string getChannelSongsUrl = DbFMCommonData.ChannelSongsUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
+            if (!string.IsNullOrEmpty(DbFMCommonData.UserID))
+            {
+                getChannelSongsUrl += "&user_id=" + DbFMCommonData.UserID;
+            }
+            if (!string.IsNullOrEmpty(DbFMCommonData.Expire))
+            {
+                getChannelSongsUrl += "&expire=" + DbFMCommonData.Expire;
+            }
+            if (!string.IsNullOrEmpty(DbFMCommonData.Token))
+            {
+                getChannelSongsUrl += "&token=" + DbFMCommonData.Token;
+            }
+            if (songId != null)
+            {
+                getChannelSongsUrl += "&sid=" + songId;
+            }
+            if (channelId != null)
+            {
+                getChannelSongsUrl += "&channel=" + channelId;
+            }
+            getChannelSongsUrl += "&type=" + type;
+            WpStorage.SetIsoSetting("SongsUrl", getChannelSongsUrl);
+        }
     }
 }

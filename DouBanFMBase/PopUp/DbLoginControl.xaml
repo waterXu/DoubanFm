@@ -25,6 +25,7 @@
             <ColumnDefinition Width="400*"/>
             <ColumnDefinition Width="20*"/>
         </Grid.ColumnDefinitions>
+        <Border Grid.Column="1" Grid.Row="1" BorderBrush="Gray" BorderThickness="10" ></Border>
         <Grid Grid.Column="1" Grid.Row="1" x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40*"/>
@@ -33,6 +34,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
             <Grid Grid.Column="0" Grid.Row="0" Background="White">
                 <Image Source="/Images/logo.png" HorizontalAlignment="Left"/>
             </Grid>

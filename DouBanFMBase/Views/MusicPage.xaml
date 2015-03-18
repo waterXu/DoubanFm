@@ -13,12 +13,12 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True"
-    shell:SystemTray.Opacity="0">
+    shell:SystemTray.Opacity="0"
+    Loaded="PhoneApplicationPage_Loaded">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/DouBanFMBase;component/Style/ListboxItemStyle.xaml"/>
-
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -29,15 +29,15 @@
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="1.5*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="13*"/>
+            <RowDefinition Height="2.5*"/>
         </Grid.RowDefinitions>
        
         <Canvas Grid.Column="0" Grid.Row="0" Background="White" Opacity=".5">
             <Image Source="/Images/logo.png" HorizontalAlignment="Left"/>
         </Canvas>
-        <TextBlock Text="遇见"  Grid.Row="1" Foreground="#FF70B3BF" FontSize="50" HorizontalAlignment="Center"  VerticalAlignment="Bottom"/>
+        <TextBlock x:Name="TitleText" Text="未知" TextWrapping="Wrap" Grid.Row="1" Foreground="#FF70B3BF" FontSize="40" HorizontalAlignment="Center"  VerticalAlignment="Bottom"/>
         <phone:Pivot Grid.Row="2" Margin="0,-30,0,0" x:Name="pivotItems" SelectionChanged="Pivot_SelectionChanged">
             <!--<phone:Pivot.Background>
                 <ImageBrush ImageSource="/Images/theme/theme6.jpg"></ImageBrush>
@@ -45,13 +45,13 @@
             <phone:PivotItem>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="9*"/>
+                        <RowDefinition Height="12*"/>
                         <RowDefinition Height="3*"/>
-                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="2.6*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
-                   
-                    <Image Grid.Row="0" Source="/Images/theme/theme5.jpg" Stretch="UniformToFill"></Image>
+
+                    <Image x:Name="AlbumArtImage" Grid.Row="0" Source="/Images/theme/theme5.jpg" Stretch="UniformToFill"></Image>
                     <Grid  Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0*"/>
@@ -62,17 +62,17 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" Margin="0,0,20,0" Grid.RowSpan="2">
-                            
-                            <Slider Value="20" Minimum="0" Maximum="100" Foreground="#FFB0DBE3" Background="#FF8B939A"/>
-                            <TextBlock Text="00:00" Foreground="Black" FontSize="30" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                            <Slider x:Name="SongSlider"  Value="20" Minimum="0" Maximum="100"  Foreground="#FFB0DBE3" Background="#FF8B939A"/>
+                            <TextBlock x:Name="EndTextBlock" Text="00:00" Foreground="Black" FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                            <TextBlock x:Name="StartTextBlock" Text="00:00" Foreground="Black" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
                         </Grid>
                         <Border Background="#FFB0DBE3" Grid.Column="1" Padding="12" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,9,0,8" Grid.RowSpan="2" Height="85" Width="57">
-                            <CB:ChangeButton Click="ChangeButton_Click" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png"></CB:ChangeButton>
+                            <CB:ChangeButton x:Name="PlayButton" Click="ChangeButton_Click" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png"></CB:ChangeButton>
                         </Border>
                     </Grid>
                     <StackPanel Grid.Row="1">
-                        <TextBlock Text="李宗胜/梁静茹" HorizontalAlignment="Center" Foreground="#FF70B3BF" FontSize="40"></TextBlock>
-                        <TextBlock Text="李宗胜/梁静茹" HorizontalAlignment="Center" Foreground="Black" FontSize="20"></TextBlock>
+                        <TextBlock x:Name="ArtistText" Text="未知" HorizontalAlignment="Center" Foreground="#FF70B3BF" FontSize="40"></TextBlock>
+                        <TextBlock x:Name="AlbumText" Text="未知" HorizontalAlignment="Center" Foreground="Black" FontSize="20"></TextBlock>
                     </StackPanel>
                 </Grid>
             </phone:PivotItem>
@@ -84,15 +84,27 @@
         <Grid Grid.Row="3"  Background="#FFB0DBE3" Opacity=".5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2.5*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="6*"/>
+                <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
-            <Ellipse HorizontalAlignment="Center"  Name="ellipse0" Grid.Column="1" Grid.Row="0" Fill="Gray" Height="13" Width="13" Tag="0" Margin="-25,0,0,0"/>
-            <Ellipse Name="ellipse1" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Fill="#FFEF6B6B" Height="13" Tag="1" Width="13" Margin="0,0,-25,0"/>
+            <Ellipse HorizontalAlignment="Center"  Name="ellipse0" Grid.Column="1" Grid.Row="0" Fill="#FFEF6B6B" Height="13" Width="13" Tag="0" Margin="-25,0,0,0"/>
+            <Ellipse Name="ellipse1" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center"  Fill="Gray"   Height="13" Tag="1" Width="13" Margin="0,0,-25,0"/>
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Tap="DownMusic_Tap" Margin="10" Source="/Images/down.png"></Image>
+                <CB:ChangeButton x:Name="LoveImage" Margin="10" Grid.Column="1" DefaultImage="/Images/love.png" SeletedImage="/Images/heart.png" Click="LoveImage_Click"></CB:ChangeButton>
+                <Image  Margin="17" Grid.Column="2" Source="/Images/trash.png"></Image>
+                <Image  Tap="ForwardImage_Tap" Margin="10" Grid.Column="3" Source="/Images/forward.png"></Image>
+            </Grid>
         </Grid>
     </Grid>
 

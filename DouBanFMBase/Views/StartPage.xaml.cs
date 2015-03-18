@@ -65,7 +65,7 @@ namespace DouBanFMBase
                         this.Dispatcher.BeginInvoke(() =>
                         {
                             PopupManager.OffPopUp();
-                            this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
+                            this.NavigationService.Navigate(new Uri(DbFMCommonData.MianPageUrl, UriKind.RelativeOrAbsolute));
                         });
                     }));
                     //登录验证 todo
@@ -77,7 +77,7 @@ namespace DouBanFMBase
                     //没有登录成功信息 跳转首页 显示登陆框
                     this.Dispatcher.BeginInvoke(() =>
                     {
-                        this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
+                        this.NavigationService.Navigate(new Uri(DbFMCommonData.MianPageUrl, UriKind.RelativeOrAbsolute));
                     });
                 }
             }
@@ -85,7 +85,7 @@ namespace DouBanFMBase
             {
                 this.Dispatcher.BeginInvoke(() =>
                 {
-                    this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
+                    this.NavigationService.Navigate(new Uri(DbFMCommonData.MianPageUrl, UriKind.RelativeOrAbsolute));
                 });
             }
            
@@ -142,11 +142,11 @@ namespace DouBanFMBase
             {
                 if (isSuccess)
                 {
-                    this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
+                    this.NavigationService.Navigate(new Uri(DbFMCommonData.MianPageUrl, UriKind.RelativeOrAbsolute));
                 }
                 else
                 {
-                     this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
+                    this.NavigationService.Navigate(new Uri(DbFMCommonData.MianPageUrl, UriKind.RelativeOrAbsolute));
                 }
                 PopupManager.OffPopUp();
             });
@@ -154,7 +154,7 @@ namespace DouBanFMBase
         }
         private void ExperienceBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/DouBanFMBase;component/MainPage.xaml", UriKind.RelativeOrAbsolute));
+            this.NavigationService.Navigate(new Uri(DbFMCommonData.MianPageUrl, UriKind.RelativeOrAbsolute));
         }
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {

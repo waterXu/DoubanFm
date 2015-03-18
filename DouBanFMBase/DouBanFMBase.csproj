@@ -96,7 +96,7 @@
     <Compile Include="CallbackManager.cs" />
     <Compile Include="Helper\LrcFragment.cs" />
     <Compile Include="Helper\Lyric.cs" />
-    <Compile Include="MusicPage.xaml.cs">
+    <Compile Include="Views\MusicPage.xaml.cs">
       <DependentUpon>MusicPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ChannelInfo.cs" />
@@ -106,7 +106,7 @@
     <Compile Include="Helper\WpStorage.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="LoginResult.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PopUp\DbLoginControl.xaml.cs">
@@ -122,7 +122,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="StartPage.xaml.cs">
+    <Compile Include="Views\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ChannelViewModel.cs" />
@@ -134,7 +134,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="MusicPage.xaml">
+    <Page Include="Views\MusicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -142,7 +142,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,7 +154,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StartPage.xaml">
+    <Page Include="Views\StartPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -189,6 +189,7 @@
     <Content Include="Images\btn_on.png" />
     <Content Include="Images\day.png" />
     <Content Include="Images\db.png" />
+    <Content Include="Images\down.png" />
     <Content Include="Images\exit.png" />
     <Content Include="Images\forward.png" />
     <Content Include="Images\header.jpg" />
@@ -198,6 +199,7 @@
     <Content Include="Images\inputa.png" />
     <Content Include="Images\inputb.png" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\love.png" />
     <Content Include="Images\main.png" />
     <Content Include="Images\moon.png" />
     <Content Include="Images\night.png" />
@@ -220,9 +222,11 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\play.gif" />
     <Content Include="Images\play.png" />
     <Content Include="Images\star.png" />
     <Content Include="Images\stary.png" />
+    <Content Include="Images\stats.png" />
     <Content Include="Images\sun.png" />
     <Content Include="Images\theme.png" />
     <Content Include="Images\theme\theme1.jpg" />
@@ -240,6 +244,7 @@
     <Content Include="Images\defaultuser.png" />
     <Content Include="Images\close.png" />
     <Content Include="Images\delete.png" />
+    <Content Include="Images\trash.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">

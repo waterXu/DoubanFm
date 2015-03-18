@@ -42,7 +42,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="9.5*"/>
             </Grid.RowDefinitions>
-            <Ellipse Width="70" Height="70" Stroke="AliceBlue" StrokeThickness="2" HorizontalAlignment="Left">
+            <Ellipse Width="70" Height="70" Stroke="AliceBlue" StrokeThickness="2" HorizontalAlignment="Left" Tap="UserImage_Tap">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="/Images/defaultuser.png" Stretch="UniformToFill" />
                 </Ellipse.Fill>
@@ -69,8 +69,7 @@
                     <phone:PivotItem.Header>
                         <TextBlock Text="全部赫兹" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
-                    <ListBox x:Name="AllChannels" 
-                            ItemsSource="{Binding Channels}" SelectionChanged="All_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+                    <ListBox x:Name="AllChannels" SelectionChanged="All_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30"  Text="{Binding Name}"/>
@@ -82,7 +81,7 @@
                     <phone:PivotItem.Header>
                         <TextBlock Text="收藏赫兹" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
-                    <ListBox x:Name="CollectChannels" SelectionChanged="All_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+                    <ListBox x:Name="CollectChannels" SelectionChanged="Collect_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30"  Text="{Binding Name}"/>
@@ -104,11 +103,11 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Border BorderBrush="Black" BorderThickness="3"  Height="70" Width="70" CornerRadius="60"  Padding="15">
-                <CB:ChangeButton DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png"></CB:ChangeButton>
+                <CB:ChangeButton x:Name="PlayBtn" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png" Tap="ChangeButton_Click" Height="34" VerticalAlignment="Top"></CB:ChangeButton>
             </Border>
             <StackPanel  Grid.Column="1" Margin="10,0,0,0"  Tap="SongInfo_Tap">
-                <TextBlock Text="{Binding artist}" FontSize="35" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
-                <TextBlock Text="{Binding title}"></TextBlock>
+                <TextBlock x:Name="SongName" Text="Unknow" FontSize="35" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
+                <TextBlock x:Name="SongArtist" Text="Unknow"></TextBlock>
             </StackPanel>
 
             <Border Grid.Column="2" BorderBrush="Black" BorderThickness="3"  Height="70" Width="70" CornerRadius="60"  Padding="15">

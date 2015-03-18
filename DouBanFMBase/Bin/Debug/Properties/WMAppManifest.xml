@@ -11,7 +11,7 @@
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
     </Capabilities>
     <Tasks>
-      <DefaultTask Name="_default" NavigationPage="StartPage.xaml" />
+      <DefaultTask Name="_default" NavigationPage="Views/StartPage.xaml" />
       <ExtendedTask Name="BackgroundTask">
         <BackgroundServiceAgent Specifier="AudioPlayerAgent" Name="DouBanAudioAgent" Source="DouBanAudioAgent" Type="DouBanAudioAgent.AudioPlayer" />
         <BackgroundServiceAgent Specifier="AudioStreamingAgent" Name="DbAudioStreamAgent" Source="DbAudioStreamAgent" Type="DbAudioStreamAgent.AudioTrackStreamer" />

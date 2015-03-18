@@ -41,17 +41,9 @@ namespace DouBanFMBase.PopUp
              /// </summary>
              ForgetPassword,
              /// <summary>
-             /// 账号管理页面 AccountManageControl.xmal
-             /// </summary>
-             AccountManager,
-             /// <summary>
              /// 协议隐私条款信息页面
              /// </summary>
              LicenseControl,
-             /// <summary>
-             ///巨人移动账号修改密码  ChangePwdControl.xaml
-             /// </summary>
-             ChangePwdControl,
          };
 
         /// <summary>

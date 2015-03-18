@@ -69,12 +69,13 @@ namespace DouBanFMBase.PopUp
                         WpStorage.SetIsoSetting(DbFMCommonData.UserName, username);
                         WpStorage.SetIsoSetting(DbFMCommonData.Password, password);
                         DbFMCommonData.loginSuccess = true;
-                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, true);
                     }
                     else
                     {
+                        //todo
                         //MessageBox.Show("用户名或密码错误");
                     }
+                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, DbFMCommonData.loginSuccess);
                 }
                 catch
                 {
