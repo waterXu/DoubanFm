@@ -7,11 +7,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using DouBanAudioAgent;
 
 namespace DouBanFMBase
 {
     public class MainViewModel:INotifyPropertyChanged
     {
+        public ObservableCollection<ChannelViewModel> Channels { get; set; }
+        public ObservableCollection<ChannelViewModel> CollectChannels { get; set; }
+        private bool _loginSuccess;
+        public bool LoginSuccess
+        {
+            get { return _loginSuccess; }
+            set
+            {
+                if (_loginSuccess != value)
+                {
+                    _loginSuccess = value;
+                    NotifyPropertyChanged("LoginSuccess");
+                }
+            }
+        }
         public MainViewModel()
         {
             this.Channels = new ObservableCollection<ChannelViewModel>();
@@ -133,24 +149,7 @@ namespace DouBanFMBase
             }
             WpStorage.SetIsoSetting(DbFMCommonData.CollectName, collectChannels);
         }
-        public void LoadTestData()
-        {
-            Channels.Add(new ChannelViewModel() { ChannelId = "1", Name = "我的红心赫兹1" ,IsChecked=true});
-            Channels.Add(new ChannelViewModel() { ChannelId = "2", Name = "我的私人赫兹2", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "3", Name = "流行赫兹3", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "4", Name = "我的测试赫兹4", IsChecked = true });
-            Channels.Add(new ChannelViewModel() { ChannelId = "5", Name = "欧美赫兹5", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "6", Name = "华语赫兹6", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "7", Name = "日韩赫兹7", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "8", Name = "情歌赫兹8", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "9", Name = "情歌赫兹9", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "10", Name = "情歌赫兹10", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "11", Name = "情歌赫兹11", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "12", Name = "情歌赫兹12", IsChecked = false });
-            Channels.Add(new ChannelViewModel() { ChannelId = "13", Name = "情歌赫兹13", IsChecked = false });
-        }
-        public ObservableCollection<ChannelViewModel> Channels { get; set; }
-        public ObservableCollection<ChannelViewModel> CollectChannels{ get; set; }
+   
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string porpertyName)
         {

@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
+using DouBanAudioAgent;
 
 namespace DouBanFMBase.PopUp
 {
@@ -77,7 +78,7 @@ namespace DouBanFMBase.PopUp
                     {
                         WpStorage.SetIsoSetting(DbFMCommonData.UserName, userName);
                         WpStorage.SetIsoSetting(DbFMCommonData.Password, password);
-                        DbFMCommonData.loginSuccess = true;
+                       // DbFMCommonData.loginSuccess = true;
                         DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, true);
                     }
                     else

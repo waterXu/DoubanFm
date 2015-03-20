@@ -10,6 +10,7 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True"
     shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="Black"
     Loaded="StartPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <UserControl.Resources>
         <ResourceDictionary>

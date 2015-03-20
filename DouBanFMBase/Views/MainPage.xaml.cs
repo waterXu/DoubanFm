@@ -14,11 +14,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Data;
 using Microsoft.Phone.BackgroundAudio;
 using DouBanAudioAgent;
+using Microsoft.Phone.Info;
 
 namespace DouBanFMBase
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        /// <summary>
+        /// 标识首次启动时音乐是否在播放
+        /// </summary>
+        private bool FirstLoadMusicIsPlaying = false;
         // 构造函数
         public MainPage()
         {
@@ -29,24 +34,8 @@ namespace DouBanFMBase
         #region Page EventHandler Method
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-
-            if (!string.IsNullOrEmpty(DbFMCommonData.NickName))
-            {
-                showUserName.Text = DbFMCommonData.NickName;
-            }
             CallbackManager.Mainpage = this;
             DbFMCommonData.MainPageLoaded = true;
-            if (App.ViewModel.IsLoaded)
-            {
-                if (DbFMCommonData.DownLoadSuccess)
-                {
-                    DataContextLoaded();
-                }
-                else
-                {
-                    DataContextLoadedFail();
-                }
-            }
 
             if (BackgroundAudioPlayer.Instance.Track != null)
             {
@@ -61,7 +50,21 @@ namespace DouBanFMBase
                 {
                     PlayBtn.IsChecked = true;
                 }
+                FirstLoadMusicIsPlaying = true;
+
             }
+            if (App.ViewModel.IsLoaded)
+            {
+                if (DbFMCommonData.DownLoadSuccess)
+                {
+                    DataContextLoaded();
+                }
+                else
+                {
+                    DataContextLoadedFail();
+                }
+            }
+            
         }
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -91,32 +94,31 @@ namespace DouBanFMBase
         {
             ListBox lb = sender as ListBox;
             ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
-            System.Diagnostics.Debug.WriteLine("Hz名称：" + cv.Name + " Hz 是否收藏" + cv.IsChecked.ToString());
 
-            WpStorage.SetIsoSetting("ChangeChannels", true);
-            object o = WpStorage.GetIsoSetting("ChangeChannels");
-            if (DbFMCommonData.IsFirstLoadSongs)
+            DbFMCommonData.SetSongsUrl("n", cv.ChannelId);
+            if (FirstLoadMusicIsPlaying)
             {
-                HttpHelper.GetChannelSongs("n", cv.ChannelId);
-                DbFMCommonData.SetSongsUrl("n", cv.ChannelId);
-                DbFMCommonData.IsFirstLoadSongs = false;
+                FirstLoadMusicIsPlaying = false;
+                //启动应用时有音乐在播放则不获取新列表
+                return;
             }
-            else
-            {
-                //有正在播放的歌曲  保存  获取新列表 url
-                HttpHelper.GetChannelSongs("n", cv.ChannelId);
-                DbFMCommonData.SetSongsUrl("n", cv.ChannelId);
-            }
+          
+            HttpHelper.GetChannelSongs("n", cv.ChannelId);
+            // 保存获取新列表 url 以便给background audio调用
+            System.Diagnostics.Debug.WriteLine("Hz名称：" + cv.Name + " Hz 是否收藏" + cv.IsChecked.ToString());
 
         }
         private void Collect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            WpStorage.SetIsoSetting("ChangeChannels", true);
+            
+            //WpStorage.SetIsoSetting("ChangeChannels", true);
             ListBox lb = sender as ListBox;
             ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
+
             //有正在播放的歌曲  保存  获取新列表 url
             HttpHelper.GetChannelSongs("n", cv.ChannelId);
             DbFMCommonData.SetSongsUrl("n", cv.ChannelId);
+          
         }
         private void Forward_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -145,9 +147,24 @@ namespace DouBanFMBase
         }
         private void UserImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //跳转至用户中心
+            MainPiovt.SelectedIndex = 3;
+        }
+        /// <summary>
+        /// 登录账号/切换账号
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoginStatusBtn_Click(object sender, RoutedEventArgs e)
+        {
             PopupManager.ShowUserControl(PopupManager.UserControlType.LoginControl);
         }
+        private void ChangeUserImgBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         #endregion
+
         #region Audio Method
 
         private void Instance_PlayStateChanged(object sender, EventArgs e)
@@ -167,6 +184,7 @@ namespace DouBanFMBase
                     {
                         PlayBtn.IsChecked = true;
                     }
+                    
                 }
             });
         }
@@ -210,7 +228,9 @@ namespace DouBanFMBase
         {
             this.Dispatcher.BeginInvoke(() => 
             {
+                //绑定数据源
                 DataContext = App.ViewModel;
+                App.ViewModel.LoginSuccess = DbFMCommonData.loginSuccess;
                 Binding channels = new Binding();
                 channels.Path = new PropertyPath("Channels");
                 AllChannels.SetBinding(ListBox.ItemsSourceProperty,channels);
@@ -219,7 +239,13 @@ namespace DouBanFMBase
                 CollectChannels.SetBinding(ListBox.ItemsSourceProperty, collectChannels);
                 if (App.ViewModel.Channels.Count > 0)
                 {
-                    AllChannels.SelectedIndex = 0;
+                    int channelIndex = 0;
+                    if (FirstLoadMusicIsPlaying && WpStorage.GetIsoSetting("LastedChannelId") != null)
+                    {
+                        string index = WpStorage.GetIsoSetting("LastedChannelId").ToString();
+                        channelIndex = Convert.ToInt32(index);
+                    }
+                    AllChannels.SelectedIndex = channelIndex;
                 }
             });
            
@@ -232,6 +258,8 @@ namespace DouBanFMBase
 
         public void GetSongSuccess(int p)
         {
+            //标识切换频道 请求play
+            WpStorage.CreateFile("ChangeChannels");
             BackgroundAudioPlayer.Instance.Play();
         }
         public void GetSongFail()
@@ -249,7 +277,6 @@ namespace DouBanFMBase
             {
                 this.Dispatcher.BeginInvoke(() =>
                 {
-                    showUserName.Text = DbFMCommonData.NickName;
                     PopupManager.OffPopUp();
                 });
             }
@@ -257,6 +284,19 @@ namespace DouBanFMBase
         }
 
         #endregion
+
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            long memory = DeviceStatus.ApplicationCurrentMemoryUsage / 1048576;
+            long memoryLimit= DeviceStatus.ApplicationMemoryUsageLimit / 1048576;
+            long memoryMax = DeviceStatus.ApplicationPeakMemoryUsage / 1048576;
+            MessageBox.Show("当前内存使用情况："+memory.ToString() + " MB 当前最大内存使用情况： "+memoryMax.ToString()+ "MB  当前可分配最大内存： " + memoryLimit.ToString()+"  MB");
+        }
+
+      
+
 
         // 用于生成本地化 ApplicationBar 的示例代码
         //private void BuildLocalizedApplicationBar()

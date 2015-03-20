@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Microsoft.Phone.Info;
 using System.IO;
 using Windows.Networking.Connectivity;
+using DouBanAudioAgent;
 
 namespace DouBanFMBase
 {
@@ -37,6 +38,24 @@ namespace DouBanFMBase
             }
            
         }
+        public static byte[] SyncResultToByte(IAsyncResult syncResult)
+        {
+            try
+            {
+                WebResponse response = ((HttpWebRequest)syncResult.AsyncState).EndGetResponse(syncResult);
+                Stream stream = response.GetResponseStream();
+                byte[] data = new byte[stream.Length];
+                stream.Read(data, 0, (int)stream.Length);
+                return data;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("SyncResultTostring" + e.Message);
+                // todo   show  tip server not conn  如何检测是否联网
+                return null;
+            }
+
+        }
         /// <summary>
         /// 豆瓣登录账号请求  服务器返回统一code解析
         /// </summary>
@@ -46,8 +65,8 @@ namespace DouBanFMBase
         {
             try
             {
+                DbFMCommonData.loginSuccess = false;
                 string result = SyncResultTostring(syncResult);
-
                 LoginResult loginresult = JsonConvert.DeserializeObject<LoginResult>(result);
                 if (loginresult.r == 0)
                 {
@@ -57,6 +76,7 @@ namespace DouBanFMBase
                     DbFMCommonData.NickName = loginresult.user_name;
                     DbFMCommonData.Email = loginresult.email;
                     DbFMCommonData.UserID = loginresult.user_id;
+                    DbFMCommonData.loginSuccess = true;
                 }else if(loginresult.r == 1)
                 {
                     MessageBox.Show(loginresult.err);
@@ -127,8 +147,11 @@ namespace DouBanFMBase
         /// /// <param name="songId">要操作的歌曲id</param>
         public static void GetChannelSongs(string type, string channelId, string songId = null)
         {
+            if (WpStorage.isoFile.FileExists("SongsLoaded"))
+            {
+                WpStorage.isoFile.DeleteFile("SongsLoaded");
+            }
             bool loadSuccess = false;
-            WpStorage.SetIsoSetting("SongsLoaded", null);
             try
             {
                 string getChannelSongsUrl = DbFMCommonData.ChannelSongsUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
@@ -157,11 +180,13 @@ namespace DouBanFMBase
                 HttpHelper.httpGet(getChannelSongsUrl, new AsyncCallback((ar) =>
                 {
                     string result = SyncResultTostring(ar);
-                    WpStorage.SetIsoSetting("SongsLoaded", true);
+
+                    //标识新列表请求已经返回
+                    WpStorage.CreateFile("SongsLoaded");
+                    WpStorage.SaveStringToIsoStore("CurrentSongs.dat", result);
 
                     if (!string.IsNullOrEmpty(result))
                     {
-                        WpStorage.SetIsoSetting("Songs", result);
                         SongResult songresult = JsonConvert.DeserializeObject<SongResult>(result);
                         if (songresult.r == 0)
                         {
@@ -201,17 +226,26 @@ namespace DouBanFMBase
                 System.Diagnostics.Debug.WriteLine("GetChannelList Exception：" + e.Message);
             }
         }
-        /// <summary>
-        /// 下载歌曲到本地
-        /// </summary>
-        /// <param name="musicUrl"></param>
-        /// <param name="pictrueUrl"></param>
-        /// <param name="tile"></param>
-        /// <param name="artist"></param>
-        /// <param name="songId"></param>
-        /// <param name="album"></param>
-        public static void DownLoadMusic(string musicUrl, string pictrueUrl, string tile, string artist, string songId,string album)
+      
+        public static void DownLoadMusic(string songInfo)
         {
+            try
+            {
+                SongInfo song = JsonConvert.DeserializeObject<SongInfo>(songInfo);
+
+                HttpHelper.httpGet(song.url, new AsyncCallback((ar) =>
+                {
+                    byte[] data = SyncResultToByte(ar);
+                    if (data != null)
+                    {
+                        WpStorage.SaveFilesToIsoStore(DbFMCommonData.DownSongsIsoName + song.aid + ".mp3", data);
+
+                    }
+                }),songInfo);
+            }catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("DownLoadMusic ex" + e.Message);
+            }
         }
         /// <summary>
         /// 更改歌曲是否红心状态
@@ -225,14 +259,19 @@ namespace DouBanFMBase
         /// </summary>
         /// <param name="url">请求url</param>
         /// <param name="asyncCallback">请求返回</param>
-        public static void httpGet(string url, AsyncCallback asyncCallback)
+        public static void httpGet(string url, AsyncCallback asyncCallback,string cookieTag = null)
         {
             HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
             req.Method = "GET";
             req.AllowAutoRedirect = true;
+            //if (!string.IsNullOrEmpty(cookieTag))
+            //{
+            //    req.Headers["Cookie"] = "Tag="+cookieTag ;
+            //    //Cookie c = new Cookie("Tag",cookieTag);
+            //    //req.CookieContainer = new CookieContainer();
+            //    //req.CookieContainer.Add(url,c);
+            //}
             IAsyncResult token = req.BeginGetResponse(asyncCallback, req);
         }
-
-
     }
 }

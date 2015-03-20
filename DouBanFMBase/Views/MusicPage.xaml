@@ -33,11 +33,11 @@
             <RowDefinition Height="13*"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
-       
+
         <Canvas Grid.Column="0" Grid.Row="0" Background="White" Opacity=".5">
             <Image Source="/Images/logo.png" HorizontalAlignment="Left"/>
         </Canvas>
-        <TextBlock x:Name="TitleText" Text="未知" TextWrapping="Wrap" Grid.Row="1" Foreground="#FF70B3BF" FontSize="40" HorizontalAlignment="Center"  VerticalAlignment="Bottom"/>
+        <TextBlock x:Name="TitleText" Text="未知" TextWrapping="Wrap" Grid.Row="1" Foreground="#FF70B3BF" FontSize="30" HorizontalAlignment="Center"  VerticalAlignment="Bottom"/>
         <phone:Pivot Grid.Row="2" Margin="0,-30,0,0" x:Name="pivotItems" SelectionChanged="Pivot_SelectionChanged">
             <!--<phone:Pivot.Background>
                 <ImageBrush ImageSource="/Images/theme/theme6.jpg"></ImageBrush>
@@ -53,21 +53,20 @@
 
                     <Image x:Name="AlbumArtImage" Grid.Row="0" Source="/Images/theme/theme5.jpg" ImageOpened="AlbumArtImage_ImageOpened" Opacity="0" Stretch="UniformToFill"></Image>
                     <Grid  Grid.Row="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0*"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="7*"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0" Margin="0,0,20,0" Grid.RowSpan="2">
+                        <Grid Grid.Column="0" Grid.RowSpan="2">
                             <Slider x:Name="SongSlider"  Value="20" Minimum="0" Maximum="100"  Foreground="#FFB0DBE3" Background="#FF8B939A"/>
                             <TextBlock x:Name="EndTextBlock" Text="00:00" Foreground="Black" FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                             <TextBlock x:Name="StartTextBlock" Text="00:00" Foreground="Black" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
                         </Grid>
-                        <Border Background="#FFB0DBE3" Grid.Column="1" Padding="12" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,9,0,8" Grid.RowSpan="2" Height="85" Width="57">
-                            <CB:ChangeButton x:Name="PlayButton" Click="ChangeButton_Click" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png"></CB:ChangeButton>
+                        <!--<Border Background="#FFB0DBE3" Grid.Column="1" Padding="12" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,9,0,8" Grid.RowSpan="2" Height="85" Width="57">
+                            <CB:ChangeButton  x:Name="PlayButton" Click="ChangeButton_Click" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png"></CB:ChangeButton>
+                        </Border>-->
+                        <Border Grid.Column="1" Background="#FFB0DBE3"   BorderBrush="Black" BorderThickness="3" CornerRadius="60" Height="60" Width="60" Padding="10" Grid.RowSpan="2" Margin="-5">
+                            <CB:ChangeButton CB:TiltEffect.IsTiltEnabled="true" x:Name="PlayButton" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png" Tap="ChangeButton_Click" Height="34" VerticalAlignment="Top"></CB:ChangeButton>
                         </Border>
                     </Grid>
                     <StackPanel Grid.Row="1">

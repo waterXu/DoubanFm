@@ -8,6 +8,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using DouBanFMBase.Resources;
 using System.Collections.Generic;
+using Microsoft.Phone.BackgroundAudio;
 
 namespace DouBanFMBase
 {
@@ -109,12 +110,17 @@ namespace DouBanFMBase
         // 此代码在应用程序关闭时不执行
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("App Status now = background");
+            System.Diagnostics.Debug.WriteLine("App CurrentDomain FriendlyName =" + AppDomain.CurrentDomain.FriendlyName);
+            AppDomainManager appManeger = AppDomain.CurrentDomain.DomainManager;
+            System.Diagnostics.Debug.WriteLine("App CurrentDomain DomainManager name =" + AppDomain.CurrentDomain.DomainManager.ToString());
         }
 
         // 应用程序关闭(例如，用户点击“后退”)时执行的代码
         // 此代码在停用应用程序时不执行
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("App Status now = close");
         }
 
         // 导航失败时执行的代码

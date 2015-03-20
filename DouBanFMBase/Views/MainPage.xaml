@@ -42,13 +42,14 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="9.5*"/>
             </Grid.RowDefinitions>
-            <Ellipse Width="70" Height="70" Stroke="AliceBlue" StrokeThickness="2" HorizontalAlignment="Left" Tap="UserImage_Tap">
+            <Ellipse Width="70" Height="70" Stroke="AliceBlue" x:Name="UserPictrue" StrokeThickness="2" HorizontalAlignment="Left" Tap="UserImage_Tap">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="/Images/defaultuser.png" Stretch="UniformToFill" />
                 </Ellipse.Fill>
             </Ellipse>
-            
-            <TextBlock Name="showUserName" Text="请先登录" Foreground="Black" Margin="75,25,127,25" VerticalAlignment="Center"/>
+
+            <TextBlock Name="showUserName" Text="{Binding LoginSuccess ,Converter={StaticResource textConverter},ConverterParameter= NickName }" Foreground="Black" Margin="75,0,121,0" VerticalAlignment="Center"/>
+            <Button Content="查看内存使用" Click="Button_Click" Margin="229,-5,103,5"></Button>
             <Ellipse Width="40" Height="40" Stroke="White" StrokeThickness="3" HorizontalAlignment="Right">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="/Images/theme.png" Stretch="Uniform"/>
@@ -67,7 +68,7 @@
                     <phone:PivotItem.Header>
                         <TextBlock Text="我的赫兹" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
-                    
+
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>
@@ -97,6 +98,21 @@
                     <phone:PivotItem.Header>
                         <TextBlock Text="个人中心" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Ellipse Width="170" Height="170" Stroke="Gray" StrokeThickness="2" HorizontalAlignment="Center" Tap="UserImage_Tap" Fill="{Binding ElementName=UserPictrue, Path=Fill,Mode=TwoWay}">
+                        </Ellipse>
+                        <Button HorizontalAlignment="Right" x:Name="LoginStatusBtn" VerticalAlignment="Top" Background="#FF62CDD1" Opacity=".5" Content="更换头像" Click="ChangeUserImgBtn_Click"></Button>
+                        <Button Grid.Row="1" FontSize="35" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF62CDD1" Content="{Binding LoginSuccess, Converter={StaticResource textConverter}}" Opacity=".5" Width="340" Height="90" Click="LoginStatusBtn_Click"></Button>
+                        <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF62CDD1" FontSize="35" Content="主题设置" Opacity=".5"  Width="340" Height="90" ></Button>
+                    </Grid>
+
                 </phone:PivotItem>
             </phone:Pivot>
         </Grid>
@@ -106,16 +122,16 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Border BorderBrush="Black" BorderThickness="3"  Height="70" Width="70" CornerRadius="60"  Padding="15">
-                <CB:ChangeButton x:Name="PlayBtn" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png" Tap="ChangeButton_Click" Height="34" VerticalAlignment="Top"></CB:ChangeButton>
+            <Border  BorderBrush="Black" BorderThickness="3"  Height="70" Width="70" CornerRadius="60"  Padding="15">
+                <CB:ChangeButton  CB:TiltEffect.IsTiltEnabled="true" x:Name="PlayBtn" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png" Tap="ChangeButton_Click" Height="34" VerticalAlignment="Top"></CB:ChangeButton>
             </Border>
-            <StackPanel  Grid.Column="1" Margin="10,0,0,0"  Tap="SongInfo_Tap">
+            <StackPanel  CB:TiltEffect.IsTiltEnabled="true"   Grid.Column="1" Margin="10,0,0,0"  Tap="SongInfo_Tap">
                 <TextBlock x:Name="SongName" Text="Unknow" FontSize="35" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
                 <TextBlock x:Name="SongArtist" Text="Unknow"></TextBlock>
             </StackPanel>
 
-            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="3"  Height="70" Width="70" CornerRadius="60"  Padding="15">
-                <Image Source="/Images/forward.png" Tap="Forward_Tap"></Image>
+            <Border  Grid.Column="2" BorderBrush="Black" BorderThickness="3"  Height="70" Width="70" CornerRadius="60"  Padding="15">
+                <Image  CB:TiltEffect.IsTiltEnabled="true"  Source="/Images/forward.png" Tap="Forward_Tap"></Image>
             </Border>
         </Grid>
     </Grid>

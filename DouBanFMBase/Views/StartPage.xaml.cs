@@ -12,6 +12,7 @@ using System.Windows.Threading;
 using DouBanFMBase.PopUp;
 using Newtonsoft.Json;
 using DouBanFMBase.Resources;
+using DouBanAudioAgent;
 
 namespace DouBanFMBase
 {
@@ -60,7 +61,6 @@ namespace DouBanFMBase
                         {
                             WpStorage.SetIsoSetting(DbFMCommonData.UserName, username);
                             WpStorage.SetIsoSetting(DbFMCommonData.Password, password);
-                            DbFMCommonData.loginSuccess = true;
                         }
                         this.Dispatcher.BeginInvoke(() =>
                         {

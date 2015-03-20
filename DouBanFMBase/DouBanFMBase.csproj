@@ -96,16 +96,17 @@
     <Compile Include="CallbackManager.cs" />
     <Compile Include="Helper\LrcFragment.cs" />
     <Compile Include="Helper\Lyric.cs" />
+    <Compile Include="ViewModel\TextConverter.cs" />
+    <Compile Include="ViewModel\TiltEffect.cs" />
     <Compile Include="Views\MusicPage.xaml.cs">
       <DependentUpon>MusicPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\ChannelInfo.cs" />
+    <Compile Include="Models\ChannelInfo.cs" />
     <Compile Include="DbFMCommonData.cs" />
     <Compile Include="Helper\HttpHelper.cs" />
     <Compile Include="Helper\VirtualizingCollection.cs" />
-    <Compile Include="Helper\WpStorage.cs" />
     <Compile Include="LocalizedStrings.cs" />
-    <Compile Include="LoginResult.cs" />
+    <Compile Include="Models\LoginResult.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

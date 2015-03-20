@@ -5,6 +5,7 @@ using Microsoft.Phone.BackgroundAudio;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO.IsolatedStorage;
+using System.Net;
 
 namespace DouBanAudioAgent
 {
@@ -71,7 +72,7 @@ namespace DouBanAudioAgent
             switch (playState)
             {
                 case PlayState.TrackEnded:
-                    player.Track = GetPreviousTrack();
+                    player.Track = GetNextTrack();
                     break;
                 case PlayState.TrackReady:
                     player.Play();
@@ -121,20 +122,21 @@ namespace DouBanAudioAgent
             switch (action)
             {
                 case UserAction.Play:
-                    if (WpStorage.GetIsoSetting("ChangeChannels") != null)
+                    //查看是否有 切换频道标识， 有则更新playerList
+                    if (WpStorage.isoFile.FileExists("ChangeChannels"))
                     {
-                        WpStorage.SetIsoSetting("ChangeChannels", null);
+                        //清除切换频道标识
+                        WpStorage.isoFile.DeleteFile("ChangeChannels");
 
                         // load play list from isolated storage 
                         LoadPlayListFromIsolatedStorage();
-
-                        // start playing
                         if (playList.Count == 0)
                         {
                             System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
                             return;
                         }
-                        PlayTrack(player);
+                        // start playing
+                        UpdatePlayTrack(player);
                     }
                     else
                     {
@@ -154,7 +156,7 @@ namespace DouBanAudioAgent
                                 System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
                                 return;
                             }
-                            PlayTrack(player);
+                            UpdatePlayTrack(player);
                         }
                     }
                     break;
@@ -187,25 +189,48 @@ namespace DouBanAudioAgent
 
             NotifyComplete();
         }
+        #region load New Songs Method
         // load all playlist from isoloated storage
         private void LoadPlayListFromIsolatedStorage()
         {
-            // clear previous playlist
-            if (WpStorage.GetIsoSetting("SongsLoaded") != null)
+            //判断请求新歌曲列表是否返回
+            if (WpStorage.isoFile.FileExists("SongsLoaded"))
             {
-                if (WpStorage.GetIsoSetting("Songs") != null)
+                WpStorage.isoFile.DeleteFile("SongsLoaded");
+                if (WpStorage.isoFile.FileExists("CurrentSongs.dat"))
                 {
-                    string songsResult = WpStorage.GetIsoSetting("Songs").ToString();
-                    SongResult songresult = JsonConvert.DeserializeObject<SongResult>(songsResult);
-                    if (songresult.r == 0)
+                    string songsResult = WpStorage.readIsolatedStorageFile("CurrentSongs.dat");
+
+                    if (!string.IsNullOrEmpty(songsResult))
                     {
-                        songList = songresult.song;
+                        try
+                        {
+                            SongResult songresult = JsonConvert.DeserializeObject<SongResult>(songsResult);
+                            if (songresult.r == 0)
+                            {
+                                songList = songresult.song;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine("SongResult json DeserializeObject exception = " + ex.Message);
+                        }
                     }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("没有可播放的新歌曲");
+                        return;
+                    }
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("没有可播放的新歌曲");
+                    return;
                 }
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
+                System.Diagnostics.Debug.WriteLine("没有可播放的新歌曲");
                 return;
             }
             if (songList.Count > 0)
@@ -213,9 +238,11 @@ namespace DouBanAudioAgent
                 playList.Clear();
                 SongInfo songInfo;
                 // Find songs details
+                string tag;
                 for (int i = 0; i < songList.Count; i++)
                 {
                     songInfo = songList[i];
+                    tag =  JsonConvert.SerializeObject(songInfo);
                     System.Diagnostics.Debug.WriteLine("SONG = " + songInfo.url + songInfo.albumtitle);
                     // Create a new AudioTrack object
                     AudioTrack audioTrack = new AudioTrack(
@@ -223,7 +250,9 @@ namespace DouBanAudioAgent
                         songInfo.title,         // MP3 Music Title
                         songInfo.artist,        // MP3 Music Artist
                         songInfo.albumtitle,         // MP3 Music Album name
-                        new Uri(songInfo.picture, UriKind.Absolute)    // MP3 Music Artwork URL
+                        new Uri(songInfo.picture, UriKind.Absolute),  // MP3 Music Artwork URL
+                        tag,
+                        EnabledPlayerControls.All
                         );
                     // add song to PlayList
                     playList.Add(audioTrack);
@@ -235,25 +264,18 @@ namespace DouBanAudioAgent
             }
 
         }
-        private void PlayTrack(BackgroundAudioPlayer player)
+        /// <summary>
+        /// 更新 播放列表
+        /// </summary>
+        /// <param name="player"></param>
+        private void UpdatePlayTrack(BackgroundAudioPlayer player)
         {
-            if (PlayState.Paused == player.PlayerState)
-            {
-                // If we're paused, we already have 
-                // the track set, so just resume playing.
-                player.Play();
-            }
-            else
-            {
-                // Set which track to play. When the TrackReady state is received 
-                // in the OnPlayStateChanged handler, call player.Play().
-
-                player.Track = playList[currentSongIndex];
-                // start playing
-                player.Play();
-            }
-
+            currentSongIndex = 0;
+            player.Track = playList[currentSongIndex];
+            // start playing
+            player.Play();
         }
+        #endregion
         /// <summary>
         /// 实现逻辑以获取下一个 AudioTrack 实例。
         /// 在播放列表中，源可以是文件、Web 请求，等等。
@@ -274,7 +296,7 @@ namespace DouBanAudioAgent
             currentSongIndex++;
             if (currentSongIndex > playList.Count - 1) 
             {
-                if (WpStorage.GetIsoSetting("SongsLoaded") != null)
+                if (WpStorage.isoFile.FileExists("SongsLoaded"))
                 {
                     LoadPlayListFromIsolatedStorage();
                 }
@@ -282,8 +304,9 @@ namespace DouBanAudioAgent
             }
             else if (currentSongIndex == 1)
             {
-                //预加载其他歌曲保存
-                GetHttpSongs.GetChannelSongs();
+                //预加载其他歌曲保存 到独立存储
+                //GetHttpSongs.GetChannelSongs();
+                PlayListHelper.ReFreshSongList();
             }
             System.Diagnostics.Debug.WriteLine("Current now = " + currentSongIndex);
             System.Diagnostics.Debug.WriteLine("Playlist count = " + playList.Count);
@@ -365,7 +388,70 @@ namespace DouBanAudioAgent
         {
 
         }
+        #region LoadNewSongList Method
+        private static WebClient wc = new WebClient();
 
+        static void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            WpStorage.CreateFile("SongsLoaded");
+
+            if (e.Error != null)
+            {
+                System.Diagnostics.Debug.WriteLine("wc_DownloadStringCompleted  error：" + e.Error);
+                return;
+            }
+            if (e.Result != "")
+            {
+                WpStorage.SaveStringToIsoStore("CurrentSongs.dat", e.Result);
+            }
+        }
+
+
+        public static void ReFreshSongList()
+        {
+            if (WpStorage.isoFile.FileExists("SongsLoaded"))
+            {
+                WpStorage.isoFile.DeleteFile("SongsLoaded");
+            }
+            if (WpStorage.isoFile.FileExists("CurrentSongs.dat"))
+            {
+                WpStorage.isoFile.DeleteFile("CurrentSongs.dat");
+            }
+            if (wc.IsBusy)
+            {
+                try
+                {
+                    wc.CancelAsync();
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+            string getChannelSongsUrl = null;
+            getChannelSongsUrl = WpStorage.readIsolatedStorageFile("SongsUrl.dat");
+            if (string.IsNullOrEmpty(getChannelSongsUrl))
+            {
+                return;
+            }
+            try
+            {
+                Random random = new Random();
+                int r = random.Next();
+                //getChannelSongsUrl += "&r=" + r;
+                System.Diagnostics.Debug.WriteLine("操作歌曲url：" + getChannelSongsUrl);
+
+                wc.DownloadStringCompleted -= new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
+                wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
+
+                wc.DownloadStringAsync(new Uri(getChannelSongsUrl, UriKind.Absolute));
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("ReFreshSongList exception：" + e.Message);
+            }
+        }
+        #endregion
 
     }
 }

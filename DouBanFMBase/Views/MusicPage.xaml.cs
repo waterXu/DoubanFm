@@ -11,6 +11,8 @@ using System.Windows.Media;
 using Microsoft.Phone.BackgroundAudio;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Newtonsoft.Json;
+using DouBanAudioAgent;
 
 namespace DouBanFMBase
 {
@@ -24,6 +26,10 @@ namespace DouBanFMBase
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         // Latest AlbumArt path
         public string latestAlbumArtPath { get; set; }
+        //Latest song srouce
+        public string latestSource { get; set; }
+        //当前播放歌曲的信息
+        private string currentSongInfo { get; set; }
         public MusicPage()
         {
             InitializeComponent();
@@ -107,6 +113,7 @@ namespace DouBanFMBase
 
         private void DownMusic_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            HttpHelper.DownLoadMusic(currentSongInfo);
             //check this music exsit
             //HttpHelper.DownLoadMusic();
         }
@@ -126,9 +133,7 @@ namespace DouBanFMBase
                 {
                     SongSlider.Tag = "loseFoucesed";
                     dispatcherTimer.Stop();
-                    // get slider value
                     int sliderValue = (int)e.OldValue;
-                    // create timespan object with milliseconds (from slider value)
                     TimeSpan timeSpan = new TimeSpan(0, 0, 0, 0, sliderValue);
                     // set a new position of the song
                     BackgroundAudioPlayer.Instance.Position = timeSpan;
@@ -156,11 +161,9 @@ namespace DouBanFMBase
             // ff something is playing (a new song)
             if (BackgroundAudioPlayer.Instance.Track != null)
             {
-                // show soung info
                 TitleText.Text = BackgroundAudioPlayer.Instance.Track.Title;
                 ArtistText.Text = BackgroundAudioPlayer.Instance.Track.Artist;
                 AlbumText.Text = BackgroundAudioPlayer.Instance.Track.Album;
-                // handle slider and texts
                 SongSlider.Minimum = 0;
                 SongSlider.Maximum = BackgroundAudioPlayer.Instance.Track.Duration.TotalMilliseconds;
                 string text = BackgroundAudioPlayer.Instance.Track.Duration.ToString();
@@ -203,6 +206,17 @@ namespace DouBanFMBase
         {
             System.Diagnostics.Debug.WriteLine("AlbumArt = " + BackgroundAudioPlayer.Instance.Track.AlbumArt);
 
+            Uri songURL = BackgroundAudioPlayer.Instance.Track.Source;
+
+            //如果与上次歌曲url不一致  则重新获取最新 tag 数据（songInfo）
+            if (songURL.AbsolutePath != latestSource)
+            {
+                string tag = BackgroundAudioPlayer.Instance.Track.Tag;
+                if(!string.IsNullOrEmpty(tag)){
+                    currentSongInfo = tag;
+                }
+            }
+
             // get album art Uri from Audio Playback Agetn
             Uri albumArtURL = BackgroundAudioPlayer.Instance.Track.AlbumArt;
             // load album art from net
@@ -241,7 +255,20 @@ namespace DouBanFMBase
             };
             transition.Begin();
         }
+        public void DownLoadSongBack(bool isSuccess)
+        {
 
+        }
+        private void SaveDownSongsHashSet()
+        {
+            string downSongIds = null;
+            if (DbFMCommonData.CollectHashSet.Count > 0)
+            {
+                //把hashset表反序列化为字符串 存入独立存储
+                downSongIds = JsonConvert.SerializeObject(DbFMCommonData.DownSongIdList);
+            }
+            WpStorage.SetIsoSetting(DbFMCommonData.DownSongIdsName, downSongIds);
+        }
         #endregion
 
     }

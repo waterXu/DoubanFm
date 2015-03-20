@@ -60,7 +60,7 @@ namespace  DouBanAudioAgent
         public static IsolatedStorageFile isoFile = IsolatedStorageFile.GetUserStoreForApplication();
 
         /// <summary>
-        /// 保存文件到手机独立存储
+        /// 保存本地文件到手机独立存储
         /// </summary>
         /// <param name="fileName"></param>
         public static void SaveToIsoStore(string fileName, string assemblyName)
@@ -76,10 +76,6 @@ namespace  DouBanAudioAgent
                         SaveStringToIsoStore(fileName, strFileContent);
                     }
                 } 
-               // Stream stream = Microsoft.Xna.Framework.TitleContainer.OpenStream(fileName);
-               // byte[] data = new byte[stream.Length];
-               // stream.Read(data, 0, (int)stream.Length);
-               // SaveFilesToIsoStore(fileName, data);
             }
             catch (Exception e)
             {
@@ -101,22 +97,23 @@ namespace  DouBanAudioAgent
         {
             try
             {
-                if (!isoFile.FileExists(fileName))
+                if (isoFile.FileExists(fileName))
                 {
-                    string strBaseDir = string.Empty;
-                    string delimStr = "/";
-                    char[] delimiter = delimStr.ToCharArray();
-                    string[] dirsPath = fileName.Split(delimiter);
-                    for (int i = 0; i < dirsPath.Length - 1; i++)
-                    {
-                        strBaseDir = System.IO.Path.Combine(strBaseDir, dirsPath[i]);
-                        isoFile.CreateDirectory(strBaseDir);
-                    }
-                    using (BinaryWriter bw = new BinaryWriter(isoFile.CreateFile(fileName)))
-                    {
-                        bw.Write(data);
-                        bw.Close();
-                    }
+                    isoFile.DeleteFile(fileName);
+                }
+                string strBaseDir = string.Empty;
+                string delimStr = "/";
+                char[] delimiter = delimStr.ToCharArray();
+                string[] dirsPath = fileName.Split(delimiter);
+                for (int i = 0; i < dirsPath.Length - 1; i++)
+                {
+                    strBaseDir = System.IO.Path.Combine(strBaseDir, dirsPath[i]);
+                    isoFile.CreateDirectory(strBaseDir);
+                }
+                using (BinaryWriter bw = new BinaryWriter(isoFile.CreateFile(fileName)))
+                {
+                    bw.Write(data);
+                    bw.Close();
                 }
             }
             catch
@@ -130,13 +127,32 @@ namespace  DouBanAudioAgent
             string rn = "";
             if (isoFile.FileExists(fileName))
             {
-                IsolatedStorageFileStream isofs = isoFile.OpenFile(fileName, FileMode.Open, FileAccess.Read);
-                byte[] data = new byte[isofs.Length];
-                isofs.Read(data, 0, (int)isofs.Length);
-                isofs.Close();
-                rn = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
+                 using (IsolatedStorageFileStream isofs = new IsolatedStorageFileStream(fileName, FileMode.Open,FileAccess.Read,isoFile)){
+                     byte[] data = new byte[isofs.Length];
+                     isofs.Read(data, 0, (int)isofs.Length);
+                     isofs.Close();
+                     rn = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
+                 }
+                //using（IsolatedStorageFileStream isofs = new IsolatedStorageFileStream(fileName, FileMode.Open,FileAccess.Read,isoFile))
+                //{
+                //    byte[] data = new byte[isofs.Length];
+                //    isofs.Read(data, 0, (int)isofs.Length);
+                //    isofs.Close();
+                //    rn = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
+                //}
+                
             }
             return rn;
+        }
+        public static void CreateFile(string fileName)
+        {
+            if (!isoFile.FileExists(fileName))
+            {
+                using (IsolatedStorageFileStream isofs = new IsolatedStorageFileStream(fileName, FileMode.Create, isoFile))
+                {
+                }
+            }
+           
         }
     }
 }

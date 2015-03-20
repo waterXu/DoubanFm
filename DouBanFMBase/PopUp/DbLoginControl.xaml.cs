@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Newtonsoft.Json;
 using Microsoft.Phone.Shell;
 using System.IO;
+using DouBanAudioAgent;
 
 namespace DouBanFMBase.PopUp
 {

@@ -106,8 +106,11 @@ namespace DouBanFMBase
             LoadedData = 2,
             LoadSongBack = 3
         }
+
+        /// <summary>
+        /// 是否登录成功
+        /// </summary>
         public static bool loginSuccess = false;
-       
         /// <summary>
         /// 定义popup回调函数
         /// </summary>
@@ -125,6 +128,16 @@ namespace DouBanFMBase
         /// 记录收藏hz
         /// </summary>
         public static HashSet<string> CollectHashSet { get;set;}
+
+        public static string DownSongIdsName { get { return "DownSongIds"; } }
+        /// <summary>
+        /// 下载歌曲根目录
+        /// </summary>
+        public static string DownSongsIsoName { get { return "DownSongs//"; } }
+        /// <summary>
+        /// 记录下载歌曲的id
+        /// </summary>
+        public static HashSet<string> DownSongIdList { get; set; }
         /// <summary>
         /// MainPage页面是否load完成
         /// </summary>
@@ -176,7 +189,9 @@ namespace DouBanFMBase
                 getChannelSongsUrl += "&channel=" + channelId;
             }
             getChannelSongsUrl += "&type=" + type;
-            WpStorage.SetIsoSetting("SongsUrl", getChannelSongsUrl);
+            //保存 获取歌曲列表Url
+            WpStorage.SaveStringToIsoStore("SongsUrl.dat", getChannelSongsUrl);
+            WpStorage.SetIsoSetting("LastedChannelId",channelId);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace DouBanFMBase
                     if (DbFMCommonData.MainPageLoaded)
                     {
                         Mainpage.UserLoginSuccess(isSuccess);
+                        App.ViewModel.LoginSuccess = DbFMCommonData.loginSuccess;
                     }
                     else
                     {
