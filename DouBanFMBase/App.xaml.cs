@@ -9,6 +9,9 @@ using Microsoft.Phone.Shell;
 using DouBanFMBase.Resources;
 using System.Collections.Generic;
 using Microsoft.Phone.BackgroundAudio;
+using Newtonsoft.Json;
+using DouBanAudioAgent;
+using System.Collections.ObjectModel;
 
 namespace DouBanFMBase
 {
@@ -80,7 +83,19 @@ namespace DouBanFMBase
         // 此代码在重新激活应用程序时不执行
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-           
+            //加载下载歌曲
+            string songs = WpStorage.readIsolatedStorageFile(DbFMCommonData.SongsSavePath);
+            if (!string.IsNullOrEmpty(songs))
+            {
+                DbFMCommonData.DownSongsList = JsonConvert.DeserializeObject<ObservableCollection<SongInfo>>(songs);
+                App.ViewModel.LocalSongs = DbFMCommonData.DownSongsList;
+            }
+            //加载下载歌曲的id列表
+            if (WpStorage.GetIsoSetting(DbFMCommonData.DownSongIdsName)!=null)
+            {
+                string songIds = WpStorage.GetIsoSetting(DbFMCommonData.DownSongIdsName).ToString();
+                DbFMCommonData.DownSongIdList = JsonConvert.DeserializeObject<HashSet<string>>(songIds);
+            }
         }
 
         // 激活应用程序(置于前台)时执行的代码
@@ -103,6 +118,22 @@ namespace DouBanFMBase
             if(DbFMCommonData.CollectHashSet == null)
             {
                 DbFMCommonData.CollectHashSet = new HashSet<string>();
+            }
+            if (DbFMCommonData.DownSongsList != null && DbFMCommonData.DownSongsList.Count < 1)
+            {
+               string songs = WpStorage.readIsolatedStorageFile(DbFMCommonData.SongsSavePath);
+               if (!string.IsNullOrEmpty(songs))
+               {
+                   DbFMCommonData.DownSongsList = JsonConvert.DeserializeObject<ObservableCollection<SongInfo>>(songs);
+               }
+            }
+            if (DbFMCommonData.DownSongIdList != null && DbFMCommonData.DownSongIdList.Count < 1) 
+            {
+                string songIds = WpStorage.GetIsoSetting(DbFMCommonData.DownSongIdsName).ToString();
+                if (!string.IsNullOrEmpty(songIds))
+                {
+                    DbFMCommonData.DownSongIdList = JsonConvert.DeserializeObject<HashSet<string>>(songIds);
+                }
             }
         }
 

@@ -15,6 +15,7 @@ using System.Windows.Data;
 using Microsoft.Phone.BackgroundAudio;
 using DouBanAudioAgent;
 using Microsoft.Phone.Info;
+using Newtonsoft.Json;
 
 namespace DouBanFMBase
 {
@@ -28,13 +29,11 @@ namespace DouBanFMBase
         public MainPage()
         {
             InitializeComponent();
-            BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
             UpdateTheme();
         }
         #region Page EventHandler Method
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            CallbackManager.Mainpage = this;
             DbFMCommonData.MainPageLoaded = true;
 
             if (BackgroundAudioPlayer.Instance.Track != null)
@@ -79,8 +78,39 @@ namespace DouBanFMBase
                 {
                     Application.Current.Terminate();
                 }
+                else
+                {
+                    e.Cancel = true;
+                    return;
+                }
             }
         }
+        // Navigated to this Player Page
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            CallbackManager.Mainpage = this;
+            if (DbFMCommonData.DownLoadedSong)
+            {
+                App.ViewModel.LocalSongs = DbFMCommonData.DownSongsList;
+                Binding localSongs = new Binding();
+                localSongs.Path = new PropertyPath("LocalSongs");
+                DownSongList.SetBinding(ListBox.ItemsSourceProperty, localSongs);
+            }
+            BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
+        }
+        // Navigated from this Page
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            // Stop timer and remove Event Handlers
+            BackgroundAudioPlayer.Instance.PlayStateChanged -= new EventHandler(Instance_PlayStateChanged);
+
+            DownSongList.ClearValue(ListBox.ItemsSourceProperty);
+
+           CallbackManager.Mainpage = null;
+
+        }
+       
         #endregion
 
         #region Control EnventHandler
@@ -161,7 +191,76 @@ namespace DouBanFMBase
         }
         private void ChangeUserImgBtn_Click(object sender, RoutedEventArgs e)
         {
+            //访问手机照片
+        }
+        private void DownSongList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox lb = sender as ListBox;
+            if (lb.SelectedIndex == -1)
+            {
+                return;
+            }
+            SongInfo songinfo = lb.SelectedItem as SongInfo;
+            if (songinfo != null)
+            {
+                //判断是否多选删除模式  不是则播放该歌曲
+                if (!CheckSongs.IsChecked)
+                {
+                    string tag = JsonConvert.SerializeObject(songinfo);
+                    AudioTrack track = new AudioTrack(new Uri(songinfo.url,UriKind.Relative),songinfo.title,songinfo.artist,songinfo.albumtitle,new Uri(songinfo.picture,UriKind.Relative),tag ,EnabledPlayerControls.All);
+                    BackgroundAudioPlayer.Instance.Track = track;
+                    BackgroundAudioPlayer.Instance.Play();
+                    DbFMCommonData.SongFormDown = true;
+                }
+            }
+            //lb.SelectedIndex = -1;
+            //lb.SelectedItem = null;
+        }
 
+        private void DeleteSongs_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            foreach (SongInfo song in DownSongList.SelectedItems)
+            {
+
+                string imageType = song.picture.Remove(0, song.picture.Length - 4);
+                string localurl = DbFMCommonData.DownSongsIsoName + song.aid + ".mp3";
+                string picture = DbFMCommonData.DownSongsIsoName + song.aid + imageType;
+
+                bool test = WpStorage.isoFile.FileExists(localurl);
+
+                WpStorage.isoFile.DeleteFile(localurl.Replace("//","/"));
+                WpStorage.isoFile.DeleteFile(picture);
+                DbFMCommonData.DownSongIdList.Remove(song.aid);
+                DbFMCommonData.DownSongsList.Remove(song);
+
+                test = WpStorage.isoFile.FileExists(localurl);
+                test = WpStorage.isoFile.FileExists(localurl.Replace("//", "/"));
+                test = WpStorage.isoFile.FileExists(picture);
+
+            }
+            App.ViewModel.SaveDownSongs();
+            CheckSongs_Click(CheckSongs,new RoutedEventArgs());
+            CheckSongs.IsChecked = false;
+        }
+
+        private void CheckSongs_Click(object sender, RoutedEventArgs e)
+        {
+            if (CheckSongs.IsChecked)
+            {
+                DeleteSongs.Visibility = System.Windows.Visibility.Collapsed;
+                Style itemStyle = Resources["ListBoxItemStyle2"] as Style;
+                DownSongList.ItemContainerStyle = itemStyle;
+                DownSongList.SelectionMode = SelectionMode.Single;
+            }
+            else
+            {
+                DeleteSongs.Visibility = System.Windows.Visibility.Visible;
+                Style itemStyle = Resources["ListBoxItemStyle1"] as Style;
+                DownSongList.ItemContainerStyle = itemStyle;
+                DownSongList.SelectionMode = SelectionMode.Multiple;
+            }
+            DownSongList.SelectedIndex = -1;
+            DownSongList.SelectedItem = null;
         }
         #endregion
 
@@ -188,6 +287,7 @@ namespace DouBanFMBase
                 }
             });
         }
+
         #endregion
 
         #region hleper Method
@@ -282,6 +382,16 @@ namespace DouBanFMBase
             }
 
         }
+        public void DownSongBack(bool isSuccess)
+        {
+            this.Dispatcher.BeginInvoke(() =>
+            {
+                App.ViewModel.LocalSongs = DbFMCommonData.DownSongsList;
+                Binding localSongs = new Binding();
+                localSongs.Path = new PropertyPath("LocalSongs");
+                DownSongList.SetBinding(ListBox.ItemsSourceProperty, localSongs);
+            });
+        }
 
         #endregion
 
@@ -294,6 +404,8 @@ namespace DouBanFMBase
             long memoryMax = DeviceStatus.ApplicationPeakMemoryUsage / 1048576;
             MessageBox.Show("当前内存使用情况："+memory.ToString() + " MB 当前最大内存使用情况： "+memoryMax.ToString()+ "MB  当前可分配最大内存： " + memoryLimit.ToString()+"  MB");
         }
+
+
 
       
 

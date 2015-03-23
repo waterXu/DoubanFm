@@ -15,6 +15,27 @@ namespace DouBanFMBase
     {
         public ObservableCollection<ChannelViewModel> Channels { get; set; }
         public ObservableCollection<ChannelViewModel> CollectChannels { get; set; }
+
+        private ObservableCollection<SongInfo> localSongs;
+        /// <summary>
+        /// 下载歌曲绑定
+        /// </summary>
+        public ObservableCollection<SongInfo> LocalSongs 
+        {
+            get { return localSongs; }
+            set
+            {
+                if (localSongs == null)
+                {
+                    localSongs = new ObservableCollection<SongInfo>();
+                }
+                if (localSongs != value)
+                {
+                    localSongs = value;
+                    NotifyPropertyChanged("LocalSongs");
+                }
+            }
+        }
         private bool _loginSuccess;
         public bool LoginSuccess
         {
@@ -32,6 +53,7 @@ namespace DouBanFMBase
         {
             this.Channels = new ObservableCollection<ChannelViewModel>();
             this.CollectChannels = new ObservableCollection<ChannelViewModel>();
+            this.LocalSongs = new ObservableCollection<SongInfo>();
            // Channels.CollectionChanged += new NotifyCollectionChangedEventHandler(ChannelsChanged);
             //Channels.PropertyChanged += new PropertyChangedEventHandler(ChannelPropertyChanged);
         }
@@ -83,6 +105,7 @@ namespace DouBanFMBase
             }
            
         }
+ 
         private void ChannelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             throw new NotImplementedException();
@@ -149,7 +172,26 @@ namespace DouBanFMBase
             }
             WpStorage.SetIsoSetting(DbFMCommonData.CollectName, collectChannels);
         }
-   
+        public void SaveDownSongs()
+        {
+            //this.LocalSongs = DbFMCommonData.DownSongsList;
+            string downSongIds = null;
+            if (DbFMCommonData.DownSongIdList.Count > 0)
+            {
+                //把hashset表反序列化为字符串 存入独立存储
+                downSongIds = JsonConvert.SerializeObject(DbFMCommonData.DownSongIdList);
+            }
+            WpStorage.SetIsoSetting(DbFMCommonData.DownSongIdsName, downSongIds);
+
+            string downSongs = null;
+            if (LocalSongs.Count > 0)
+            {
+                //把下载歌曲反序列化为字符串 存入独立存储
+                downSongs = JsonConvert.SerializeObject(DbFMCommonData.DownSongsList);
+            }
+            WpStorage.SaveStringToIsoStore(DbFMCommonData.SongsSavePath, downSongs);
+
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string porpertyName)
         {

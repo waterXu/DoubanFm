@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using DouBanAudioAgent;
+using System.Collections.ObjectModel;
 
 namespace DouBanFMBase
 {
@@ -104,7 +105,8 @@ namespace DouBanFMBase
         {
             Login = 1,
             LoadedData = 2,
-            LoadSongBack = 3
+            LoadSongBack = 3,
+            DownSongBack = 4
         }
 
         /// <summary>
@@ -133,11 +135,49 @@ namespace DouBanFMBase
         /// <summary>
         /// 下载歌曲根目录
         /// </summary>
-        public static string DownSongsIsoName { get { return "DownSongs//"; } }
+        public static string DownSongsIsoName { get { return "DownSongs\\"; } }
+
+
         /// <summary>
         /// 记录下载歌曲的id
         /// </summary>
-        public static HashSet<string> DownSongIdList { get; set; }
+        private static HashSet<string> downSongIdList;
+        public static HashSet<string> DownSongIdList {
+            get {
+                if (downSongIdList == null)
+                    downSongIdList = new HashSet<string>();
+                return downSongIdList; 
+            }
+            set 
+            {
+                if (downSongIdList == null)
+                    downSongIdList = new HashSet<string>();
+                downSongIdList = value;
+            }
+        }
+        /// <summary>
+        /// 下载歌曲信息保存文件名
+        /// </summary>
+        public static string SongsSavePath { get { return "DownSongsInfo.dat"; } }
+        /// <summary>
+        /// 记录下载的歌曲列表信息
+        /// </summary>
+        private static ObservableCollection<SongInfo> downSongsList;
+        public static ObservableCollection<SongInfo> DownSongsList 
+        {
+            get
+            {
+                if (downSongsList == null)
+                    downSongsList = new ObservableCollection<SongInfo>();
+                return downSongsList;
+            }
+            set 
+            {
+                if (downSongsList == null)
+                    downSongsList = new ObservableCollection<SongInfo>();
+                downSongsList = value;
+            }
+        }
         /// <summary>
         /// MainPage页面是否load完成
         /// </summary>
@@ -193,5 +233,11 @@ namespace DouBanFMBase
             WpStorage.SaveStringToIsoStore("SongsUrl.dat", getChannelSongsUrl);
             WpStorage.SetIsoSetting("LastedChannelId",channelId);
         }
+        /// <summary>
+        /// 下载歌曲是否完成
+        /// </summary>
+        public static bool DownLoadedSong = true;
+
+        public static bool SongFormDown { get; set; }
     }
 }

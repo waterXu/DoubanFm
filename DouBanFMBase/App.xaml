@@ -11,6 +11,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/DouBanFMBase;component/Style/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="/DouBanFMBase;component/Style/ListboxItemStyle1.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <local:LocalizedStrings xmlns:local="clr-namespace:DouBanFMBase" x:Key="LocalizedStrings"/>
             <local:TextConverter x:Key="textConverter" />

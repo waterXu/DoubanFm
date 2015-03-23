@@ -16,7 +16,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="LayoutRoot" BorderBrush="Gray" BorderThickness="1" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                    <Border x:Name="LayoutRoot"  Background="#FFE4EAEB" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>
@@ -73,11 +73,25 @@
                                         </LinearGradientBrush>
                                     </Rectangle.Fill>
                                 </Rectangle>
-                                <Border x:Name="BorderStyle" BorderBrush="Red" BorderThickness="2" Opacity="0">
-                                    <Image Height="30" Width="30" Source="Images/IconsLand_023.png" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                <Border x:Name="BorderStyle" BorderBrush="Red" BorderThickness="3" Opacity="0">
+                                    <Image Height="30" Width="30" Source="/Images/checked.png" HorizontalAlignment="Right" VerticalAlignment="Top"/>
                                 </Border>
                                 <ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" d:LayoutOverrides="Width, Height" Grid.Column="1" VerticalAlignment="Center"/>
                             </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ListBoxItemStyle2" TargetType="ListBoxItem">
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="LayoutRoot"  Background="#FFE4EAEB" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        <Grid>
+                                <ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" d:LayoutOverrides="Width, Height" Grid.Column="1" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>

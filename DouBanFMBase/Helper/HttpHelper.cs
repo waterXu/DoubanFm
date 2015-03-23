@@ -226,25 +226,46 @@ namespace DouBanFMBase
                 System.Diagnostics.Debug.WriteLine("GetChannelList Exception：" + e.Message);
             }
         }
-      
-        public static void DownLoadMusic(string songInfo)
+
+        public static void DownLoadMusic(SongInfo song)
         {
+            DbFMCommonData.DownLoadedSong = false;
+            bool downLoadSuccess = false;
             try
             {
-                SongInfo song = JsonConvert.DeserializeObject<SongInfo>(songInfo);
-
                 HttpHelper.httpGet(song.url, new AsyncCallback((ar) =>
                 {
                     byte[] data = SyncResultToByte(ar);
                     if (data != null)
                     {
                         WpStorage.SaveFilesToIsoStore(DbFMCommonData.DownSongsIsoName + song.aid + ".mp3", data);
-
+                        HttpHelper.httpGet(song.picture, new AsyncCallback((imgar) =>
+                        {
+                            string imageType = song.picture.Remove(0,song.picture.Length-4);
+                            byte[] imgdata = SyncResultToByte(imgar);
+                            if (imgdata != null)
+                            {
+                                WpStorage.SaveFilesToIsoStore(DbFMCommonData.DownSongsIsoName + song.aid + imageType, imgdata);
+                                song.url = DbFMCommonData.DownSongsIsoName + song.aid + ".mp3";
+                                song.picture = DbFMCommonData.DownSongsIsoName + song.aid + imageType;
+                                DbFMCommonData.DownSongIdList.Add(song.aid);
+                                DbFMCommonData.DownSongsList.Add(song);
+                                //App.ViewModel.LocalSongs.Add(song);
+                                App.ViewModel.SaveDownSongs();
+                                downLoadSuccess = true;
+                            }
+                            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongBack, downLoadSuccess);
+                        }));
                     }
-                }),songInfo);
+                    else
+                    {
+                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongBack, downLoadSuccess);
+                    }
+                }));
             }catch(Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("DownLoadMusic ex" + e.Message);
+                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongBack, downLoadSuccess);
             }
         }
         /// <summary>

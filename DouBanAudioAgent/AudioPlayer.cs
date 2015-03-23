@@ -140,24 +140,26 @@ namespace DouBanAudioAgent
                     }
                     else
                     {
-                        if (player.PlayerState == PlayState.Paused)
-                        {
-                            // start playing again
-                            player.Play();
-                        }
-                        else if (player.PlayerState != PlayState.Playing)
-                        {
-                            // load play list from isolated storage 
-                            LoadPlayListFromIsolatedStorage();
+                        player.Play();
 
-                            // start playing
-                            if (playList.Count == 0)
-                            {
-                                System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
-                                return;
-                            }
-                            UpdatePlayTrack(player);
-                        }
+                        //if (player.PlayerState == PlayState.Paused)
+                        //{
+                        //    // start playing again
+                        //    player.Play();
+                        //}
+                        //else if (player.PlayerState != PlayState.Playing)
+                        //{
+                        //    // load play list from isolated storage 
+                        //    LoadPlayListFromIsolatedStorage();
+
+                        //    // start playing
+                        //    if (playList.Count == 0)
+                        //    {
+                        //        System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
+                        //        return;
+                        //    }
+                        //    UpdatePlayTrack(player);
+                        //}
                     }
                     break;
                 case UserAction.Stop:
@@ -302,15 +304,18 @@ namespace DouBanAudioAgent
                 }
                 currentSongIndex = 0;
             }
-            else if (currentSongIndex == 1)
-            {
-                //预加载其他歌曲保存 到独立存储
-                //GetHttpSongs.GetChannelSongs();
-                PlayListHelper.ReFreshSongList();
-            }
+            //else if (currentSongIndex == 1)
+            //{
+            //    //预加载其他歌曲保存 到独立存储
+            //    //GetHttpSongs.GetChannelSongs();
+            //    PlayListHelper.ReFreshSongList();
+            //}
             System.Diagnostics.Debug.WriteLine("Current now = " + currentSongIndex);
             System.Diagnostics.Debug.WriteLine("Playlist count = " + playList.Count);
-            track = playList[currentSongIndex];
+            if (playList != null && playList.Count > 0)
+            {
+                track = playList[currentSongIndex];
+            }
             // specify the track
 
             return track;

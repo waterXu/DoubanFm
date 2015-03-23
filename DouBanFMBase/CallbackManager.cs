@@ -10,6 +10,7 @@ namespace DouBanFMBase
     {
         public static MainPage Mainpage;
         public static StartPage Startpage;
+        public static MusicPage musicPage;
         public static void CallBackTrigger(int action,bool isSuccess)
         {
             switch (action)
@@ -27,7 +28,7 @@ namespace DouBanFMBase
                     }
                     break;
                 case (int)DbFMCommonData.CallbackType.LoadedData:
-                    if (DbFMCommonData.MainPageLoaded)
+                    if (Mainpage != null)
                     {
                         if (DbFMCommonData.DownLoadSuccess)
                         {
@@ -40,16 +41,30 @@ namespace DouBanFMBase
                     }
                     break;
                 case (int)DbFMCommonData.CallbackType.LoadSongBack:
-                    if (isSuccess)
+                    if (Mainpage != null)
                     {
-                        Mainpage.GetSongSuccess(0);
+                        if (isSuccess)
+                        {
+                            Mainpage.GetSongSuccess(0);
+                        }
+                        else
+                        {
+                            Mainpage.GetSongFail();
+                        }
                     }
-                    else
+                   
+                    break;
+                case (int)DbFMCommonData.CallbackType.DownSongBack:
+                    DbFMCommonData.DownLoadedSong = true;
+                    if (musicPage != null)
                     {
-                        Mainpage.GetSongFail();
+                        musicPage.DownLoadSongBack(isSuccess);
+                    }
+                    if (Mainpage != null)
+                    {
+                        Mainpage.DownSongBack(isSuccess);
                     }
                     break;
-                    
                 default:
                     break;
             }

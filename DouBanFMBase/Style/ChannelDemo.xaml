@@ -1,7 +1,8 @@
 ﻿<MVM:MainViewModel
      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:MVM="clr-namespace:DouBanFMBase">
+    xmlns:MVM="clr-namespace:DouBanFMBase"
+    xmlns:DBAA="clr-namespace:DouBanAudioAgent;assembly=DouBanAudioAgent">
     <MVM:MainViewModel.Channels>
         <MVM:ChannelViewModel ChannelId="1" Name="我的私人赫兹" IsChecked="True"/>
         <MVM:ChannelViewModel ChannelId="2" Name="我的红心赫兹" IsChecked="True"/>
@@ -11,4 +12,13 @@
         <MVM:ChannelViewModel ChannelId="6" Name="Le Sang Song 系 MHz" IsChecked="False"/>
         <MVM:ChannelViewModel ChannelId="7" Name="我的私人赫兹" IsChecked="True"/>
     </MVM:MainViewModel.Channels>
+    <MVM:MainViewModel.LocalSongs>
+        <DBAA:SongInfo title="测试歌曲1" artist="zhangjie"></DBAA:SongInfo>
+        <DBAA:SongInfo title="测试歌曲2" artist="zhangjie"></DBAA:SongInfo>
+        <DBAA:SongInfo title="测试歌曲3" artist="zhangjie"></DBAA:SongInfo>
+        <DBAA:SongInfo title="测试歌曲4" artist="zhangjie"></DBAA:SongInfo>
+        <DBAA:SongInfo title="测试歌曲5" artist="zhangjie"></DBAA:SongInfo>
+        <DBAA:SongInfo title="测试歌曲6" artist="zhangjie"></DBAA:SongInfo>
+        <DBAA:SongInfo title="测试歌曲7" artist="zhangjie"></DBAA:SongInfo>
+    </MVM:MainViewModel.LocalSongs>
 </MVM:MainViewModel>

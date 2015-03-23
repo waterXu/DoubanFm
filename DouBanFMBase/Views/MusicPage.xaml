@@ -66,11 +66,11 @@
                             <CB:ChangeButton  x:Name="PlayButton" Click="ChangeButton_Click" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png"></CB:ChangeButton>
                         </Border>-->
                         <Border Grid.Column="1" Background="#FFB0DBE3"   BorderBrush="Black" BorderThickness="3" CornerRadius="60" Height="60" Width="60" Padding="10" Grid.RowSpan="2" Margin="-5">
-                            <CB:ChangeButton CB:TiltEffect.IsTiltEnabled="true" x:Name="PlayButton" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png" Tap="ChangeButton_Click" Height="34" VerticalAlignment="Top"></CB:ChangeButton>
+                            <CB:ChangeButton CB:TiltEffect.IsTiltEnabled="true" x:Name="PlayButton" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png" Tap="ChangeButton_Click" VerticalAlignment="Top"></CB:ChangeButton>
                         </Border>
                     </Grid>
                     <StackPanel Grid.Row="1">
-                        <TextBlock x:Name="ArtistText" Text="未知" HorizontalAlignment="Center" Foreground="#FF70B3BF" FontSize="40"></TextBlock>
+                        <TextBlock x:Name="ArtistText" Text="未知" HorizontalAlignment="Center" Foreground="#FF70B3BF" FontSize="30"></TextBlock>
                         <TextBlock x:Name="AlbumText" Text="未知" HorizontalAlignment="Center" Foreground="Black" FontSize="20"></TextBlock>
                     </StackPanel>
                 </Grid>
@@ -100,10 +100,10 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Image Tap="DownMusic_Tap" Margin="10" Source="/Images/down.png"></Image>
+                <Image Tap="DownMusic_Tap" x:Name="DownSong" Margin="10" Source="/Images/down.png"></Image>
                 <CB:ChangeButton x:Name="LoveImage" Margin="10" Grid.Column="1" DefaultImage="/Images/love.png" SeletedImage="/Images/heart.png" Click="LoveImage_Click"></CB:ChangeButton>
                 <Image  Margin="17" Grid.Column="2" Source="/Images/trash.png"></Image>
-                <Image  Tap="ForwardImage_Tap" Margin="10" Grid.Column="3" Source="/Images/forward.png"></Image>
+                <Image   Tap="ForwardImage_Tap" Margin="10" Grid.Column="3" Source="/Images/forward.png"></Image>
             </Grid>
         </Grid>
     </Grid>

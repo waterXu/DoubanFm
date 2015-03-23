@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Newtonsoft.Json;
 using DouBanAudioAgent;
+using System.IO.IsolatedStorage;
+using System.IO;
 
 namespace DouBanFMBase
 {
@@ -29,7 +31,11 @@ namespace DouBanFMBase
         //Latest song srouce
         public string latestSource { get; set; }
         //当前播放歌曲的信息
-        private string currentSongInfo { get; set; }
+        private SongInfo currentSongInfo { get; set; }
+        /// <summary>
+        /// 是否第一次跳转到musicpage
+        /// </summary>
+        private bool isFirstComeHere { get; set; }
         public MusicPage()
         {
             InitializeComponent();
@@ -47,7 +53,8 @@ namespace DouBanFMBase
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
+            CallbackManager.musicPage = this;
+            isFirstComeHere = true;
             // Playing - set Pause Button text
             if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
             {
@@ -69,6 +76,8 @@ namespace DouBanFMBase
             dispatcherTimer.Stop();
             dispatcherTimer.Tick -= new EventHandler(dispatcherTimer_Tick);
             BackgroundAudioPlayer.Instance.PlayStateChanged -= new EventHandler(Instance_PlayStateChanged);
+            CallbackManager.musicPage = null;
+
         }
         #endregion
         #region Control Eventhandler Method
@@ -113,6 +122,13 @@ namespace DouBanFMBase
 
         private void DownMusic_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //查看该歌曲是否已经下载
+            if (DbFMCommonData.DownSongIdList.Contains(currentSongInfo.aid))
+            {
+                MessageBox.Show("该歌曲已下载");
+                return;
+            }
+            DownSong.Visibility = System.Windows.Visibility.Collapsed;
             HttpHelper.DownLoadMusic(currentSongInfo);
             //check this music exsit
             //HttpHelper.DownLoadMusic();
@@ -161,6 +177,7 @@ namespace DouBanFMBase
             // ff something is playing (a new song)
             if (BackgroundAudioPlayer.Instance.Track != null)
             {
+                DownSong.Visibility = System.Windows.Visibility.Visible;
                 TitleText.Text = BackgroundAudioPlayer.Instance.Track.Title;
                 ArtistText.Text = BackgroundAudioPlayer.Instance.Track.Artist;
                 AlbumText.Text = BackgroundAudioPlayer.Instance.Track.Album;
@@ -170,6 +187,14 @@ namespace DouBanFMBase
                 EndTextBlock.Text = text.Substring(3, 5);
                 // album art
                 LoadAlbumArt();
+            }
+            if (isFirstComeHere)
+            {
+                isFirstComeHere = false;
+                if (!DbFMCommonData.DownLoadedSong)
+                {
+                    DownSong.Visibility = System.Windows.Visibility.Collapsed;
+                }
             }
         }
         private void startTimer()
@@ -209,21 +234,39 @@ namespace DouBanFMBase
             Uri songURL = BackgroundAudioPlayer.Instance.Track.Source;
 
             //如果与上次歌曲url不一致  则重新获取最新 tag 数据（songInfo）
-            if (songURL.AbsolutePath != latestSource)
+            if (songURL.ToString() != latestSource)
             {
+                latestSource = songURL.ToString();
                 string tag = BackgroundAudioPlayer.Instance.Track.Tag;
                 if(!string.IsNullOrEmpty(tag)){
-                    currentSongInfo = tag;
+                    currentSongInfo = JsonConvert.DeserializeObject<SongInfo>(tag);
                 }
             }
 
             // get album art Uri from Audio Playback Agetn
             Uri albumArtURL = BackgroundAudioPlayer.Instance.Track.AlbumArt;
-            // load album art from net
-            if (albumArtURL != null && latestAlbumArtPath != albumArtURL.AbsolutePath)
+            // load album art from net or local
+            if (albumArtURL != null && latestAlbumArtPath != albumArtURL.ToString())
             {
-                latestAlbumArtPath = albumArtURL.AbsolutePath;
-                AlbumArtImage.Source = new BitmapImage(albumArtURL);
+                latestAlbumArtPath = albumArtURL.ToString();
+                if (DbFMCommonData.SongFormDown)
+                {
+
+                    if (WpStorage.isoFile.FileExists(latestAlbumArtPath))
+                      {
+                          using (IsolatedStorageFileStream isoFileStream = WpStorage.isoFile.OpenFile(latestAlbumArtPath, FileMode.Open, FileAccess.Read))
+                         {
+                               BitmapImage background = new BitmapImage();
+                                background.SetSource(isoFileStream);
+                                AlbumArtImage.Source = background;
+                        }
+
+                      }
+                }
+                else
+                {
+                    AlbumArtImage.Source = new BitmapImage(albumArtURL);
+                }
             }
             // there is no album art in net, load album art from project resources
             else if (albumArtURL == null)
@@ -257,17 +300,13 @@ namespace DouBanFMBase
         }
         public void DownLoadSongBack(bool isSuccess)
         {
-
+            this.Dispatcher.BeginInvoke(()=>{
+                DownSong.Visibility = System.Windows.Visibility.Visible;
+            });
         }
         private void SaveDownSongsHashSet()
         {
-            string downSongIds = null;
-            if (DbFMCommonData.CollectHashSet.Count > 0)
-            {
-                //把hashset表反序列化为字符串 存入独立存储
-                downSongIds = JsonConvert.SerializeObject(DbFMCommonData.DownSongIdList);
-            }
-            WpStorage.SetIsoSetting(DbFMCommonData.DownSongIdsName, downSongIds);
+            //DownSong.Visibility = System.Windows.Visibility.Visible;
         }
         #endregion
 

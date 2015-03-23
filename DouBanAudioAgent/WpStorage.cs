@@ -102,7 +102,7 @@ namespace  DouBanAudioAgent
                     isoFile.DeleteFile(fileName);
                 }
                 string strBaseDir = string.Empty;
-                string delimStr = "/";
+                string delimStr = "//";
                 char[] delimiter = delimStr.ToCharArray();
                 string[] dirsPath = fileName.Split(delimiter);
                 for (int i = 0; i < dirsPath.Length - 1; i++)
