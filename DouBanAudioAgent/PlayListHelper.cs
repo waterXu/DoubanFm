@@ -50,7 +50,7 @@ namespace DouBanAudioAgent
                 }
             }
            string getChannelSongsUrl = null;
-            getChannelSongsUrl = WpStorage.readIsolatedStorageFile("SongsUrl.dat");
+            getChannelSongsUrl = WpStorage.ReadIsolatedStorageFile("SongsUrl.dat");
             if (string.IsNullOrEmpty(getChannelSongsUrl))
             {
                 return;

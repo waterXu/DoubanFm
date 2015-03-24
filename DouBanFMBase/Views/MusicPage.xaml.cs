@@ -80,8 +80,9 @@ namespace DouBanFMBase
 
         }
         #endregion
+
+
         #region Control Eventhandler Method
-       
         private void ChangeButton_Click(object sender, RoutedEventArgs e)
         {
             if (PlayButton.IsChecked)
@@ -165,10 +166,21 @@ namespace DouBanFMBase
 
         private void AlbumArtImage_ImageOpened(object sender, RoutedEventArgs e)
         {
-            this.AlbumArtImage.Opacity = 1;
             ImageChange();
         }
+
+        private void AlbumArtImage_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            Random random = new Random();
+            //get random theme image
+            int imageindex = random.Next(1, 10);
+            Uri uri = new Uri("/Images/theme/theme" + imageindex.ToString() + ".jpg", UriKind.Relative);
+            BitmapImage bitmapImage = new BitmapImage(uri);
+            AlbumArtImage.Source = bitmapImage;
+        }
         #endregion
+
+
         #region Hleper Method
         private void Instance_PlayStateChanged(object sender, EventArgs e)
         {
@@ -249,19 +261,25 @@ namespace DouBanFMBase
             if (albumArtURL != null && latestAlbumArtPath != albumArtURL.ToString())
             {
                 latestAlbumArtPath = albumArtURL.ToString();
+
+                bool test =  WpStorage.isoFile.FileExists(DbFMCommonData.DownSongsIsoName + "12121331.jpg");
+
                 if (DbFMCommonData.SongFormDown)
                 {
-
-                    if (WpStorage.isoFile.FileExists(latestAlbumArtPath))
-                      {
-                          using (IsolatedStorageFileStream isoFileStream = WpStorage.isoFile.OpenFile(latestAlbumArtPath, FileMode.Open, FileAccess.Read))
-                         {
-                               BitmapImage background = new BitmapImage();
-                                background.SetSource(isoFileStream);
-                                AlbumArtImage.Source = background;
+                    //string isoAlbumArtPath = latestAlbumArtPath.Replace("/", "\\");
+                    string isoAlbumArtPath = latestAlbumArtPath;
+                    if (WpStorage.isoFile.FileExists(isoAlbumArtPath))
+                    {
+                        using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream(isoAlbumArtPath, FileMode.Open, FileAccess.ReadWrite, WpStorage.isoFile))
+                        {
+                            BitmapImage background = new BitmapImage();
+                            background.SetSource(isoFileStream);
+                            AlbumArtImage.Source = background;
+                            ImageChange();
                         }
+                    }
+                   // AlbumArtImage.Source = new BitmapImage(new Uri(latestAlbumArtPath,UriKind.Relative));
 
-                      }
                 }
                 else
                 {
@@ -297,6 +315,7 @@ namespace DouBanFMBase
                 transition.Stop();
             };
             transition.Begin();
+            AlbumArtImage.Opacity = 1;
         }
         public void DownLoadSongBack(bool isSuccess)
         {
@@ -309,6 +328,8 @@ namespace DouBanFMBase
             //DownSong.Visibility = System.Windows.Visibility.Visible;
         }
         #endregion
+
+
 
     }
 }

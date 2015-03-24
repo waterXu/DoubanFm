@@ -102,7 +102,7 @@ namespace  DouBanAudioAgent
                     isoFile.DeleteFile(fileName);
                 }
                 string strBaseDir = string.Empty;
-                string delimStr = "//";
+                string delimStr = "\\";
                 char[] delimiter = delimStr.ToCharArray();
                 string[] dirsPath = fileName.Split(delimiter);
                 for (int i = 0; i < dirsPath.Length - 1; i++)
@@ -110,37 +110,89 @@ namespace  DouBanAudioAgent
                     strBaseDir = System.IO.Path.Combine(strBaseDir, dirsPath[i]);
                     isoFile.CreateDirectory(strBaseDir);
                 }
-                using (BinaryWriter bw = new BinaryWriter(isoFile.CreateFile(fileName)))
+                using (IsolatedStorageFileStream fileStream =  isoFile.OpenFile(fileName, FileMode.OpenOrCreate, FileAccess.Write))
                 {
-                    bw.Write(data);
-                    bw.Close();
+                    using (BinaryWriter bw = new BinaryWriter(fileStream))
+                    {
+                        bw.Write(data);
+                        bw.Close();
+                    }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show("存储错误");
+                System.Diagnostics.Debug.WriteLine("SaveFilesToIsoStore exception = " + ex.Message);
+                //MessageBox.Show("存储错误");
             }
         }
-
-        public static string readIsolatedStorageFile(string fileName)
+        /// <summary>
+        ///保存文件夹内容到手机存储
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="data"></param>
+        public static void SaveFilesToIsoStore(string fileName, Stream stream)
+        {
+            try
+            {
+                if (isoFile.FileExists(fileName))
+                {
+                    isoFile.DeleteFile(fileName);
+                }
+                string strBaseDir = string.Empty;
+                string delimStr = "\\";
+                char[] delimiter = delimStr.ToCharArray();
+                string[] dirsPath = fileName.Split(delimiter);
+                for (int i = 0; i < dirsPath.Length - 1; i++)
+                {
+                    strBaseDir = System.IO.Path.Combine(strBaseDir, dirsPath[i]);
+                    isoFile.CreateDirectory(strBaseDir);
+                }
+                using (var fileStream = isoFile.OpenFile
+                   (fileName, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    stream.Position = 0;
+                    stream.CopyTo(fileStream);//保存到本地 
+                    //fileStream.Close();
+                } 
+                //using (BinaryWriter bw = new BinaryWriter(isoFile.CreateFile(fileName)))
+                //{
+                //    bw.Write(data);
+                //    bw.Close();
+                //}
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("SaveFilesToIsoStore exception = " + ex.Message);
+                //MessageBox.Show("存储错误");
+            }
+        }
+        public static string ReadIsolatedStorageFile(string fileName)
         {
             string rn = "";
-            if (isoFile.FileExists(fileName))
+            try
             {
-                 using (IsolatedStorageFileStream isofs = new IsolatedStorageFileStream(fileName, FileMode.Open,FileAccess.Read,isoFile)){
-                     byte[] data = new byte[isofs.Length];
-                     isofs.Read(data, 0, (int)isofs.Length);
-                     isofs.Close();
-                     rn = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
-                 }
-                //using（IsolatedStorageFileStream isofs = new IsolatedStorageFileStream(fileName, FileMode.Open,FileAccess.Read,isoFile))
-                //{
-                //    byte[] data = new byte[isofs.Length];
-                //    isofs.Read(data, 0, (int)isofs.Length);
-                //    isofs.Close();
-                //    rn = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
-                //}
-                
+                if (isoFile.FileExists(fileName))
+                {
+                    using (IsolatedStorageFileStream isofs = new IsolatedStorageFileStream(fileName, FileMode.Open, FileAccess.Read, isoFile))
+                    {
+                        byte[] data = new byte[isofs.Length];
+                        isofs.Read(data, 0, (int)isofs.Length);
+                        isofs.Close();
+                        rn = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
+                    }
+                    //using（IsolatedStorageFileStream isofs = new IsolatedStorageFileStream(fileName, FileMode.Open,FileAccess.Read,isoFile))
+                    //{
+                    //    byte[] data = new byte[isofs.Length];
+                    //    isofs.Read(data, 0, (int)isofs.Length);
+                    //    isofs.Close();
+                    //    rn = System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
+                    //}
+
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("readIsolatedStorageFile exception = " + ex.Message);
             }
             return rn;
         }

@@ -51,7 +51,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
 
-                    <Image x:Name="AlbumArtImage" Grid.Row="0" Source="/Images/theme/theme5.jpg" ImageOpened="AlbumArtImage_ImageOpened" Opacity="0" Stretch="UniformToFill"></Image>
+                    <Image x:Name="AlbumArtImage" Grid.Row="0" Source="/Images/theme/theme5.jpg" ImageOpened="AlbumArtImage_ImageOpened" ImageFailed="AlbumArtImage_ImageFailed" Opacity="0" Stretch="UniformToFill"></Image>
                     <Grid  Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="7*"/>
@@ -65,7 +65,7 @@
                         <!--<Border Background="#FFB0DBE3" Grid.Column="1" Padding="12" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,9,0,8" Grid.RowSpan="2" Height="85" Width="57">
                             <CB:ChangeButton  x:Name="PlayButton" Click="ChangeButton_Click" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png"></CB:ChangeButton>
                         </Border>-->
-                        <Border Grid.Column="1" Background="#FFB0DBE3"   BorderBrush="Black" BorderThickness="3" CornerRadius="60" Height="60" Width="60" Padding="10" Grid.RowSpan="2" Margin="-5">
+                        <Border Grid.Column="1" Background="#FFB0DBE3" Opacity=".7"   BorderBrush="Gray" BorderThickness="3" CornerRadius="60" Height="60" Width="60" Padding="10" Grid.RowSpan="2" Margin="-5">
                             <CB:ChangeButton CB:TiltEffect.IsTiltEnabled="true" x:Name="PlayButton" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png" Tap="ChangeButton_Click" VerticalAlignment="Top"></CB:ChangeButton>
                         </Border>
                     </Grid>
@@ -102,7 +102,7 @@
                 </Grid.ColumnDefinitions>
                 <Image Tap="DownMusic_Tap" x:Name="DownSong" Margin="10" Source="/Images/down.png"></Image>
                 <CB:ChangeButton x:Name="LoveImage" Margin="10" Grid.Column="1" DefaultImage="/Images/love.png" SeletedImage="/Images/heart.png" Click="LoveImage_Click"></CB:ChangeButton>
-                <Image  Margin="17" Grid.Column="2" Source="/Images/trash.png"></Image>
+                <Image  Margin="10" Grid.Column="2" Source="/Images/trash1.png"></Image>
                 <Image   Tap="ForwardImage_Tap" Margin="10" Grid.Column="3" Source="/Images/forward.png"></Image>
             </Grid>
         </Grid>

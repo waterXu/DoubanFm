@@ -183,7 +183,6 @@
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="delete1.png" />
     <Content Include="Images\btn.png" />
     <Content Include="Images\btn_a.png" />
     <Content Include="Images\btn_a_on.png" />
@@ -226,6 +225,7 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\trash1.png" />
     <Resource Include="Images\play.gif" />
     <Content Include="Images\play.png" />
     <Content Include="Images\star.png" />

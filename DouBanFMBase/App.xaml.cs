@@ -84,7 +84,7 @@ namespace DouBanFMBase
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             //加载下载歌曲
-            string songs = WpStorage.readIsolatedStorageFile(DbFMCommonData.SongsSavePath);
+            string songs = WpStorage.ReadIsolatedStorageFile(DbFMCommonData.SongsSavePath);
             if (!string.IsNullOrEmpty(songs))
             {
                 DbFMCommonData.DownSongsList = JsonConvert.DeserializeObject<ObservableCollection<SongInfo>>(songs);
@@ -121,7 +121,7 @@ namespace DouBanFMBase
             }
             if (DbFMCommonData.DownSongsList != null && DbFMCommonData.DownSongsList.Count < 1)
             {
-               string songs = WpStorage.readIsolatedStorageFile(DbFMCommonData.SongsSavePath);
+               string songs = WpStorage.ReadIsolatedStorageFile(DbFMCommonData.SongsSavePath);
                if (!string.IsNullOrEmpty(songs))
                {
                    DbFMCommonData.DownSongsList = JsonConvert.DeserializeObject<ObservableCollection<SongInfo>>(songs);
@@ -129,10 +129,13 @@ namespace DouBanFMBase
             }
             if (DbFMCommonData.DownSongIdList != null && DbFMCommonData.DownSongIdList.Count < 1) 
             {
-                string songIds = WpStorage.GetIsoSetting(DbFMCommonData.DownSongIdsName).ToString();
-                if (!string.IsNullOrEmpty(songIds))
+                if (WpStorage.GetIsoSetting(DbFMCommonData.DownSongIdsName) != null)
                 {
-                    DbFMCommonData.DownSongIdList = JsonConvert.DeserializeObject<HashSet<string>>(songIds);
+                    string songIds = WpStorage.GetIsoSetting(DbFMCommonData.DownSongIdsName).ToString();
+                    if (!string.IsNullOrEmpty(songIds))
+                    {
+                        DbFMCommonData.DownSongIdList = JsonConvert.DeserializeObject<HashSet<string>>(songIds);
+                    }
                 }
             }
         }

@@ -73,7 +73,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1.5*"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="10*"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0" Background="#FFD1E3E6" Margin="20,10">
                             <Grid.ColumnDefinitions>
@@ -83,15 +83,16 @@
                             <Image Grid.Column="0" Source="/Images/heart.png"></Image>
                             <TextBlock Grid.Column="1" Foreground="Black" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30"  Text="我的红心赫兹"/>
                         </Grid>
-                        <Grid  Grid.Row="1" Background="#FFB0DBE3" Opacity=".5" Margin="20,10">
+                        <Grid  Grid.Row="1" Background="#FFB0DBE3" Opacity=".5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="9*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width=".4*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock HorizontalAlignment="Left" Text="我的下载" FontSize="25"></TextBlock>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Text="我的下载" FontSize="25"></TextBlock>
                             <CB:ChangeButton Grid.Column="2" x:Name="CheckSongs" SeletedImage="/Images/delete1.png" DefaultImage="/Images/checkbox.png" Click="CheckSongs_Click"></CB:ChangeButton>
-                            <Image Grid.Column="1" VerticalAlignment="Center"  Source="/Images/trash.png" x:Name="DeleteSongs" Tap="DeleteSongs_Tap" Visibility="Collapsed"></Image>
+                            <Image Grid.Column="1" VerticalAlignment="Center"  Source="/Images/trash1.png" x:Name="DeleteSongs" Tap="DeleteSongs_Tap" Visibility="Collapsed"></Image>
                         </Grid>
                         <ListBox Grid.Row="2" x:Name="DownSongList" Margin="10,5"  SelectionChanged="DownSongList_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle2}" ItemsSource="{Binding LocalSongs}">
                             <ListBox.ItemTemplate>
@@ -162,7 +163,7 @@
                 <CB:ChangeButton  CB:TiltEffect.IsTiltEnabled="true" x:Name="PlayBtn" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png" Tap="ChangeButton_Click" Height="34" VerticalAlignment="Top"></CB:ChangeButton>
             </Border>
             <StackPanel  CB:TiltEffect.IsTiltEnabled="true"   Grid.Column="1" Margin="10,0,0,0"  Tap="SongInfo_Tap">
-                <TextBlock x:Name="SongName" Foreground="Black"  Text="Unknow" FontSize="35"></TextBlock>
+                <TextBlock x:Name="SongName" Foreground="Black"  Text="Unknow" FontSize="30"></TextBlock>
                 <TextBlock x:Name="SongArtist" Foreground="Black" Text="Unknow"></TextBlock>
             </StackPanel>
 

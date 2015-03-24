@@ -51,7 +51,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border  CB:TiltEffect.IsTiltEnabled="true"  x:Name="LayoutRoot" Height="75" BorderThickness="0" Margin="15,5"  Background="#FFE4EAEB" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                    <Border  CB:TiltEffect.IsTiltEnabled="true"  x:Name="LayoutRoot" Height="65" BorderThickness="0" Margin="15,5"  Background="#FFE4EAEB" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>

@@ -201,7 +201,7 @@ namespace DouBanAudioAgent
                 WpStorage.isoFile.DeleteFile("SongsLoaded");
                 if (WpStorage.isoFile.FileExists("CurrentSongs.dat"))
                 {
-                    string songsResult = WpStorage.readIsolatedStorageFile("CurrentSongs.dat");
+                    string songsResult = WpStorage.ReadIsolatedStorageFile("CurrentSongs.dat");
 
                     if (!string.IsNullOrEmpty(songsResult))
                     {
@@ -434,7 +434,7 @@ namespace DouBanAudioAgent
                 }
             }
             string getChannelSongsUrl = null;
-            getChannelSongsUrl = WpStorage.readIsolatedStorageFile("SongsUrl.dat");
+            getChannelSongsUrl = WpStorage.ReadIsolatedStorageFile("SongsUrl.dat");
             if (string.IsNullOrEmpty(getChannelSongsUrl))
             {
                 return;

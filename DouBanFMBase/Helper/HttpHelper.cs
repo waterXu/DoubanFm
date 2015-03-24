@@ -241,10 +241,10 @@ namespace DouBanFMBase
                         WpStorage.SaveFilesToIsoStore(DbFMCommonData.DownSongsIsoName + song.aid + ".mp3", data);
                         HttpHelper.httpGet(song.picture, new AsyncCallback((imgar) =>
                         {
-                            string imageType = song.picture.Remove(0,song.picture.Length-4);
                             byte[] imgdata = SyncResultToByte(imgar);
                             if (imgdata != null)
                             {
+                                string imageType = song.picture.Remove(0, song.picture.Length - 4);
                                 WpStorage.SaveFilesToIsoStore(DbFMCommonData.DownSongsIsoName + song.aid + imageType, imgdata);
                                 song.url = DbFMCommonData.DownSongsIsoName + song.aid + ".mp3";
                                 song.picture = DbFMCommonData.DownSongsIsoName + song.aid + imageType;
