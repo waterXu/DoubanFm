@@ -12,6 +12,7 @@ using Microsoft.Phone.BackgroundAudio;
 using Newtonsoft.Json;
 using DouBanAudioAgent;
 using System.Collections.ObjectModel;
+using DouBanFMBase.ViewModel;
 
 namespace DouBanFMBase
 {
@@ -107,7 +108,7 @@ namespace DouBanFMBase
             //{
             //    App.ViewModel.LoadData();
             //}
-            if (!App.ViewModel.IsLoaded)
+            if (DbFMCommonData.ChannelList == null)
             {
                 HttpHelper.GetChannelList();
             }

@@ -94,10 +94,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="CallbackManager.cs" />
+    <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Helper\LrcFragment.cs" />
     <Compile Include="Helper\Lyric.cs" />
-    <Compile Include="ViewModel\TextConverter.cs" />
+    <Compile Include="Converts\TextConverter.cs" />
     <Compile Include="ViewModel\TiltEffect.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Views\MusicPage.xaml.cs">
       <DependentUpon>MusicPage.xaml</DependentUpon>
     </Compile>
@@ -225,6 +227,8 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\reload.png" />
+    <Content Include="Images\reload1.png" />
     <Content Include="Images\trash1.png" />
     <Resource Include="Images\play.gif" />
     <Content Include="Images\play.png" />

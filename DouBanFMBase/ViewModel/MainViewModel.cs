@@ -8,11 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using DouBanAudioAgent;
+using System.Windows.Media.Imaging;
 
-namespace DouBanFMBase
+namespace DouBanFMBase.ViewModel
 {
-    public class MainViewModel:INotifyPropertyChanged
+    public class MainViewModel:ViewModelBase
     {
+        public bool IsLoaded = false;
+
+        public MainViewModel()
+        {
+            this.Channels = new ObservableCollection<ChannelViewModel>();
+            this.CollectChannels = new ObservableCollection<ChannelViewModel>();
+            this.LocalSongs = new ObservableCollection<SongInfo>();
+            // Channels.CollectionChanged += new NotifyCollectionChangedEventHandler(ChannelsChanged);
+            //Channels.PropertyChanged += new PropertyChangedEventHandler(ChannelPropertyChanged);
+        }
+        #region Property
         public ObservableCollection<ChannelViewModel> Channels { get; set; }
         public ObservableCollection<ChannelViewModel> CollectChannels { get; set; }
 
@@ -49,15 +61,50 @@ namespace DouBanFMBase
                 }
             }
         }
-        public MainViewModel()
+
+        private BitmapImage backgroundImg;
+        public BitmapImage BackgroundImg
         {
-            this.Channels = new ObservableCollection<ChannelViewModel>();
-            this.CollectChannels = new ObservableCollection<ChannelViewModel>();
-            this.LocalSongs = new ObservableCollection<SongInfo>();
-           // Channels.CollectionChanged += new NotifyCollectionChangedEventHandler(ChannelsChanged);
-            //Channels.PropertyChanged += new PropertyChangedEventHandler(ChannelPropertyChanged);
+            get
+            {
+                return backgroundImg;
+            }
+            set
+            {
+                backgroundImg = value;
+                NotifyPropertyChanged("BackgroundImg");
+            }
         }
-        public bool IsLoaded = false;
+        #endregion
+
+        #region Method
+        public void UpdateTheme()
+        {
+            //ImageBrush bgBrush = new ImageBrush();
+            //获取主题路径
+            string themeBgPath = DbFMCommonData.DefaultDayTheme;
+            if (WpStorage.GetIsoSetting(DbFMCommonData.ThemePath) != null)
+            {
+                themeBgPath = WpStorage.GetIsoSetting(DbFMCommonData.ThemePath).ToString();
+            }
+
+            bool showMode = false;
+
+            //获取显示模式 true 为夜间模式
+            if (WpStorage.GetIsoSetting(DbFMCommonData.ShowMode) != null)
+            {
+                showMode = (bool)WpStorage.GetIsoSetting(DbFMCommonData.ShowMode);
+            }
+
+            if (showMode)
+            {
+                BackgroundImg = new BitmapImage(new Uri(DbFMCommonData.DefaultNightTheme, UriKind.RelativeOrAbsolute));
+            }
+            else
+            {
+                BackgroundImg = new BitmapImage(new Uri(themeBgPath, UriKind.RelativeOrAbsolute));
+            }
+        }
         public void LoadData()
         {
             bool ischecked = false;
@@ -105,25 +152,7 @@ namespace DouBanFMBase
             }
            
         }
- 
-        private void ChannelPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
-        private void ChannelsChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            ObservableCollection<ChannelViewModel> cvCol = sender as ObservableCollection<ChannelViewModel>;
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                //判断新增的项是否被收藏
-                ChannelViewModel cv = cvCol[cvCol.Count - 1];
-                if (cv.IsChecked)
-                {
-                    CollectChannels.Add(cv);
-                }
-            }
-        }
         public void TriggerChangeCollectChannels(ChannelViewModel channelInfo,bool isChecked)
         {
             try
@@ -192,14 +221,6 @@ namespace DouBanFMBase
             WpStorage.SaveStringToIsoStore(DbFMCommonData.SongsSavePath, downSongs);
 
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(string porpertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (PropertyChanged != null)
-            {
-                handler(this, new PropertyChangedEventArgs(porpertyName));
-            }
-        }
+        #endregion
     }
 }

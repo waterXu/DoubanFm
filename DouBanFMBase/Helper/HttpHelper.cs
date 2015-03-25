@@ -126,17 +126,20 @@ namespace DouBanFMBase
                         DbFMCommonData.ChannelList = JsonConvert.DeserializeObject<ChannelList>(result);
                         DbFMCommonData.DownLoadSuccess = true;
                         App.ViewModel.LoadData();
-
                     }
                     else
                     {
                         App.ViewModel.IsLoaded = true;
+                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadedData, App.ViewModel.IsLoaded);
+
                         //加载失败
                     }
                 }));
             }catch(Exception e){
                 System.Diagnostics.Debug.WriteLine("GetChannelList Exception：" + e.Message);
                 App.ViewModel.IsLoaded = true;
+                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadedData, App.ViewModel.IsLoaded);
+
             }
         }
         /// <summary>
@@ -183,10 +186,10 @@ namespace DouBanFMBase
 
                     //标识新列表请求已经返回
                     WpStorage.CreateFile("SongsLoaded");
-                    WpStorage.SaveStringToIsoStore("CurrentSongs.dat", result);
 
                     if (!string.IsNullOrEmpty(result))
                     {
+                        WpStorage.SaveStringToIsoStore("CurrentSongs.dat", result);
                         SongResult songresult = JsonConvert.DeserializeObject<SongResult>(result);
                         if (songresult.r == 0)
                         {

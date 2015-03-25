@@ -16,6 +16,8 @@ using Microsoft.Phone.BackgroundAudio;
 using DouBanAudioAgent;
 using Microsoft.Phone.Info;
 using Newtonsoft.Json;
+using DouBanFMBase.ViewModel;
+
 
 namespace DouBanFMBase
 {
@@ -29,7 +31,16 @@ namespace DouBanFMBase
         public MainPage()
         {
             InitializeComponent();
-            UpdateTheme();
+            //绑定数据源
+            DataContext = App.ViewModel;
+            bool showMode = false;
+            //获取显示模式 true 为夜间模式
+            if (WpStorage.GetIsoSetting(DbFMCommonData.ShowMode) != null)
+            {
+                showMode = (bool)WpStorage.GetIsoSetting(DbFMCommonData.ShowMode);
+            }
+            ToggleBtn.IsChecked = showMode;
+            App.ViewModel.UpdateTheme();
         }
         #region Page EventHandler Method
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -118,7 +129,7 @@ namespace DouBanFMBase
         {
             bool showMode = ToggleBtn.IsChecked ? false : true;
             WpStorage.SetIsoSetting(DbFMCommonData.ShowMode, showMode);
-            UpdateTheme();
+            App.ViewModel.UpdateTheme();
         }
         private void All_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -303,6 +314,12 @@ namespace DouBanFMBase
             DownSongList.SelectedIndex = -1;
             DownSongList.SelectedItem = null;
         }
+
+        private void LoadChannelGrid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            LoadChannelGrid.Visibility = System.Windows.Visibility.Collapsed;
+            HttpHelper.GetChannelList();
+        }
         #endregion
 
         #region Audio Method
@@ -369,8 +386,7 @@ namespace DouBanFMBase
         {
             this.Dispatcher.BeginInvoke(() => 
             {
-                //绑定数据源
-                DataContext = App.ViewModel;
+              
                 App.ViewModel.LoginSuccess = DbFMCommonData.loginSuccess;
                 Binding channels = new Binding();
                 channels.Path = new PropertyPath("Channels");
@@ -399,6 +415,10 @@ namespace DouBanFMBase
         {
             //添加 重新加载按钮
             //。。。。
+            this.Dispatcher.BeginInvoke(() => 
+            {
+                LoadChannelGrid.Visibility = System.Windows.Visibility.Visible;
+            });
         }
 
         public void GetSongSuccess(int p)
@@ -437,10 +457,7 @@ namespace DouBanFMBase
                 DownSongList.SetBinding(ListBox.ItemsSourceProperty, localSongs);
             });
         }
-
         #endregion
-
-
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -449,10 +466,6 @@ namespace DouBanFMBase
             long memoryMax = DeviceStatus.ApplicationPeakMemoryUsage / 1048576;
             MessageBox.Show("当前内存使用情况："+memory.ToString() + " MB 当前最大内存使用情况： "+memoryMax.ToString()+ "MB  当前可分配最大内存： " + memoryLimit.ToString()+"  MB");
         }
-
-
-
-      
 
 
         // 用于生成本地化 ApplicationBar 的示例代码

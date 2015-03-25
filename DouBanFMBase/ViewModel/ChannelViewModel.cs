@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DouBanFMBase
+namespace DouBanFMBase.ViewModel
 {
-    public class ChannelViewModel : INotifyPropertyChanged
+    public class ChannelViewModel : ViewModelBase
     {
         private string _name;
         /// <summary>
@@ -71,14 +71,6 @@ namespace DouBanFMBase
                 }
             }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(String propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (null != handler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+      
     }
 }
