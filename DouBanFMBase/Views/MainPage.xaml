@@ -56,11 +56,6 @@
                     <ImageBrush ImageSource="/Images/theme.png" Stretch="Uniform"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <!--<Ellipse Name="ShowModeEllipse" Width="40" Height="40" Stroke="White" Margin="0,0,63,0" StrokeThickness="3" HorizontalAlignment="Right" RenderTransformOrigin="-0.125,0.375" Tag="on" Tap="Ellipse_Tap">
-                <Ellipse.Fill>
-                    <ImageBrush ImageSource="/Images/moon.png" Stretch="Uniform"/>
-                </Ellipse.Fill>
-            </Ellipse>-->
             <Border BorderBrush="White" BorderThickness="3" Margin="0,0,63,0" HorizontalAlignment="Right"   Height="40" Width="40" CornerRadius="60"  >
                 <CB:ChangeButton x:Name="ToggleBtn" Click="ToggleBtn_Click" DefaultImage="/Images/moon.png" SeletedImage="/Images/sun.png" VerticalAlignment="Top"></CB:ChangeButton>
             </Border>
@@ -120,10 +115,10 @@
                         </ListBox>
                         <Grid VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="LoadChannelGrid" Tap="LoadChannelGrid_Tap" Visibility="Collapsed">
                             <Image Opacity=".5" Source="/Images/reload1.png" Height="100" Width="100" VerticalAlignment="Center"></Image>
-                            <TextBlock Text="点击加载频道列表" Foreground="Black" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock x:Name="LoadChannelsBtn" Text="点击加载频道列表" Foreground="Black" VerticalAlignment="Center"></TextBlock>
                         </Grid>
                     </Grid>
-
+                   
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>
@@ -143,17 +138,17 @@
                     </phone:PivotItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="3.5*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Ellipse Width="120" Height="120" Stroke="Gray" StrokeThickness="2" HorizontalAlignment="Center" Tap="UserImage_Tap" Fill="{Binding ElementName=UserPictrue, Path=Fill,Mode=TwoWay}">
+                        <Ellipse Width="170" Height="170" Stroke="Gray" StrokeThickness="2" HorizontalAlignment="Center" Tap="UserImage_Tap" Fill="{Binding ElementName=UserPictrue, Path=Fill,Mode=TwoWay}">
                         </Ellipse>
-                        <Button HorizontalAlignment="Right" x:Name="LoginStatusBtn" VerticalAlignment="Top" Background="#FFB0DBE3" Opacity=".5" Foreground="Black" Content="更换头像" Click="ChangeUserImgBtn_Click"></Button>
-                        <Button Grid.Row="0" Foreground="Black"  HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="#FFB0DBE3" Content="{Binding LoginSuccess, Converter={StaticResource textConverter}}" Opacity=".5"  Click="LoginStatusBtn_Click"></Button>
-                        <Grid Grid.Row="1">
-                            
-                        </Grid>
-                        <!--<Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#FF62CDD1" FontSize="35" Content="主题设置" Opacity=".5" ></Button>-->
+                        <Button HorizontalAlignment="Right" x:Name="LoginStatusBtn" VerticalAlignment="Top" Background="#FF62CDD1" Opacity=".5" Content="更换头像" Click="ChangeUserImgBtn_Click"></Button>
+                        <Button Grid.Row="1" FontSize="35" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF62CDD1" Content="{Binding LoginSuccess, Converter={StaticResource textConverter}}" Opacity=".5" Width="340" Height="90" Click="LoginStatusBtn_Click"></Button>
+                        <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF62CDD1" FontSize="35" Content="主题设置" Opacity=".5"  Width="340" Height="90" ></Button>
                     </Grid>
 
                 </phone:PivotItem>
