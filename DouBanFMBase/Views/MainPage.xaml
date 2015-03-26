@@ -244,6 +244,7 @@
                                         </Grid>
                                     </coding4fun:Tile>
                                 </StackPanel>
+                                <StackPanel></StackPanel>
                             </Grid>
                         </ScrollViewer>
                     </Grid>
