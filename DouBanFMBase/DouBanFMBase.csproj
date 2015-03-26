@@ -176,7 +176,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
@@ -233,8 +232,6 @@
     <Content Include="Images\reload.png" />
     <Content Include="Images\reload1.png" />
     <Content Include="Images\trash1.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Resource Include="Images\play.gif" />
     <Content Include="Images\play.png" />
     <Content Include="Images\star.png" />

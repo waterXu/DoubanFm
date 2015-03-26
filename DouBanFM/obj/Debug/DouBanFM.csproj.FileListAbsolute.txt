@@ -1,4 +1,0 @@
-c:\users\xyl\documents\visual studio 2013\Projects\DouBanFM\DouBanFM\Bin\Debug\DouBanFM.dll
-c:\users\xyl\documents\visual studio 2013\Projects\DouBanFM\DouBanFM\Bin\Debug\DouBanFM.pdb
-c:\users\xyl\documents\visual studio 2013\Projects\DouBanFM\DouBanFM\obj\Debug\DouBanFM.dll
-c:\users\xyl\documents\visual studio 2013\Projects\DouBanFM\DouBanFM\obj\Debug\DouBanFM.pdb
