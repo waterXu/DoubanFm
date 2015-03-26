@@ -7,6 +7,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:coding4fun="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls"
+    xmlns:coding4funBinding="clr-namespace:Coding4Fun.Phone.Controls.Binding;assembly=Coding4Fun.Phone.Controls"
+    xmlns:tool="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:CB ="clr-namespace:DouBanFMBase"
     d:DataContext="{d:DesignData Style/ChannelDemo.xaml}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -22,6 +25,18 @@
     <!--LayoutRoot 是包含所有页面内容的根网格-->
     <UserControl.Resources>
         <ResourceDictionary>
+            <Storyboard 
+            x:Name="trexStoryboard" 
+            AutoReverse="True" 
+            RepeatBehavior="Forever"  >
+                <DoubleAnimationUsingKeyFrames 
+				Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)"
+				Storyboard.TargetName="CustomTheme">
+                    <SplineDoubleKeyFrame KeyTime="0:0:1"/>
+                    <SplineDoubleKeyFrame KeyTime="0:0:36" Value="-307"/>
+                    <SplineDoubleKeyFrame KeyTime="0:0:37" Value="-307" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/DouBanFMBase;component/Style/ListboxItemStyle.xaml"/>
                 <ResourceDictionary Source="/DouBanFMBase;component/Style/ListboxItemStyle1.xaml"/>
@@ -37,13 +52,14 @@
             <RowDefinition Height="10*"/>
             <RowDefinition Height="1.2*"/>
         </Grid.RowDefinitions>
-        <Canvas Grid.Row="0" Background="#FFB0DBE3" Opacity=".5"></Canvas>
+        <Canvas Background="Black" Grid.RowSpan="3" Grid.Column="0" Opacity="{Binding NightOpacity}"></Canvas>
+        <Canvas Grid.Row="0" Background="#FFB0DBE3" Opacity=".7"></Canvas>
         <Grid Grid.RowSpan="2" Grid.Row="0" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="9.5*"/>
             </Grid.RowDefinitions>
-            <Ellipse Width="70" Height="70" Stroke="AliceBlue" x:Name="UserPictrue" StrokeThickness="2" HorizontalAlignment="Left" Tap="UserImage_Tap">
+            <Ellipse Width="70" Height="70" Stroke="AntiqueWhite" x:Name="UserPictrue" StrokeThickness="2" HorizontalAlignment="Left" Tap="UserImage_Tap">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="/Images/defaultuser.png" Stretch="UniformToFill" />
                 </Ellipse.Fill>
@@ -51,13 +67,13 @@
 
             <TextBlock Name="showUserName" Text="{Binding LoginSuccess ,Converter={StaticResource textConverter},ConverterParameter= NickName }" Foreground="Black" Margin="75,0,121,0" VerticalAlignment="Center"/>
             <Button Content="查看内存使用" Click="Button_Click" Margin="229,-5,103,5" Foreground="Black"></Button>
-            <Ellipse Width="40" Height="40" Stroke="White" StrokeThickness="3" HorizontalAlignment="Right">
+            <Ellipse Width="40" Height="40" Stroke="AntiqueWhite" StrokeThickness="3" HorizontalAlignment="Right" Tap="ThemeSetting_Tap">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="/Images/theme.png" Stretch="Uniform"/>
                 </Ellipse.Fill>
             </Ellipse>
-            <Border BorderBrush="White" BorderThickness="3" Margin="0,0,63,0" HorizontalAlignment="Right"   Height="40" Width="40" CornerRadius="60"  >
-                <CB:ChangeButton x:Name="ToggleBtn" Click="ToggleBtn_Click" DefaultImage="/Images/moon.png" SeletedImage="/Images/sun.png" VerticalAlignment="Top"></CB:ChangeButton>
+            <Border BorderBrush="AntiqueWhite" BorderThickness="3" Margin="377,14,0,13" HorizontalAlignment="Left"   Height="40" Width="40" CornerRadius="60"  >
+                <CB:ChangeButton x:Name="ToggleBtn" DefaultImage="/Images/moon.png" SeletedImage="/Images/sun.png" VerticalAlignment="Top" IsChecked="{Binding ThemeMode,Mode=TwoWay}" ></CB:ChangeButton>
             </Border>
             <phone:Pivot Grid.Row="1" x:Name="MainPiovt" Foreground="Black" SelectedIndex="1">
                 <phone:PivotItem Margin="0">
@@ -70,11 +86,12 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="10*"/>
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Background="#FFD1E3E6" Margin="20,10">
+                        <Grid Grid.Row="0"  Margin="20,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="5*"/>
                             </Grid.ColumnDefinitions>
+                            <Canvas Grid.ColumnSpan="2" Background="#FFD1E3E6" Opacity=".5"></Canvas>
                             <Image Grid.Column="0" Source="/Images/heart.png"></Image>
                             <TextBlock Grid.Column="1" Foreground="Black" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30"  Text="我的红心赫兹"/>
                         </Grid>
@@ -118,7 +135,7 @@
                             <TextBlock x:Name="LoadChannelsBtn" Text="点击加载频道列表" Foreground="Black" VerticalAlignment="Center"></TextBlock>
                         </Grid>
                     </Grid>
-                   
+
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>
@@ -138,19 +155,98 @@
                     </phone:PivotItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="3.5*"/>
                         </Grid.RowDefinitions>
-                        <Ellipse Width="170" Height="170" Stroke="Gray" StrokeThickness="2" HorizontalAlignment="Center" Tap="UserImage_Tap" Fill="{Binding ElementName=UserPictrue, Path=Fill,Mode=TwoWay}">
+                        <Ellipse Width="120" Height="120" Stroke="Gray" StrokeThickness="2" HorizontalAlignment="Center" Tap="UserImage_Tap" Fill="{Binding ElementName=UserPictrue, Path=Fill,Mode=TwoWay}">
                         </Ellipse>
-                        <Button HorizontalAlignment="Right" x:Name="LoginStatusBtn" VerticalAlignment="Top" Background="#FF62CDD1" Opacity=".5" Content="更换头像" Click="ChangeUserImgBtn_Click"></Button>
-                        <Button Grid.Row="1" FontSize="35" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF62CDD1" Content="{Binding LoginSuccess, Converter={StaticResource textConverter}}" Opacity=".5" Width="340" Height="90" Click="LoginStatusBtn_Click"></Button>
-                        <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF62CDD1" FontSize="35" Content="主题设置" Opacity=".5"  Width="340" Height="90" ></Button>
-                    </Grid>
+                        <Button BorderThickness="0" HorizontalAlignment="Left" x:Name="LoginStatusBtn" Foreground="Black" VerticalAlignment="Top" Background="#FFB0DBE3" Opacity=".7" Content="更换头像" Click="ChangeUserImgBtn_Click"></Button>
+                        <Button BorderThickness="0" Grid.Row="0" Foreground="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#FFB0DBE3" Content="{Binding LoginSuccess, Converter={StaticResource textConverter}}" Opacity=".7"  Click="LoginStatusBtn_Click"></Button>
+                        <ScrollViewer Grid.Row="1" x:Name="SettingScroll">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid Background="#FFB0DBE3" Opacity=".7">
+                                    <TextBlock Text="主题设置" VerticalAlignment="Center" FontSize="30" Margin="10,0,0,0"></TextBlock>
+                                </Grid>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" >
+                                    <Rectangle HorizontalAlignment="Left" Height="40" Margin="12,10,0,-0"  Width="12" Opacity=".5">
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <TextBlock Text="猜你喜欢" Foreground="Gray" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
 
+                                </StackPanel>
+                                <Grid Grid.Row="2" CB:TiltEffect.IsTiltEnabled="true" HorizontalAlignment="Center" CacheMode="BitmapCache">
+                                    <tool:WrapPanel >
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="2">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme2.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="3">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme3.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="4">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme4.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="5">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme5.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="6">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme6.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="7">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme7.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="8">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme8.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="9">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme9.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                    </tool:WrapPanel>
+                                </Grid>
+                                <StackPanel Grid.Row="3" Orientation="Horizontal" >
+                                    <Rectangle HorizontalAlignment="Left" Height="40" Margin="12,5,0,-0"  Width="12" Opacity=".5">
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <TextBlock Text="自定义主题" Foreground="Gray" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
+                                    <coding4fun:Tile Background="{x:Null}" CB:TiltEffect.IsTiltEnabled="true" Command="{Binding CustomThemeCommand}" CommandParameter="9">
+                                        <Image Margin="250,0,0,0" Source="/Images/add.png"  Stretch="Fill" Width="40" Height="40" Opacity=".5"/>
+                                    </coding4fun:Tile>
+                                </StackPanel>
+                                <StackPanel Grid.Row="4" Orientation="Vertical" x:Name="AddThemePanel" HorizontalAlignment="Center">
+                                    <coding4fun:Tile x:Name="aboutTile" CB:TiltEffect.IsTiltEnabled="true" Loaded="aboutTile_Loaded"
+                                             HorizontalAlignment="Left"
+                                             Margin="12,12,0,0"
+                                             Width="408"
+                                             Height="173" Command="{Binding SelectCustomCommand}"                                              coding4funBinding:FrameworkElementBinding.ClipToBounds="True"
+                                             Title="点击右上'+'号可从本地图库选择你喜欢的主题哦~~" TextWrapping="Wrap"
+                                             Foreground="White">
+                                        <Grid>
+                                            <Canvas>
+                                                <Image x:Name="CustomTheme" Source="/Images/theme/theme6.jpg"
+	        		                        Stretch="None"
+                                            CacheMode="BitmapCache">
+                                                    <Image.RenderTransform>
+                                                        <CompositeTransform />
+                                                    </Image.RenderTransform>
+                                                </Image>
+                                            </Canvas>
+                                        </Grid>
+                                    </coding4fun:Tile>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
                 </phone:PivotItem>
             </phone:Pivot>
         </Grid>

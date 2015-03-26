@@ -11,6 +11,7 @@ namespace DouBanFMBase
 {
     public static class DbFMCommonData
     {
+        #region Common  readonly Data
         /// <summary>
         /// 登录url
         /// </summary>
@@ -40,6 +41,29 @@ namespace DouBanFMBase
         /// </summary>
         public static string Version { get { return "100"; } }
         /// <summary>
+        /// 下载歌曲根目录
+        /// </summary>
+        public static string DownSongsIsoName { get { return "DownSongs\\"; } }
+        /// <summary>
+        /// 默认白天主题路径
+        /// </summary>
+        public static string DefaultDayTheme { get { return "/Images/theme/theme3.jpg"; } }
+        /// <summary>
+        /// 默认夜间主题路径
+        /// </summary>
+        public static string DefaultNightTheme { get { return "/Images/theme/theme1.jpg"; } }
+        /// <summary>
+        /// 白天小图标
+        /// </summary>
+        public static string MoonPngPath { get { return "/Images/moon.png"; } }
+        /// <summary>
+        /// 夜晚小图标
+        /// </summary>
+        public static string SunPngPath { get { return "/Images/sun.png"; } }
+        #endregion
+
+        #region IsolatedStorage FileName Or KeyName
+        /// <summary>
         /// 是否第一次使用该App
         /// </summary>
         public static string IsFirstUse { get { return "IsFirstUse"; } }
@@ -51,6 +75,36 @@ namespace DouBanFMBase
         /// 上次成功登录密码
         /// </summary>
         public static string Password { get { return "Password"; } }
+        /// <summary>
+        /// 应用显示 模式 
+        /// </summary>
+        public static string ShowMode { get { return "ShowMode"; } }
+        /// <summary>
+        /// 主题图片路径
+        /// </summary>
+        public static string ThemePath { get { return "ThemePath"; } }
+        /// <summary>
+        /// 是否自定义主题
+        /// </summary>
+        public static string IsCustom { get { return "IsCustom"; } }
+        /// <summary>
+        /// 获取自定义主题路径
+        /// </summary>
+        public static string CustomJpgPath { get { return "Custom.jpg"; } }
+        /// <summary>
+        /// 独立存储收藏hz列表名称
+        /// </summary>
+        public static string CollectName { get { return "CollectChannels"; } }
+        /// <summary>
+        /// 独立存储歌曲id列表名称
+        /// </summary>
+        public static string DownSongIdsName { get { return "DownSongIds"; } }
+        /// <summary>
+        /// 独立存储下载歌曲信息保存文件名
+        /// </summary>
+        public static string SongsSavePath { get { return "DownSongsInfo.dat"; } }
+        #endregion 
+
         /// <summary>
         /// 启屏时间
         /// </summary>
@@ -76,31 +130,6 @@ namespace DouBanFMBase
         /// </summary>
         public static string Email { get; set; }
 
-        /// <summary>
-        /// 应用显示 模式 
-        /// </summary>
-        public static string ShowMode { get { return "ShowMode"; } }
-        /// <summary>
-        /// 主题图片路径
-        /// </summary>
-        public static string ThemePath { get; set; }
-        /// <summary>
-        /// 默认白天主题路径
-        /// </summary>
-        public static string DefaultDayTheme { get { return "/Images/theme/theme3.jpg"; } }
-        /// <summary>
-        /// 默认夜间主题路径
-        /// </summary>
-        public static string DefaultNightTheme { get { return "/Images/theme/theme1.jpg"; } }
-        /// <summary>
-        /// 白天小图标
-        /// </summary>
-        public static string MoonPngPath { get { return "/Images/moon.png"; } }
-        /// <summary>
-        /// 夜晚小图标
-        /// </summary>
-        public static string SunPngPath { get { return "/Images/sun.png"; } }
-
         public enum CallbackType
         {
             Login = 1,
@@ -114,6 +143,14 @@ namespace DouBanFMBase
         /// </summary>
         public static bool loginSuccess = false;
         /// <summary>
+        /// 下载歌曲是否完成
+        /// </summary>
+        public static bool DownLoadedSong = true;
+        /// <summary>
+        /// 播放歌曲是否来自本地
+        /// </summary>
+        public static bool SongFormDown { get; set; }
+        /// <summary>
         /// 定义popup回调函数
         /// </summary>
         /// <param name="msg"></param>
@@ -125,18 +162,10 @@ namespace DouBanFMBase
         public static InformCallback informCallback { get; set; }
 
         public static ChannelList ChannelList { get; set; }
-        public static string CollectName { get { return "CollectChannels"; } }
         /// <summary>
         /// 记录收藏hz
         /// </summary>
         public static HashSet<string> CollectHashSet { get;set;}
-
-        public static string DownSongIdsName { get { return "DownSongIds"; } }
-        /// <summary>
-        /// 下载歌曲根目录
-        /// </summary>
-        public static string DownSongsIsoName { get { return "DownSongs\\"; } }
-
 
         /// <summary>
         /// 记录下载歌曲的id
@@ -155,10 +184,7 @@ namespace DouBanFMBase
                 downSongIdList = value;
             }
         }
-        /// <summary>
-        /// 下载歌曲信息保存文件名
-        /// </summary>
-        public static string SongsSavePath { get { return "DownSongsInfo.dat"; } }
+
         /// <summary>
         /// 记录下载的歌曲列表信息
         /// </summary>
@@ -233,11 +259,6 @@ namespace DouBanFMBase
             WpStorage.SaveStringToIsoStore("SongsUrl.dat", getChannelSongsUrl);
             WpStorage.SetIsoSetting("LastedChannelId",channelId);
         }
-        /// <summary>
-        /// 下载歌曲是否完成
-        /// </summary>
-        public static bool DownLoadedSong = true;
 
-        public static bool SongFormDown { get; set; }
     }
 }

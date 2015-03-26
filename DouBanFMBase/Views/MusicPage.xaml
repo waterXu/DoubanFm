@@ -25,7 +25,7 @@
     <!--LayoutRoot 是包含所有页面内容的根网格-->
     <Grid x:Name="LayoutRoot">
         <Grid.Background>
-            <ImageBrush ImageSource="/Images/theme/theme3.jpg"/>
+            <ImageBrush ImageSource="{Binding BackgroundImg}"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -34,9 +34,9 @@
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
 
-        <Canvas Grid.Column="0" Grid.Row="0" Background="White" Opacity=".5">
+        <Grid Grid.Column="0" Grid.Row="0" Background="White" Opacity=".5">
             <Image Source="/Images/logo.png" HorizontalAlignment="Left"/>
-        </Canvas>
+        </Grid>
         <TextBlock x:Name="TitleText" Text="未知" TextWrapping="Wrap" Grid.Row="1" Foreground="#FF70B3BF" FontSize="30" HorizontalAlignment="Center"  VerticalAlignment="Bottom"/>
         <phone:Pivot Grid.Row="2" Margin="0,-30,0,0" x:Name="pivotItems" SelectionChanged="Pivot_SelectionChanged">
             <!--<phone:Pivot.Background>

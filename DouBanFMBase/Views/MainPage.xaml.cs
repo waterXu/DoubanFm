@@ -34,12 +34,13 @@ namespace DouBanFMBase
             //绑定数据源
             DataContext = App.ViewModel;
             bool showMode = false;
-            //获取显示模式 true 为夜间模式
+           // 获取显示模式 true 为夜间模式
             if (WpStorage.GetIsoSetting(DbFMCommonData.ShowMode) != null)
             {
                 showMode = (bool)WpStorage.GetIsoSetting(DbFMCommonData.ShowMode);
             }
             ToggleBtn.IsChecked = showMode;
+
             App.ViewModel.UpdateTheme();
         }
         #region Page EventHandler Method
@@ -125,12 +126,7 @@ namespace DouBanFMBase
         #endregion
 
         #region Control EnventHandler
-        private void ToggleBtn_Click(object sender, RoutedEventArgs e)
-        {
-            bool showMode = ToggleBtn.IsChecked ? false : true;
-            WpStorage.SetIsoSetting(DbFMCommonData.ShowMode, showMode);
-            App.ViewModel.UpdateTheme();
-        }
+     
         private void All_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox lb = sender as ListBox;
@@ -320,6 +316,20 @@ namespace DouBanFMBase
             LoadChannelGrid.Visibility = System.Windows.Visibility.Collapsed;
             HttpHelper.GetChannelList();
         }
+        private void AddTheme_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void ThemeSetting_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            MainPiovt.SelectedIndex = 3;
+            SettingScroll.ScrollToVerticalOffset(0);
+        }
+        private void aboutTile_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.trexStoryboard.Begin();
+        }
         #endregion
 
         #region Audio Method
@@ -466,6 +476,10 @@ namespace DouBanFMBase
             long memoryMax = DeviceStatus.ApplicationPeakMemoryUsage / 1048576;
             MessageBox.Show("当前内存使用情况："+memory.ToString() + " MB 当前最大内存使用情况： "+memoryMax.ToString()+ "MB  当前可分配最大内存： " + memoryLimit.ToString()+"  MB");
         }
+
+
+
+
 
 
         // 用于生成本地化 ApplicationBar 的示例代码

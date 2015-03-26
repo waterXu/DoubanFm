@@ -40,7 +40,7 @@ namespace DouBanFMBase
         {
             InitializeComponent();
             BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
-
+            DataContext = App.ViewModel;
         }
         #region Page EventHandler Method
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)

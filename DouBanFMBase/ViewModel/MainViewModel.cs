@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using DouBanAudioAgent;
 using System.Windows.Media.Imaging;
+using DouBanFMBase.Commands;
+using System.IO.IsolatedStorage;
+using System.IO;
 
 namespace DouBanFMBase.ViewModel
 {
@@ -62,17 +65,123 @@ namespace DouBanFMBase.ViewModel
             }
         }
 
-        private BitmapImage backgroundImg;
-        public BitmapImage BackgroundImg
+        
+        private bool _themeMode;
+         public bool ThemeMode
         {
             get
             {
-                return backgroundImg;
+                return _themeMode;
             }
             set
             {
-                backgroundImg = value;
-                NotifyPropertyChanged("BackgroundImg");
+                if (_themeMode != value)
+                {
+                    _themeMode = value;
+                    //保存用户选择到独立存储
+                    WpStorage.SetIsoSetting(DbFMCommonData.ShowMode, _themeMode);
+                    if (_themeMode)
+                    {
+                        NightOpacity = 0.5;
+                    }
+                    else
+                    {
+                        NightOpacity = 0;
+                    }
+                    UpdateTheme();
+                    NotifyPropertyChanged("ThemeMode");
+                }
+            }
+        }
+         private double _nightOpacity;
+         public double NightOpacity
+        {
+            get
+            {
+                return _nightOpacity;
+            }
+            set
+            {
+                if (_nightOpacity != value)
+                {
+                    _nightOpacity = value;
+                    NotifyPropertyChanged("NightOpacity");
+                }
+              
+            }
+        }
+        
+        #endregion
+
+        #region Command
+         //白天/夜间模式切换
+         private DelegateCommand _themeModeChangeCommand;
+         public DelegateCommand ThemeModeChangeCommand
+         {
+             get
+             {
+                 return _themeModeChangeCommand ?? (_themeModeChangeCommand = new DelegateCommand(() =>
+                 {
+                     //ThemeMode = ThemeMode ? false : true;
+                     //UpdateTheme();
+                 }));
+             }
+         }
+
+        private DelegateCommand<string> _selectThemeCommand;
+        public DelegateCommand<string> SelectThemeCommand
+        {
+            get
+            {
+                return _selectThemeCommand??(_selectThemeCommand = new DelegateCommand<string>((imageId)=>{
+                    string backImgPath = "/Images/theme/theme"+imageId+".jpg";
+                    //BackgroundImg = new BitmapImage(new Uri(backImgPath, UriKind.RelativeOrAbsolute));
+                    WpStorage.SetIsoSetting(DbFMCommonData.ThemePath, backImgPath);
+                    WpStorage.SetIsoSetting(DbFMCommonData.IsCustom, false);
+                    UpdateTheme();
+                }));
+            }
+        }
+  
+        //使用自定义主题
+        private DelegateCommand _selectCustomCommand;
+        public DelegateCommand SelectCustomCommand
+        {
+            get
+            {
+                return _selectCustomCommand ?? (_selectCustomCommand = new DelegateCommand(() =>
+                {
+                    if (WpStorage.isoFile.FileExists(DbFMCommonData.CustomJpgPath))
+                    {
+                        using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream(DbFMCommonData.CustomJpgPath, FileMode.Open, FileAccess.ReadWrite, WpStorage.isoFile))
+                        {
+                            BackgroundImg.SetSource(isoFileStream);
+                        }
+                        WpStorage.SetIsoSetting(DbFMCommonData.IsCustom, true);
+                    }
+                }));
+            }
+        }
+        //从本地图片库选择自定义主题
+        private DelegateCommand _customThemeCommand;
+        public DelegateCommand CustomThemeCommand
+        {
+            get
+            {
+                return _customThemeCommand ?? (_customThemeCommand = new DelegateCommand(() =>
+                {
+
+                    //todo  打开图片库
+                    //string backImgPath = "/Images/theme/theme" + imageId + ".jpg";
+                    //BackgroundImg = new BitmapImage(new Uri(backImgPath, UriKind.RelativeOrAbsolute));
+                    //WpStorage.SetIsoSetting(DbFMCommonData.ThemePath, backImgPath);
+
+                    if (WpStorage.isoFile.FileExists(DbFMCommonData.CustomJpgPath))
+                    {
+                        WpStorage.SetIsoSetting(DbFMCommonData.IsCustom, true);
+                    }
+                    //UpdateTheme();
+                }));
             }
         }
         #endregion
@@ -88,17 +197,27 @@ namespace DouBanFMBase.ViewModel
                 themeBgPath = WpStorage.GetIsoSetting(DbFMCommonData.ThemePath).ToString();
             }
 
-            bool showMode = false;
-
-            //获取显示模式 true 为夜间模式
-            if (WpStorage.GetIsoSetting(DbFMCommonData.ShowMode) != null)
+            bool isCustom = false;
+            if (WpStorage.GetIsoSetting(DbFMCommonData.IsCustom) != null)
             {
-                showMode = (bool)WpStorage.GetIsoSetting(DbFMCommonData.ShowMode);
+                isCustom = (bool)WpStorage.GetIsoSetting(DbFMCommonData.IsCustom);
             }
 
-            if (showMode)
+            //判断显示模式 true 为夜间模式
+            if (isCustom)
             {
-                BackgroundImg = new BitmapImage(new Uri(DbFMCommonData.DefaultNightTheme, UriKind.RelativeOrAbsolute));
+                //从独立存储中获取
+                if (WpStorage.isoFile.FileExists(DbFMCommonData.CustomJpgPath))
+                {
+                    using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream(DbFMCommonData.CustomJpgPath, FileMode.Open, FileAccess.ReadWrite, WpStorage.isoFile))
+                    {
+                        BackgroundImg.SetSource(isoFileStream);
+                    }
+                }
+                else
+                {
+                    BackgroundImg = new BitmapImage(new Uri(themeBgPath, UriKind.RelativeOrAbsolute));
+                }
             }
             else
             {
@@ -140,14 +259,16 @@ namespace DouBanFMBase.ViewModel
                 }
                 else
                 {
-                    //todo  显示没有加载成功
-                    //重新加载按钮。。。。
+                    DbFMCommonData.DownLoadSuccess = false;
+                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadedData, IsLoaded);
                 }
             }
             catch(Exception e)
             {
                 //todo  显示没有加载成功
                 //重新加载按钮。。。。
+                DbFMCommonData.DownLoadSuccess = false;
+                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadedData, IsLoaded);
                 System.Diagnostics.Debug.WriteLine("LoadData异常：" + e.Message);
             }
            
