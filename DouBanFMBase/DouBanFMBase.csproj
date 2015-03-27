@@ -192,6 +192,7 @@
     <Content Include="Images\btn_a_on.png" />
     <Content Include="Images\btn_c.png" />
     <Content Include="Images\btn_on.png" />
+    <Content Include="Images\camera.png" />
     <Content Include="Images\checkbox.png" />
     <Content Include="Images\day.png" />
     <Content Include="Images\db.png" />

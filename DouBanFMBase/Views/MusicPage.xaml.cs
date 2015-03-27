@@ -77,7 +77,7 @@ namespace DouBanFMBase
             dispatcherTimer.Tick -= new EventHandler(dispatcherTimer_Tick);
             BackgroundAudioPlayer.Instance.PlayStateChanged -= new EventHandler(Instance_PlayStateChanged);
             CallbackManager.musicPage = null;
-
+            MainPage.IsFromMusicPage = true;
         }
         #endregion
 
@@ -262,15 +262,11 @@ namespace DouBanFMBase
             {
                 latestAlbumArtPath = albumArtURL.ToString();
 
-                bool test =  WpStorage.isoFile.FileExists(DbFMCommonData.DownSongsIsoName + "12121331.jpg");
-
                 if (DbFMCommonData.SongFormDown)
                 {
-                    //string isoAlbumArtPath = latestAlbumArtPath.Replace("/", "\\");
-                    string isoAlbumArtPath = latestAlbumArtPath;
-                    if (WpStorage.isoFile.FileExists(isoAlbumArtPath))
+                    if (WpStorage.isoFile.FileExists(latestAlbumArtPath))
                     {
-                        using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream(isoAlbumArtPath, FileMode.Open, FileAccess.ReadWrite, WpStorage.isoFile))
+                        using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream(latestAlbumArtPath, FileMode.Open, FileAccess.ReadWrite, WpStorage.isoFile))
                         {
                             BitmapImage background = new BitmapImage();
                             background.SetSource(isoFileStream);

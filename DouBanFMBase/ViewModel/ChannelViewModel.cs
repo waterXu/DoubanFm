@@ -9,6 +9,10 @@ namespace DouBanFMBase.ViewModel
 {
     public class ChannelViewModel : ViewModelBase
     {
+        public ChannelViewModel()
+        {
+            string a = "i am here";
+        }
         private string _name;
         /// <summary>
         /// 示例 ViewModel 属性；此属性在视图中用于使用绑定显示它的值。

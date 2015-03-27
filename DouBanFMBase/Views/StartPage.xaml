@@ -20,7 +20,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <!--LayoutRoot 是包含所有页面内容的根网格-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="White">
         <Image x:Name="bgImg" Visibility="Collapsed" Source="/Images/db.png" Stretch="Fill"></Image>
         <Grid x:Name="firstStartGrid" Visibility="Visible">
             <phone:Pivot SelectionChanged="Pivot_SelectionChanged" x:Name="pivotItems" SelectedIndex="0">

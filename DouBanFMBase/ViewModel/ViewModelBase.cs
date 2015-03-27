@@ -10,11 +10,15 @@ namespace DouBanFMBase.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        private BitmapImage backgroundImg;
+        public BitmapImage backgroundImg;
         public BitmapImage BackgroundImg
         {
             get
             {
+                if (backgroundImg == null)
+                {
+                    backgroundImg = new BitmapImage();
+                }
                 return backgroundImg;
             }
             set

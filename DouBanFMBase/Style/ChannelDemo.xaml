@@ -6,6 +6,9 @@
     <MVM:MainViewModel.BackgroundImg>
         <BitmapImage UriSource="/Images/theme/theme3.jpg"></BitmapImage>
     </MVM:MainViewModel.BackgroundImg>
+    <MVM:MainViewModel.UserPictrue>
+        <BitmapImage UriSource="/Images/defaultuser.png"></BitmapImage>
+    </MVM:MainViewModel.UserPictrue>
     <MVM:MainViewModel.Channels>
         <MVM:ChannelViewModel ChannelId="1" Name="我的私人赫兹" IsChecked="True"/>
         <MVM:ChannelViewModel ChannelId="2" Name="我的红心赫兹" IsChecked="True"/>

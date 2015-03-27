@@ -17,6 +17,8 @@ using DouBanAudioAgent;
 using Microsoft.Phone.Info;
 using Newtonsoft.Json;
 using DouBanFMBase.ViewModel;
+using System.IO.IsolatedStorage;
+using System.IO;
 
 
 namespace DouBanFMBase
@@ -26,28 +28,47 @@ namespace DouBanFMBase
         /// <summary>
         /// 标识首次启动时音乐是否在播放
         /// </summary>
-        private bool FirstLoadMusicIsPlaying = false;
+        public static bool FirstLoadMusicIsPlaying = false;
+        /// <summary>
+        /// 是否从专辑页面返回
+        /// </summary>
+        public static bool IsFromMusicPage = false;
         // 构造函数
         public MainPage()
         {
             InitializeComponent();
-            //绑定数据源
-            DataContext = App.ViewModel;
-            bool showMode = false;
-           // 获取显示模式 true 为夜间模式
-            if (WpStorage.GetIsoSetting(DbFMCommonData.ShowMode) != null)
-            {
-                showMode = (bool)WpStorage.GetIsoSetting(DbFMCommonData.ShowMode);
-            }
-            ToggleBtn.IsChecked = showMode;
-
-            App.ViewModel.UpdateTheme();
         }
         #region Page EventHandler Method
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             DbFMCommonData.MainPageLoaded = true;
+            if (!IsFromMusicPage)
+            {
+                //绑定数据源
+                DataContext = App.ViewModel;
+                bool showMode = false;
+                // 获取显示模式 true 为夜间模式
+                if (WpStorage.GetIsoSetting(DbFMCommonData.ShowMode) != null)
+                {
+                    showMode = (bool)WpStorage.GetIsoSetting(DbFMCommonData.ShowMode);
+                }
+                ToggleBtn.IsChecked = showMode;
 
+                App.ViewModel.UpdateTheme();
+                App.ViewModel.InitPropertyValue();
+                if (App.ViewModel.IsLoaded)
+                {
+                    if (DbFMCommonData.DownLoadSuccess)
+                    {
+                        DataContextLoaded();
+                    }
+                    else
+                    {
+                        DataContextLoadedFail();
+                    }
+                }
+            }
+           
             if (BackgroundAudioPlayer.Instance.Track != null)
             {
                 // show soung 
@@ -61,21 +82,7 @@ namespace DouBanFMBase
                 {
                     PlayBtn.IsChecked = true;
                 }
-                FirstLoadMusicIsPlaying = true;
-
             }
-            if (App.ViewModel.IsLoaded)
-            {
-                if (DbFMCommonData.DownLoadSuccess)
-                {
-                    DataContextLoaded();
-                }
-                else
-                {
-                    DataContextLoadedFail();
-                }
-            }
-            
         }
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -120,7 +127,7 @@ namespace DouBanFMBase
             DownSongList.ClearValue(ListBox.ItemsSourceProperty);
 
            CallbackManager.Mainpage = null;
-
+           IsFromMusicPage = false;
         }
        
         #endregion
@@ -132,7 +139,6 @@ namespace DouBanFMBase
             ListBox lb = sender as ListBox;
             ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
 
-            DbFMCommonData.SetSongsUrl("n",lb.SelectedIndex.ToString());
             if (FirstLoadMusicIsPlaying)
             {
                 FirstLoadMusicIsPlaying = false;
@@ -140,7 +146,7 @@ namespace DouBanFMBase
                 return;
             }
             DbFMCommonData.SongFormDown = false;
-          
+            DbFMCommonData.SetSongsUrl("n", lb.SelectedIndex.ToString());
             HttpHelper.GetChannelSongs("n", cv.ChannelId);
             // 保存获取新列表 url 以便给background audio调用
             System.Diagnostics.Debug.WriteLine("Hz名称：" + cv.Name + " Hz 是否收藏" + cv.IsChecked.ToString());
@@ -197,10 +203,7 @@ namespace DouBanFMBase
         {
             PopupManager.ShowUserControl(PopupManager.UserControlType.LoginControl);
         }
-        private void ChangeUserImgBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //访问手机照片
-        }
+
         private void DownSongList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox lb = sender as ListBox;
@@ -316,10 +319,6 @@ namespace DouBanFMBase
             LoadChannelGrid.Visibility = System.Windows.Visibility.Collapsed;
             HttpHelper.GetChannelList();
         }
-        private void AddTheme_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-
-        }
 
         private void ThemeSetting_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -359,39 +358,6 @@ namespace DouBanFMBase
         #endregion
 
         #region hleper Method
-
-        public void UpdateTheme()
-        {
-            ImageBrush bgBrush = new ImageBrush();
-            //获取主题路径
-            string themeBgPath = DbFMCommonData.DefaultDayTheme;
-            if (WpStorage.GetIsoSetting(DbFMCommonData.ThemePath) != null)
-            {
-                themeBgPath = WpStorage.GetIsoSetting(DbFMCommonData.ThemePath).ToString();
-            }
-
-            ImageSource bgImage;
-            bool showMode = false;
-
-            //获取显示模式 true 为夜间模式
-            if (WpStorage.GetIsoSetting(DbFMCommonData.ShowMode) != null)
-            {
-                showMode = (bool)WpStorage.GetIsoSetting(DbFMCommonData.ShowMode);
-            }
-
-            if (showMode)
-            {
-                bgImage = new BitmapImage(new Uri(DbFMCommonData.DefaultNightTheme, UriKind.RelativeOrAbsolute));
-                bgBrush.ImageSource = bgImage;
-                LayoutRoot.Background = bgBrush;
-            }
-            else
-            {
-                bgImage = new BitmapImage(new Uri(themeBgPath, UriKind.RelativeOrAbsolute));
-                bgBrush.ImageSource = bgImage;
-                LayoutRoot.Background = bgBrush;
-            }
-        }
         public void DataContextLoaded()
         {
             this.Dispatcher.BeginInvoke(() => 
@@ -404,19 +370,22 @@ namespace DouBanFMBase
                 Binding collectChannels = new Binding();
                 collectChannels.Path = new PropertyPath("CollectChannels");
                 CollectChannels.SetBinding(ListBox.ItemsSourceProperty, collectChannels);
-                if (App.ViewModel.Channels.Count > 0)
+                if (App.ViewModel.Channels != null && App.ViewModel.Channels.Count > 0)
                 {
-                    int channelIndex = 0;
-                    if (FirstLoadMusicIsPlaying && WpStorage.GetIsoSetting("LastedChannelId") != null)
+                    if (AllChannels.ItemsSource != null)
                     {
-                        string index = WpStorage.GetIsoSetting("LastedChannelId").ToString();
-                        channelIndex = Convert.ToInt32(index);
-                        if (channelIndex == -1)
+                        int channelIndex = 0;
+                        if (FirstLoadMusicIsPlaying && WpStorage.GetIsoSetting("LastedChannelId") != null)
                         {
-                            channelIndex = 0;
+                            string index = WpStorage.GetIsoSetting("LastedChannelId").ToString();
+                            channelIndex = Convert.ToInt32(index);
+                            if (channelIndex == -1)
+                            {
+                                channelIndex = 0;
+                            }
                         }
+                        AllChannels.SelectedIndex = channelIndex;
                     }
-                    AllChannels.SelectedIndex = channelIndex;
                 }
             });
            

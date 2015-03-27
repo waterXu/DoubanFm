@@ -84,6 +84,10 @@ namespace DouBanFMBase
         // 此代码在重新激活应用程序时不执行
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            if (BackgroundAudioPlayer.Instance.Track != null)
+            {
+                MainPage.FirstLoadMusicIsPlaying = true;
+            }
             //加载下载歌曲
             string songs = WpStorage.ReadIsolatedStorageFile(DbFMCommonData.SongsSavePath);
             if (!string.IsNullOrEmpty(songs))

@@ -92,6 +92,10 @@ namespace DouBanFMBase
         /// </summary>
         public static string CustomJpgPath { get { return "Custom.jpg"; } }
         /// <summary>
+        /// 获取用户头像路径
+        /// </summary>
+        public static string UserJpgPath { get { return "User.jpg"; } }
+        /// <summary>
         /// 独立存储收藏hz列表名称
         /// </summary>
         public static string CollectName { get { return "CollectChannels"; } }

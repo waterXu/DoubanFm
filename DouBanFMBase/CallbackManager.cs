@@ -8,9 +8,9 @@ namespace DouBanFMBase
 {
     public class CallbackManager
     {
-        public static MainPage Mainpage;
-        public static StartPage Startpage;
-        public static MusicPage musicPage;
+        public static MainPage Mainpage{get;set;}
+        public static StartPage Startpage{get;set;}
+        public static MusicPage musicPage{get;set;}
         public static void CallBackTrigger(int action,bool isSuccess)
         {
             switch (action)

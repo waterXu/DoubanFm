@@ -61,7 +61,7 @@
             </Grid.RowDefinitions>
             <Ellipse Width="70" Height="70" Stroke="AntiqueWhite" x:Name="UserPictrue" StrokeThickness="2" HorizontalAlignment="Left" Tap="UserImage_Tap">
                 <Ellipse.Fill>
-                    <ImageBrush ImageSource="/Images/defaultuser.png" Stretch="UniformToFill" />
+                    <ImageBrush ImageSource="{Binding UserPictrue}" Stretch="UniformToFill" />
                 </Ellipse.Fill>
             </Ellipse>
 
@@ -158,10 +158,17 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="3.5*"/>
                         </Grid.RowDefinitions>
-                        <Ellipse Width="120" Height="120" Stroke="Gray" StrokeThickness="2" HorizontalAlignment="Center" Tap="UserImage_Tap" Fill="{Binding ElementName=UserPictrue, Path=Fill,Mode=TwoWay}">
-                        </Ellipse>
-                        <Button BorderThickness="0" HorizontalAlignment="Left" x:Name="LoginStatusBtn" Foreground="Black" VerticalAlignment="Top" Background="#FFB0DBE3" Opacity=".7" Content="更换头像" Click="ChangeUserImgBtn_Click"></Button>
-                        <Button BorderThickness="0" Grid.Row="0" Foreground="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#FFB0DBE3" Content="{Binding LoginSuccess, Converter={StaticResource textConverter}}" Opacity=".7"  Click="LoginStatusBtn_Click"></Button>
+                        <Grid>
+                            <Ellipse Width="120" Height="120" Stroke="Gray" StrokeThickness="2" HorizontalAlignment="Center" Tap="UserImage_Tap" >
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding UserPictrue}"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <coding4fun:Tile Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Top" CB:TiltEffect.IsTiltEnabled="true" Command="{Binding SelectUserPictrue}">
+                                <Image Margin="110,0,0,0" Source="/Images/camera.png"  Stretch="Fill" Width="45" Height="45" Opacity=".5"/>
+                            </coding4fun:Tile>
+                        </Grid>
+                        <Button BorderThickness="0" Grid.Row="0" Foreground="Black" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#FFB0DBE3" Content="{Binding LoginSuccess, Converter={StaticResource textConverter}}" Opacity=".7"  Click="LoginStatusBtn_Click"></Button>
                         <ScrollViewer Grid.Row="1" x:Name="SettingScroll">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -220,7 +227,7 @@
                                     </Rectangle>
                                     <TextBlock Text="自定义主题" Foreground="Gray" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
                                     <coding4fun:Tile Background="{x:Null}" CB:TiltEffect.IsTiltEnabled="true" Command="{Binding CustomThemeCommand}" CommandParameter="9">
-                                        <Image Margin="250,0,0,0" Source="/Images/add.png"  Stretch="Fill" Width="40" Height="40" Opacity=".5"/>
+                                        <Image Margin="250,0,0,0" Source="/Images/camera.png"  Stretch="Fill" Width="40" Height="40" Opacity=".5"/>
                                     </coding4fun:Tile>
                                 </StackPanel>
                                 <StackPanel Grid.Row="4" Orientation="Vertical" x:Name="AddThemePanel" HorizontalAlignment="Center">
@@ -229,12 +236,12 @@
                                              Margin="12,12,0,0"
                                              Width="408"
                                              Height="173" Command="{Binding SelectCustomCommand}"                                              coding4funBinding:FrameworkElementBinding.ClipToBounds="True"
-                                             Title="点击右上'+'号可从本地图库选择你喜欢的主题哦~~" TextWrapping="Wrap"
+                                             Title="点击右上角图标可从本地图库选择你喜欢的主题图片哦~~" TextWrapping="Wrap"
                                              Foreground="White">
                                         <Grid>
                                             <Canvas>
-                                                <Image x:Name="CustomTheme" Source="/Images/theme/theme6.jpg"
-	        		                        Stretch="None"
+                                                <Image x:Name="CustomTheme"
+	        		                        Stretch="None" Source="{Binding CustomThemeImg}"
                                             CacheMode="BitmapCache">
                                                     <Image.RenderTransform>
                                                         <CompositeTransform />
@@ -244,7 +251,6 @@
                                         </Grid>
                                     </coding4fun:Tile>
                                 </StackPanel>
-                                <StackPanel></StackPanel>
                             </Grid>
                         </ScrollViewer>
                     </Grid>
