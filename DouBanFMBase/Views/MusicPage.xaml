@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:CB="clr-namespace:DouBanFMBase"
+    xmlns:ViewModel ="clr-namespace:DouBanFMBase.ViewModel"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -62,9 +63,6 @@
                             <TextBlock x:Name="EndTextBlock" Text="00:00" Foreground="Black" FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                             <TextBlock x:Name="StartTextBlock" Text="00:00" Foreground="Black" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
                         </Grid>
-                        <!--<Border Background="#FFB0DBE3" Grid.Column="1" Padding="12" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,9,0,8" Grid.RowSpan="2" Height="85" Width="57">
-                            <CB:ChangeButton  x:Name="PlayButton" Click="ChangeButton_Click" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png"></CB:ChangeButton>
-                        </Border>-->
                         <Border Grid.Column="1" Background="#FFB0DBE3" Opacity=".7"   BorderBrush="Gray" BorderThickness="3" CornerRadius="60" Height="60" Width="60" Padding="10" Grid.RowSpan="2" Margin="-5">
                             <CB:ChangeButton CB:TiltEffect.IsTiltEnabled="true" x:Name="PlayButton" DefaultImage="/Images/pause.png" SeletedImage="/Images/play.png" Tap="ChangeButton_Click" VerticalAlignment="Top"></CB:ChangeButton>
                         </Border>
@@ -75,9 +73,19 @@
                     </StackPanel>
                 </Grid>
             </phone:PivotItem>
-            <phone:PivotItem>
-                <RichTextBox>
-                </RichTextBox>
+            <phone:PivotItem x:Name="LrcPivotItem">
+                <!--<RichTextBox x:Name="LrcTextBox" IsReadOnly="True" >
+                    <Paragraph FontSize="30" >
+                        RichTextBox Demo Project eeeeeeeeeeeeeeeeeeeeeeeeeee
+                    </Paragraph>
+                </RichTextBox>-->
+                <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
+                    <ViewModel:LrcDisplayControl Grid.Row="1" Name="LrcControl" FontSize="24" EmphasisBrush="#FF70B3BF" Foreground="Black" Progress="{Binding Progress}"  />
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="LoadSongLyrGrid" Tap="LoadSongLycGrid_Tap" Visibility="Collapsed">
+                        <Image Opacity=".5" Source="/Images/reload1.png" Height="100" Width="100" VerticalAlignment="Center"></Image>
+                        <TextBlock x:Name="LoadSongLyr" Text="点击搜索歌词" Foreground="Black" VerticalAlignment="Center"></TextBlock>
+                    </Grid>
+                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
         <Grid Grid.Row="3"  Background="#FFB0DBE3" Opacity=".5">

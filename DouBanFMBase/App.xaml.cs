@@ -35,6 +35,23 @@ namespace DouBanFMBase
                 return viewModel;
             }
         }
+        private static MusicViewModel musicViewModel = null;
+
+        /// <summary>
+        /// 视图用于进行绑定的静态 ViewModel。
+        /// </summary>
+        /// <returns>MainViewModel 对象。</returns>
+        public static MusicViewModel MusicViewModel
+        {
+            get
+            {
+                // 延迟创建视图模型，直至需要时
+                if (musicViewModel == null)
+                    musicViewModel = new MusicViewModel();
+
+                return musicViewModel;
+            }
+        }
         /// <summary>
         ///提供对电话应用程序的根框架的轻松访问。
         /// </summary>

@@ -29,8 +29,17 @@ namespace DouBanFMBase
         /// 获取歌曲列表url
         /// </summary>
         public static string ChannelSongsUrl { get { return "http://www.douban.com/j/app/radio/people"; } }
-
+        /// <summary>
+        /// 获取歌词url的url地址
+        /// </summary>
+        public static string LyricUrl { get { return "http://geci.me/api/lyric/"; } }
+        /// <summary>
+        /// 主页地址
+        /// </summary>
         public static string MianPageUrl { get { return "/Views/MainPage.xaml"; } }
+        /// <summary>
+        /// 歌曲详情页地址
+        /// </summary>
         public static string MusicPageUrl { get { return "/Views/MusicPage.xaml"; } }
         /// <summary>
         /// 请求appname
@@ -139,7 +148,8 @@ namespace DouBanFMBase
             Login = 1,
             LoadedData = 2,
             LoadSongBack = 3,
-            DownSongBack = 4
+            DownSongBack = 4,
+            DownSongLyrBack = 5
         }
 
         /// <summary>

@@ -387,6 +387,7 @@ namespace DouBanFMBase
                         AllChannels.SelectedIndex = channelIndex;
                     }
                 }
+                LoadChannelGrid.Visibility = System.Windows.Visibility.Collapsed;
             });
            
         }

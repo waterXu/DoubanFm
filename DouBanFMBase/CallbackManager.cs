@@ -60,9 +60,15 @@ namespace DouBanFMBase
                     {
                         musicPage.DownLoadSongBack(isSuccess);
                     }
-                    if (Mainpage != null)
+                    else if (Mainpage != null)
                     {
                         Mainpage.DownSongBack(isSuccess);
+                    }
+                    break;
+                case (int)DbFMCommonData.CallbackType.DownSongLyrBack:
+                    if (musicPage != null)
+                    {
+                        musicPage.LoadSongLyricBack(isSuccess);
                     }
                     break;
                 default:

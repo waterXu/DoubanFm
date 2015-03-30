@@ -188,7 +188,7 @@
                                             <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
                                         </Rectangle.Fill>
                                     </Rectangle>
-                                    <TextBlock Text="猜你喜欢" Foreground="Gray" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
+                                    <TextBlock Text="猜你喜欢" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
 
                                 </StackPanel>
                                 <Grid Grid.Row="2" CB:TiltEffect.IsTiltEnabled="true" HorizontalAlignment="Center" CacheMode="BitmapCache">
@@ -225,7 +225,7 @@
                                             <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
                                         </Rectangle.Fill>
                                     </Rectangle>
-                                    <TextBlock Text="自定义主题" Foreground="Gray" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
+                                    <TextBlock Text="自定义主题" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
                                     <coding4fun:Tile Background="{x:Null}" CB:TiltEffect.IsTiltEnabled="true" Command="{Binding CustomThemeCommand}" CommandParameter="9">
                                         <Image Margin="250,0,0,0" Source="/Images/camera.png"  Stretch="Fill" Width="40" Height="40" Opacity=".5"/>
                                     </coding4fun:Tile>

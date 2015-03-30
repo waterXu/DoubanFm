@@ -96,9 +96,12 @@
     <Compile Include="CallbackManager.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Helper\AlphaKeyGroup.cs" />
-    <Compile Include="Helper\LrcFragment.cs" />
-    <Compile Include="Helper\Lyric.cs" />
+    <Compile Include="Models\LrcFragment.cs" />
+    <Compile Include="Models\Lyric.cs" />
     <Compile Include="Converts\TextConverter.cs" />
+    <Compile Include="Models\LyricResult.cs" />
+    <Compile Include="ViewModel\LrcDisplayControl.cs" />
+    <Compile Include="ViewModel\MusicViewModel.cs" />
     <Compile Include="ViewModel\TiltEffect.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Views\MusicPage.xaml.cs">
@@ -138,6 +141,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MusicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

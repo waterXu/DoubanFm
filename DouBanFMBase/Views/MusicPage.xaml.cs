@@ -15,15 +15,16 @@ using Newtonsoft.Json;
 using DouBanAudioAgent;
 using System.IO.IsolatedStorage;
 using System.IO;
+using System.Windows.Documents;
+using System.Windows.Data;
+using DouBanFMBase.ViewModel;
 
 namespace DouBanFMBase
 {
     public partial class MusicPage : PhoneApplicationPage
     {
         // Reference to App Class
-        private App app = App.Current as App;
-        // How many songs are allowed to Latest List
-        private const int LATESTS_MAX = 20;
+        //private App app = App.Current as App;
         // Check Songs playing time -> update TextBlocks and Slider
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         // Latest AlbumArt path
@@ -41,6 +42,7 @@ namespace DouBanFMBase
             InitializeComponent();
             BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
             DataContext = App.ViewModel;
+            //LrcControl.DataContext = App.MusicViewModel;
         }
         #region Page EventHandler Method
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -49,27 +51,22 @@ namespace DouBanFMBase
             SongSlider.Tap += new EventHandler<System.Windows.Input.GestureEventArgs>(SongSlider_Tap);
         }
 
-        // Navigated to this Player Page
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             CallbackManager.musicPage = this;
             isFirstComeHere = true;
-            // Playing - set Pause Button text
             if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
             {
                 PlayButton.IsChecked = false;
             }
-            // Paused - set Play Button text
             else if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Paused)
             {
                 PlayButton.IsChecked = true;
             }
             Instance_PlayStateChanged(null,new EventArgs());
-            // start timer to check position of the song
             startTimer();
         }
-        // Navigated from this Page
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
         {
             // Stop timer and remove Event Handlers
@@ -78,6 +75,7 @@ namespace DouBanFMBase
             BackgroundAudioPlayer.Instance.PlayStateChanged -= new EventHandler(Instance_PlayStateChanged);
             CallbackManager.musicPage = null;
             MainPage.IsFromMusicPage = true;
+            LrcControl.DataContext = null;
         }
         #endregion
 
@@ -131,12 +129,15 @@ namespace DouBanFMBase
             }
             DownSong.Visibility = System.Windows.Visibility.Collapsed;
             HttpHelper.DownLoadMusic(currentSongInfo);
-            //check this music exsit
-            //HttpHelper.DownLoadMusic();
         }
 
         private void LoveImage_Click(object sender, RoutedEventArgs e)
         {
+            if (DbFMCommonData.SongFormDown)
+            {
+                MessageBox.Show("下载歌曲不支持红心操作");
+                return;
+            }
             HttpHelper.SetSongLoveStatus(LoveImage.IsChecked);
         }
 
@@ -168,7 +169,6 @@ namespace DouBanFMBase
         {
             ImageChange();
         }
-
         private void AlbumArtImage_ImageFailed(object sender, ExceptionRoutedEventArgs e)
         {
             Random random = new Random();
@@ -178,8 +178,13 @@ namespace DouBanFMBase
             BitmapImage bitmapImage = new BitmapImage(uri);
             AlbumArtImage.Source = bitmapImage;
         }
-        #endregion
 
+        private void LoadSongLycGrid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            LoadSongLyrGrid.Visibility = System.Windows.Visibility.Collapsed;
+            LoadSongLyric();
+        }
+        #endregion
 
         #region Hleper Method
         private void Instance_PlayStateChanged(object sender, EventArgs e)
@@ -232,10 +237,9 @@ namespace DouBanFMBase
                 // display text
                 starttext = BackgroundAudioPlayer.Instance.Position.ToString();
                 StartTextBlock.Text = starttext.Substring(3, 5);
-
                 endtext = BackgroundAudioPlayer.Instance.Track.Duration.ToString();
                 EndTextBlock.Text = endtext.Substring(3, 5);
-
+                App.MusicViewModel.Progress = SongSlider.Value;
             }
         }
         // Load AlbumArt
@@ -244,7 +248,6 @@ namespace DouBanFMBase
             System.Diagnostics.Debug.WriteLine("AlbumArt = " + BackgroundAudioPlayer.Instance.Track.AlbumArt);
 
             Uri songURL = BackgroundAudioPlayer.Instance.Track.Source;
-
             //如果与上次歌曲url不一致  则重新获取最新 tag 数据（songInfo）
             if (songURL.ToString() != latestSource)
             {
@@ -253,15 +256,15 @@ namespace DouBanFMBase
                 if(!string.IsNullOrEmpty(tag)){
                     currentSongInfo = JsonConvert.DeserializeObject<SongInfo>(tag);
                 }
+                //获取歌词
+                LoadSongLyric();
             }
-
             // get album art Uri from Audio Playback Agetn
             Uri albumArtURL = BackgroundAudioPlayer.Instance.Track.AlbumArt;
             // load album art from net or local
             if (albumArtURL != null && latestAlbumArtPath != albumArtURL.ToString())
             {
                 latestAlbumArtPath = albumArtURL.ToString();
-
                 if (DbFMCommonData.SongFormDown)
                 {
                     if (WpStorage.isoFile.FileExists(latestAlbumArtPath))
@@ -274,19 +277,15 @@ namespace DouBanFMBase
                             ImageChange();
                         }
                     }
-                   // AlbumArtImage.Source = new BitmapImage(new Uri(latestAlbumArtPath,UriKind.Relative));
-
                 }
                 else
                 {
                     AlbumArtImage.Source = new BitmapImage(albumArtURL);
                 }
             }
-            // there is no album art in net, load album art from project resources
             else if (albumArtURL == null)
             {
                 Random random = new Random();
-                //get random theme image
                 int imageindex = random.Next(1, 10);
                 Uri uri = new Uri("/Images/theme/theme" + imageindex.ToString() + ".jpg", UriKind.Relative);
                 BitmapImage bitmapImage = new BitmapImage(uri);
@@ -296,6 +295,66 @@ namespace DouBanFMBase
             {
                 System.Diagnostics.Debug.WriteLine("Don't load same album art again");
             }
+        }
+        private bool IsLoadingLyric = false;
+        private void LoadSongLyric()
+        {
+            //绑定数据源
+            if (LrcControl.DataContext != null)
+            {
+                LrcControl.DataContext = null;
+                App.MusicViewModel.Lrc = null;
+            }
+            bool needDownLyr = true;
+            if (DbFMCommonData.DownSongIdList.Contains(currentSongInfo.aid))
+            {
+                try
+                {
+                    if (WpStorage.isoFile.FileExists(DbFMCommonData.DownSongsIsoName + currentSongInfo.aid + ".lrc"))
+                    {
+                        //解析歌词并显示
+                        string lyricInfo = WpStorage.ReadIsolatedStorageFile(DbFMCommonData.DownSongsIsoName + currentSongInfo.aid + ".lrc");
+                        App.MusicViewModel.Lrc = lyricInfo;
+                        LrcControl.DataContext = App.MusicViewModel;
+                        Binding lrc = new Binding();
+                        lrc.Path = new PropertyPath("Lrc");
+                        LrcControl.SetBinding(LrcDisplayControl.LrcTextProperty, lrc);
+                        needDownLyr = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("LoadSongLyric exception:" + ex.Message);
+                }
+            }
+
+            if (needDownLyr && !IsLoadingLyric)
+            {
+                IsLoadingLyric = true;
+                HttpHelper.DownLoadSongLyr(currentSongInfo);
+            }
+           
+        }
+       
+        public void LoadSongLyricBack(bool isSuccess)
+        {
+            IsLoadingLyric = false;
+            Dispatcher.BeginInvoke(() =>
+            {
+                if (isSuccess)
+                {
+                   LrcControl.DataContext = App.MusicViewModel;
+                   Binding lrc = new Binding();
+                   lrc.Path = new PropertyPath("Lrc");
+                   LrcControl.SetBinding(LrcDisplayControl.LrcTextProperty,lrc);
+                }
+                else
+                {
+                    LoadSongLyrGrid.Visibility = System.Windows.Visibility.Visible;
+                }
+
+            });
+          
         }
         SlideTransition st;
         private void ImageChange()
@@ -319,13 +378,9 @@ namespace DouBanFMBase
                 DownSong.Visibility = System.Windows.Visibility.Visible;
             });
         }
-        private void SaveDownSongsHashSet()
-        {
-            //DownSong.Visibility = System.Windows.Visibility.Visible;
-        }
+       
         #endregion
 
-
-
+      
     }
 }

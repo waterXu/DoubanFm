@@ -272,6 +272,68 @@ namespace DouBanFMBase
             }
         }
         /// <summary>
+        /// 下载歌词
+        /// </summary>
+        /// <param name="song"></param>
+        public static void DownLoadSongLyr(SongInfo song)
+        {
+            bool downLoadSuccess = false;
+            try
+            {
+                //string loadLycUrl = DbFMCommonData.LyricUrl + song.title + "/" + song.artist;
+                string loadLycUrl = DbFMCommonData.LyricUrl +"天路/韩红";
+                System.Diagnostics.Debug.WriteLine("歌词地址请求： " + loadLycUrl);
+                HttpHelper.httpGet(loadLycUrl, new AsyncCallback((ar) =>
+                {
+                    string result = SyncResultTostring(ar);
+                    if (result != null)
+                    {
+                        LyricResult lyric = JsonConvert.DeserializeObject<LyricResult>(result);
+                        if (lyric.code == "0")
+                        {
+                            if(lyric.result != null && lyric.result.Count>0)
+                            {
+                                HttpHelper.httpGet(lyric.result[0].lrc, new AsyncCallback((lyricAr) =>
+                                {
+                                    byte[] lyricData = SyncResultToByte(lyricAr);
+                                    if (lyricData != null)
+                                    {
+                                        string lycUrl = DbFMCommonData.DownSongsIsoName + song.aid + ".lrc";
+                                        WpStorage.SaveFilesToIsoStore(lycUrl, lyricData);
+                                        string lyricInfo = null;
+                                        if (WpStorage.isoFile.FileExists(lycUrl))
+                                        {
+                                            lyricInfo = WpStorage.ReadIsolatedStorageFile(lycUrl);
+                                            WpStorage.isoFile.DeleteFile(lycUrl);
+                                        }
+                                        App.MusicViewModel.Lrc = lyricInfo;
+                                        downLoadSuccess = true;
+                                    }
+                                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                                }));
+                            }else{
+                                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                            }
+                          
+                        }
+                        else
+                        {
+                            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                        }
+                    }
+                    else
+                    {
+                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                    }
+                }));
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("DownLoadMusic ex" + e.Message);
+                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+            }
+        }
+        /// <summary>
         /// 更改歌曲是否红心状态
         /// </summary>
         /// <param name="status"></param>
