@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using DouBanFMBase.Resources;
 
 namespace DouBanFMBase.Converts
 {
@@ -18,22 +19,22 @@ namespace DouBanFMBase.Converts
             {
                 if (parameter!=null && parameter.ToString().Equals("NickName"))
                 {
-                    retValue = DbFMCommonData.NickName??(DbFMCommonData.NickName="请先登录");
+                    retValue = DbFMCommonData.NickName ?? (DbFMCommonData.NickName = AppResources.LoginFirst);
                 }
                 else
                 {
-                    retValue = "更换账号";
+                    retValue = AppResources.ChangeAccount;
                 }
             }
             else
             {
                 if (parameter != null && parameter.ToString().Equals("NickName"))
                 {
-                    retValue = "请先登录";
+                    retValue = AppResources.LoginFirst;
                 }
                 else
                 {
-                    retValue = "账号登录";
+                    retValue = AppResources.AccountLogin;
                 }
             }
             return retValue;

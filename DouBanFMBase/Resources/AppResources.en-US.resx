@@ -117,63 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ResourceFlowDirection" xml:space="preserve">
-    <value>LeftToRight</value>
-    <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
-  </data>
-  <data name="ResourceLanguage" xml:space="preserve">
-    <value>zh-CN</value>
-    <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
-  </data>
-  <data name="ApplicationTitle" xml:space="preserve">
-    <value>我的应用程序</value>
-  </data>
-  <data name="AppBarButtonText" xml:space="preserve">
-    <value>添加</value>
-  </data>
-  <data name="AppBarMenuItemText" xml:space="preserve">
-    <value>菜单项</value>
-  </data>
   <data name="AccountLogin" xml:space="preserve">
-    <value>账号登陆</value>
+    <value>Login</value>
   </data>
   <data name="AllHz" xml:space="preserve">
-    <value>全部赫兹</value>
+    <value>All Radio</value>
   </data>
   <data name="ChangeAccount" xml:space="preserve">
-    <value>切换账号</value>
+    <value>Change Account</value>
   </data>
   <data name="CollectHz" xml:space="preserve">
-    <value>收藏赫兹</value>
+    <value>Collect Radio</value>
   </data>
   <data name="CustomTheme" xml:space="preserve">
-    <value>自定义主题</value>
+    <value>Custom Theme</value>
   </data>
   <data name="DoyouLike" xml:space="preserve">
-    <value>猜你喜欢</value>
+    <value>Do You Like</value>
   </data>
   <data name="LoadChannelTip" xml:space="preserve">
-    <value>点击加载频道列表</value>
+    <value>Tap for load radio list</value>
   </data>
   <data name="LoginFirst" xml:space="preserve">
-    <value>请先登录</value>
+    <value>Please Login</value>
   </data>
   <data name="MyCenter" xml:space="preserve">
-    <value>个人中心</value>
+    <value>My Center</value>
   </data>
   <data name="MyDownSongs" xml:space="preserve">
-    <value>我的下载</value>
+    <value>My Download Songs</value>
   </data>
   <data name="MyHz" xml:space="preserve">
-    <value>我的赫兹</value>
+    <value>My Radio</value>
   </data>
   <data name="TapLoadLyr" xml:space="preserve">
-    <value>点击搜索歌词</value>
+    <value>Tap for load lyric</value>
   </data>
   <data name="ThemeSetting" xml:space="preserve">
-    <value>主题设置</value>
+    <value>Theme Setting</value>
   </data>
   <data name="ThemeSettingTip" xml:space="preserve">
-    <value>点击右上角图标可从本地图库选择你喜欢的主题图片哦~~</value>
+    <value>Click on the upper right corner of the camera icon can choose  the picture what you like from the local media library for theme ~ ~</value>
   </data>
 </root>

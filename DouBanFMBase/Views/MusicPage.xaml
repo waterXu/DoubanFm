@@ -78,7 +78,7 @@
                     <ViewModel:LrcDisplayControl Grid.Row="1" Name="LrcControl" FontSize="24" EmphasisBrush="#FF70B3BF" Foreground="White" Progress="{Binding Progress}"  />
                     <Grid VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="LoadSongLyrGrid" Tap="LoadSongLycGrid_Tap" Visibility="Collapsed">
                         <Image Opacity=".5" Source="/Images/reload1.png" Height="100" Width="100" VerticalAlignment="Center"></Image>
-                        <TextBlock x:Name="LoadSongLyr" Text="点击搜索歌词" Foreground="Black" VerticalAlignment="Center"></TextBlock>
+                        <TextBlock x:Name="LoadSongLyr" Text="{Binding Path=LocalizedResources.TapLoadLyr,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
                     </Grid>
                 </Grid>
             </phone:PivotItem>

@@ -78,7 +78,7 @@
             <phone:Pivot Grid.Row="1" x:Name="MainPiovt" Foreground="Black" SelectedIndex="1">
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>
-                        <TextBlock Text="我的赫兹" FontSize="60"></TextBlock>
+                        <TextBlock Text="{Binding Path=LocalizedResources.MyHz,Source={StaticResource LocalizedStrings}}" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -86,15 +86,6 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="11*"/>
                         </Grid.RowDefinitions>
-                        <!--<Grid Grid.Row="0"  Margin="10,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="5*"/>
-                            </Grid.ColumnDefinitions>
-                            <Canvas Grid.ColumnSpan="2" Background="#FFD1E3E6" Opacity=".5"></Canvas>
-                            <Image Grid.Column="0" Source="/Images/heart.png"></Image>
-                            <TextBlock Grid.Column="1" Foreground="Black" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30"  Text="我的红心赫兹"/>
-                        </Grid>-->
                         <Grid  Grid.Row="0" Background="#FFB0DBE3" Opacity=".5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="9*"/>
@@ -102,7 +93,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width=".4*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Text="我的下载" FontSize="25"></TextBlock>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Text="{Binding Path=LocalizedResources.MyDownSongs,Source={StaticResource LocalizedStrings}}" FontSize="25"></TextBlock>
                             <CB:ChangeButton Grid.Column="2" x:Name="CheckSongs" SeletedImage="/Images/delete1.png" DefaultImage="/Images/checkbox.png" Click="CheckSongs_Click"></CB:ChangeButton>
                             <Image Grid.Column="1" VerticalAlignment="Center"  Source="/Images/trash1.png" x:Name="DeleteSongs" Tap="DeleteSongs_Tap" Visibility="Collapsed"></Image>
                         </Grid>
@@ -120,7 +111,7 @@
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>
-                        <TextBlock Text="全部赫兹" FontSize="60"></TextBlock>
+                        <TextBlock Text="{Binding Path=LocalizedResources.AllHz,Source={StaticResource LocalizedStrings}}" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
                     <Grid>
                         <ListBox x:Name="AllChannels" SelectionChanged="All_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
@@ -132,14 +123,14 @@
                         </ListBox>
                         <Grid VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="LoadChannelGrid" Tap="LoadChannelGrid_Tap" Visibility="Collapsed">
                             <Image Opacity=".5" Source="/Images/reload1.png" Height="100" Width="100" VerticalAlignment="Center"></Image>
-                            <TextBlock x:Name="LoadChannelsBtn" Text="点击加载频道列表" Foreground="Black" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock x:Name="LoadChannelsBtn" Text="{Binding Path=LocalizedResources.LoadChannelTip,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
                         </Grid>
                     </Grid>
 
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>
-                        <TextBlock Text="收藏赫兹" FontSize="60"></TextBlock>
+                        <TextBlock Text="{Binding Path=LocalizedResources.CollectHz,Source={StaticResource LocalizedStrings}}" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
                     <ListBox x:Name="CollectChannels" SelectionChanged="Collect_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
                         <ListBox.ItemTemplate>
@@ -151,7 +142,7 @@
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>
-                        <TextBlock Text="个人中心" FontSize="60"></TextBlock>
+                        <TextBlock Text="{Binding Path=LocalizedResources.MyCenter,Source={StaticResource LocalizedStrings}}" FontSize="60"></TextBlock>
                     </phone:PivotItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -180,7 +171,7 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid Background="#FFB0DBE3" Opacity=".7">
-                                    <TextBlock Text="主题设置" VerticalAlignment="Center" FontSize="30" Margin="10,0,0,0"></TextBlock>
+                                    <TextBlock Text="{Binding Path=LocalizedResources.ThemeSetting,Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" FontSize="30" Margin="10,0,0,0"></TextBlock>
                                 </Grid>
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" >
                                     <Rectangle HorizontalAlignment="Left" Height="40" Margin="12,10,0,-0"  Width="12" Opacity=".5">
@@ -188,11 +179,14 @@
                                             <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
                                         </Rectangle.Fill>
                                     </Rectangle>
-                                    <TextBlock Text="猜你喜欢" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
+                                    <TextBlock Text="{Binding Path=LocalizedResources.DoyouLike,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
 
                                 </StackPanel>
                                 <Grid Grid.Row="2" CB:TiltEffect.IsTiltEnabled="true" HorizontalAlignment="Center" CacheMode="BitmapCache">
                                     <tool:WrapPanel >
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="1">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme1.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
                                         <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="2">
                                             <Image Height="160" Width="90" Source="/Images/theme/theme2.jpg" Stretch="Fill" Margin="5"/>
                                         </coding4fun:Tile>
@@ -217,6 +211,15 @@
                                         <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="9">
                                             <Image Height="160" Width="90" Source="/Images/theme/theme9.jpg" Stretch="Fill" Margin="5"/>
                                         </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="10">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme10.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="11">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme11.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
+                                        <coding4fun:Tile Background="{x:Null}" Command="{Binding SelectThemeCommand}" CommandParameter="12">
+                                            <Image Height="160" Width="90" Source="/Images/theme/theme12.jpg" Stretch="Fill" Margin="5"/>
+                                        </coding4fun:Tile>
                                     </tool:WrapPanel>
                                 </Grid>
                                 <StackPanel Grid.Row="3" Orientation="Horizontal" >
@@ -225,7 +228,7 @@
                                             <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
                                         </Rectangle.Fill>
                                     </Rectangle>
-                                    <TextBlock Text="自定义主题" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
+                                    <TextBlock Text="{Binding Path=LocalizedResources.CustomTheme,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
                                     <coding4fun:Tile Background="{x:Null}" CB:TiltEffect.IsTiltEnabled="true" Command="{Binding CustomThemeCommand}" CommandParameter="9">
                                         <Image Margin="250,0,0,0" Source="/Images/camera.png"  Stretch="Fill" Width="40" Height="40" Opacity=".5"/>
                                     </coding4fun:Tile>
@@ -236,7 +239,7 @@
                                              Margin="12,12,0,0"
                                              Width="408"
                                              Height="173" Command="{Binding SelectCustomCommand}"                                              coding4funBinding:FrameworkElementBinding.ClipToBounds="True"
-                                             Title="点击右上角图标可从本地图库选择你喜欢的主题图片哦~~" TextWrapping="Wrap"
+                                             Title="{Binding Path=LocalizedResources.ThemeSettingTip,Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"
                                              Foreground="White">
                                         <Grid>
                                             <Canvas>
