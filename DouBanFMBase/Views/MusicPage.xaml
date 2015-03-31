@@ -34,7 +34,7 @@
             <RowDefinition Height="13*"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
-
+        <Canvas x:Name="BackgroundLight" Grid.RowSpan="3" Background="Black" Opacity="0"></Canvas>
         <Grid Grid.Column="0" Grid.Row="0" Background="White" Opacity=".5">
             <Image Source="/Images/logo.png" HorizontalAlignment="Left"/>
         </Grid>
@@ -74,13 +74,8 @@
                 </Grid>
             </phone:PivotItem>
             <phone:PivotItem x:Name="LrcPivotItem">
-                <!--<RichTextBox x:Name="LrcTextBox" IsReadOnly="True" >
-                    <Paragraph FontSize="30" >
-                        RichTextBox Demo Project eeeeeeeeeeeeeeeeeeeeeeeeeee
-                    </Paragraph>
-                </RichTextBox>-->
                 <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
-                    <ViewModel:LrcDisplayControl Grid.Row="1" Name="LrcControl" FontSize="24" EmphasisBrush="#FF70B3BF" Foreground="Black" Progress="{Binding Progress}"  />
+                    <ViewModel:LrcDisplayControl Grid.Row="1" Name="LrcControl" FontSize="24" EmphasisBrush="#FF70B3BF" Foreground="White" Progress="{Binding Progress}"  />
                     <Grid VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="LoadSongLyrGrid" Tap="LoadSongLycGrid_Tap" Visibility="Collapsed">
                         <Image Opacity=".5" Source="/Images/reload1.png" Height="100" Width="100" VerticalAlignment="Center"></Image>
                         <TextBlock x:Name="LoadSongLyr" Text="点击搜索歌词" Foreground="Black" VerticalAlignment="Center"></TextBlock>
@@ -110,7 +105,7 @@
                 </Grid.ColumnDefinitions>
                 <Image Tap="DownMusic_Tap" x:Name="DownSong" Margin="10" Source="/Images/down.png"></Image>
                 <CB:ChangeButton x:Name="LoveImage" Margin="10" Grid.Column="1" DefaultImage="/Images/love.png" SeletedImage="/Images/heart.png" Click="LoveImage_Click"></CB:ChangeButton>
-                <Image  Margin="10" Grid.Column="2" Source="/Images/trash1.png"></Image>
+                <Image  Margin="10" Grid.Column="2" Source="/Images/trash1.png" Tap="DeleteSong_Tap"></Image>
                 <Image   Tap="ForwardImage_Tap" Margin="10" Grid.Column="3" Source="/Images/forward.png"></Image>
             </Grid>
         </Grid>

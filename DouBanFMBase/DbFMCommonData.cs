@@ -116,6 +116,11 @@ namespace DouBanFMBase
         /// 独立存储下载歌曲信息保存文件名
         /// </summary>
         public static string SongsSavePath { get { return "DownSongsInfo.dat"; } }
+        /// <summary>
+        /// 红心赫兹 id
+        /// </summary>
+        public static string HotChannelId { get { return "-3"; } }
+
         #endregion 
 
         /// <summary>
@@ -149,7 +154,8 @@ namespace DouBanFMBase
             LoadedData = 2,
             LoadSongBack = 3,
             DownSongBack = 4,
-            DownSongLyrBack = 5
+            DownSongLyrBack = 5,
+            OperationBack = 6
         }
 
         /// <summary>
@@ -165,11 +171,16 @@ namespace DouBanFMBase
         /// </summary>
         public static bool SongFormDown { get; set; }
         /// <summary>
+        /// 当前播放歌曲用户是否改变红心（红心显示一致性）
+        /// </summary>
+        public static bool LoveSongChange = false;
+
+        /// <summary>
         /// 定义popup回调函数
         /// </summary>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public delegate void InformCallback(int action, bool isSuccess);
+        public delegate void InformCallback(int action, bool isSuccess,string type =null);
         /// <summary>
         /// 回调函数
         /// </summary>
@@ -245,7 +256,11 @@ namespace DouBanFMBase
                 }
             }
         }
-        public static void SetSongsUrl(string type, string channelId, string songId = null)
+        public static string CurrentChannelId {get;set;}
+        public static int LastedIndex = -1;
+        public static int LastedCollectIndex = -1;
+
+        public static void SetSongsUrl(string type, string channelId, int selectIndex,string songId = null)
         {
             string getChannelSongsUrl = DbFMCommonData.ChannelSongsUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
             if (!string.IsNullOrEmpty(DbFMCommonData.UserID))
@@ -267,12 +282,12 @@ namespace DouBanFMBase
             if (channelId != null)
             {
                 getChannelSongsUrl += "&channel=" + channelId;
+                CurrentChannelId = channelId;
             }
             getChannelSongsUrl += "&type=" + type;
             //保存 获取歌曲列表Url
             WpStorage.SaveStringToIsoStore("SongsUrl.dat", getChannelSongsUrl);
-            WpStorage.SetIsoSetting("LastedChannelId",channelId);
+            WpStorage.SetIsoSetting("LastedChannelId", selectIndex);
         }
-
     }
 }

@@ -31,6 +31,8 @@ namespace DouBanFMBase
         public string latestAlbumArtPath { get; set; }
         //Latest song srouce
         public string latestSource { get; set; }
+        //latest song id
+        public static string latestSid { get; set; }
         //当前播放歌曲的信息
         private SongInfo currentSongInfo { get; set; }
         /// <summary>
@@ -103,10 +105,12 @@ namespace DouBanFMBase
                     case 0:
                         ellipse0.Fill = new SolidColorBrush(Color.FromArgb(100, 230, 40, 40));
                         ellipse1.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
+                        BackgroundLight.Opacity = 0;
                         break;
                     case 1:
                         ellipse0.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse1.Fill = new SolidColorBrush(Color.FromArgb(100, 230, 40, 40));
+                        BackgroundLight.Opacity = 0.5;
                         break;
                     default:
                         break;
@@ -122,25 +126,34 @@ namespace DouBanFMBase
         private void DownMusic_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //查看该歌曲是否已经下载
-            if (DbFMCommonData.DownSongIdList.Contains(currentSongInfo.aid))
+            if (DbFMCommonData.DownSongIdList.Contains(currentSongInfo.sid))
             {
                 MessageBox.Show("该歌曲已下载");
                 return;
             }
             DownSong.Visibility = System.Windows.Visibility.Collapsed;
+            HttpHelper.DownLoadSongLyr(currentSongInfo, true);
             HttpHelper.DownLoadMusic(currentSongInfo);
         }
 
         private void LoveImage_Click(object sender, RoutedEventArgs e)
         {
-            if (DbFMCommonData.SongFormDown)
+            //r	sid	rate，歌曲正在播放，标记喜欢当前歌曲	短报告
+            //u	sid	unrate，歌曲正在播放，标记取消喜欢当前歌曲
+            if (!DbFMCommonData.loginSuccess)
             {
-                MessageBox.Show("下载歌曲不支持红心操作");
+                MessageBox.Show("请先登录，才能添加红心歌曲");
+                LoveImage.IsChecked = currentSongInfo.like=="1"?false:true;
                 return;
             }
-            HttpHelper.SetSongLoveStatus(LoveImage.IsChecked);
+            string type = "";
+            type = LoveImage.IsChecked? "u":"r";
+            HttpHelper.OperationChannelSongs(type, DbFMCommonData.CurrentChannelId, currentSongInfo.sid);
         }
-
+        private void DeleteSong_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            HttpHelper.OperationChannelSongs("b", DbFMCommonData.CurrentChannelId, currentSongInfo.sid);
+        }
         private void SongSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             //判断是否用户拖动  false则为计时器触发
@@ -256,8 +269,19 @@ namespace DouBanFMBase
                 if(!string.IsNullOrEmpty(tag)){
                     currentSongInfo = JsonConvert.DeserializeObject<SongInfo>(tag);
                 }
+                
+                LoveImage.IsChecked = currentSongInfo.like == "1" ? true : false;
                 //获取歌词
                 LoadSongLyric();
+            }
+            if (DbFMCommonData.LoveSongChange && currentSongInfo.sid == latestSid)
+            {
+                LoveImage.IsChecked = currentSongInfo.like == "1" ? false : true;
+            }
+            else
+            {
+                latestSid = currentSongInfo.sid;
+                DbFMCommonData.LoveSongChange = false;
             }
             // get album art Uri from Audio Playback Agetn
             Uri albumArtURL = BackgroundAudioPlayer.Instance.Track.AlbumArt;
@@ -306,14 +330,14 @@ namespace DouBanFMBase
                 App.MusicViewModel.Lrc = null;
             }
             bool needDownLyr = true;
-            if (DbFMCommonData.DownSongIdList.Contains(currentSongInfo.aid))
+            if (DbFMCommonData.DownSongIdList.Contains(currentSongInfo.sid))
             {
                 try
                 {
-                    if (WpStorage.isoFile.FileExists(DbFMCommonData.DownSongsIsoName + currentSongInfo.aid + ".lrc"))
+                    if (WpStorage.isoFile.FileExists(DbFMCommonData.DownSongsIsoName + currentSongInfo.sid + ".lrc"))
                     {
                         //解析歌词并显示
-                        string lyricInfo = WpStorage.ReadIsolatedStorageFile(DbFMCommonData.DownSongsIsoName + currentSongInfo.aid + ".lrc");
+                        string lyricInfo = WpStorage.ReadIsolatedStorageFile(DbFMCommonData.DownSongsIsoName + currentSongInfo.sid + ".lrc");
                         App.MusicViewModel.Lrc = lyricInfo;
                         LrcControl.DataContext = App.MusicViewModel;
                         Binding lrc = new Binding();
@@ -347,6 +371,7 @@ namespace DouBanFMBase
                    Binding lrc = new Binding();
                    lrc.Path = new PropertyPath("Lrc");
                    LrcControl.SetBinding(LrcDisplayControl.LrcTextProperty,lrc);
+                   LoadSongLyrGrid.Visibility = System.Windows.Visibility.Collapsed;
                 }
                 else
                 {
@@ -356,6 +381,44 @@ namespace DouBanFMBase
             });
           
         }
+        public void OperationSongBack(bool isSuccess,string type)
+        {
+            if (string.IsNullOrEmpty(type))
+            {
+                return;
+            }
+            Dispatcher.BeginInvoke(() =>
+            {
+                if (isSuccess)
+                {
+                    if (type == "b")
+                    {
+                        BackgroundAudioPlayer.Instance.SkipNext();
+                    }
+                    else 
+                    {
+                        if (type == "r" && currentSongInfo.like == "0")
+                        {
+                            DbFMCommonData.LoveSongChange = true;
+                        }
+                        else if (type == "u" && currentSongInfo.like == "1")
+                        {
+                            DbFMCommonData.LoveSongChange = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (type != "b")
+                    {
+                        LoveImage.IsChecked = LoveImage.IsChecked ? false : true;
+                    }
+                    //todo toast
+                    MessageBox.Show("操作失败");
+                }
+            });
+        }
+        
         SlideTransition st;
         private void ImageChange()
         {
@@ -378,9 +441,6 @@ namespace DouBanFMBase
                 DownSong.Visibility = System.Windows.Visibility.Visible;
             });
         }
-       
         #endregion
-
-      
     }
 }

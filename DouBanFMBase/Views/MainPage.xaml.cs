@@ -33,6 +33,7 @@ namespace DouBanFMBase
         /// 是否从专辑页面返回
         /// </summary>
         public static bool IsFromMusicPage = false;
+        public static int LastPivotIndex = 1;
         // 构造函数
         public MainPage()
         {
@@ -42,6 +43,11 @@ namespace DouBanFMBase
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             DbFMCommonData.MainPageLoaded = true;
+            if (WpStorage.GetIsoSetting("LastedPlayPivotIndex") != null)
+            {
+                LastPivotIndex = (int)WpStorage.GetIsoSetting("LastedPlayPivotIndex");
+            }
+            MainPiovt.SelectedIndex = LastPivotIndex;
             if (!IsFromMusicPage)
             {
                 //绑定数据源
@@ -133,36 +139,69 @@ namespace DouBanFMBase
         #endregion
 
         #region Control EnventHandler
-     
+        //标识是否从不能收听红心赫兹改变频道
+        private bool IsFormLoveChannel = false;
         private void All_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBox lb = sender as ListBox;
-            ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
-
+            //启动应用时有音乐在播放则不获取新列表
             if (FirstLoadMusicIsPlaying)
             {
                 FirstLoadMusicIsPlaying = false;
-                //启动应用时有音乐在播放则不获取新列表
                 return;
             }
+            if (IsFormLoveChannel)
+            {
+                IsFormLoveChannel = false;
+                return;
+            }
+           
+            ListBox lb = sender as ListBox;
+            ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
+            if (!DbFMCommonData.loginSuccess && cv.ChannelId == DbFMCommonData.HotChannelId)
+            {
+                MessageBox.Show("请先登录，才能收听红心赫兹");
+                IsFormLoveChannel = true;
+                AllChannels.SelectedIndex = DbFMCommonData.LastedIndex;
+                return;
+            }
+            WpStorage.SetIsoSetting("LastedPlayPivotIndex",1);
             DbFMCommonData.SongFormDown = false;
-            DbFMCommonData.SetSongsUrl("n", lb.SelectedIndex.ToString());
-            HttpHelper.GetChannelSongs("n", cv.ChannelId);
+            DbFMCommonData.SetSongsUrl("n", cv.ChannelId, lb.SelectedIndex);
+            HttpHelper.OperationChannelSongs("n", cv.ChannelId);
             // 保存获取新列表 url 以便给background audio调用
             System.Diagnostics.Debug.WriteLine("Hz名称：" + cv.Name + " Hz 是否收藏" + cv.IsChecked.ToString());
-
+            DbFMCommonData.LastedIndex = lb.SelectedIndex;
         }
         private void Collect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            //启动应用时有音乐在播放则不获取新列表
+            if (FirstLoadMusicIsPlaying)
+            {
+                FirstLoadMusicIsPlaying = false;
+                return;
+            }
+            if (IsFormLoveChannel)
+            {
+                IsFormLoveChannel = false;
+                return;
+            }
             //WpStorage.SetIsoSetting("ChangeChannels", true);
             ListBox lb = sender as ListBox;
             ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
+            if (!DbFMCommonData.loginSuccess && cv.ChannelId == DbFMCommonData.HotChannelId)
+            {
+                MessageBox.Show("请先登录，才能收听红心赫兹");
+                IsFormLoveChannel = true;
+                CollectChannels.SelectedIndex = DbFMCommonData.LastedCollectIndex;
+                return;
+            }
             DbFMCommonData.SongFormDown = false;
-            //有正在播放的歌曲  保存  获取新列表 url
-            HttpHelper.GetChannelSongs("n", cv.ChannelId);
-            DbFMCommonData.SetSongsUrl("n", lb.SelectedIndex.ToString());
-          
+            WpStorage.SetIsoSetting("LastedPlayPivotIndex", 2);
+            //保存获取新列表 url
+            HttpHelper.OperationChannelSongs("n", cv.ChannelId);
+            DbFMCommonData.SetSongsUrl("n",cv.ChannelId, lb.SelectedIndex);
+            DbFMCommonData.LastedCollectIndex = lb.SelectedIndex;
+
         }
         private void Forward_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -217,6 +256,7 @@ namespace DouBanFMBase
                 //判断是否多选删除模式  不是则播放该歌曲
                 if (!CheckSongs.IsChecked)
                 {
+                    WpStorage.SetIsoSetting("LastedPlayPivotIndex", 0);
                     string tag = JsonConvert.SerializeObject(songinfo);
                     AudioTrack track = new AudioTrack(new Uri(songinfo.url,UriKind.Relative),songinfo.title,songinfo.artist,songinfo.albumtitle,new Uri(songinfo.picture,UriKind.Relative),tag ,EnabledPlayerControls.All);
                     BackgroundAudioPlayer.Instance.Track = track;
@@ -224,8 +264,6 @@ namespace DouBanFMBase
                     DbFMCommonData.SongFormDown = true;
                 }
             }
-            //lb.SelectedIndex = -1;
-            //lb.SelectedItem = null;
         }
 
         private void DeleteSongs_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -259,11 +297,11 @@ namespace DouBanFMBase
                     }
                 }
                 string imageType = song.picture.Remove(0, song.picture.Length - 4);
-                string localurl = DbFMCommonData.DownSongsIsoName + song.aid + ".mp3";
-                string picture = DbFMCommonData.DownSongsIsoName + song.aid + imageType;
+                string localurl = DbFMCommonData.DownSongsIsoName + song.sid + ".mp3";
+                string picture = DbFMCommonData.DownSongsIsoName + song.sid + imageType;
                 WpStorage.isoFile.DeleteFile(localurl);
                 WpStorage.isoFile.DeleteFile(picture);
-                DbFMCommonData.DownSongIdList.Remove(song.aid);
+                DbFMCommonData.DownSongIdList.Remove(song.sid);
                 DbFMCommonData.DownSongsList.Remove(song);
             }
             if (playingSong != null)
@@ -272,11 +310,11 @@ namespace DouBanFMBase
                 BackgroundAudioPlayer.Instance.Stop();
                 BackgroundAudioPlayer.Instance.Track = null;
                 string imageType = playingSong.picture.Remove(0, playingSong.picture.Length - 4);
-                string localurl = DbFMCommonData.DownSongsIsoName + playingSong.aid + ".mp3";
-                string picture = DbFMCommonData.DownSongsIsoName + playingSong.aid + imageType;
+                string localurl = DbFMCommonData.DownSongsIsoName + playingSong.sid + ".mp3";
+                string picture = DbFMCommonData.DownSongsIsoName + playingSong.sid + imageType;
                 WpStorage.isoFile.DeleteFile(localurl);
                 WpStorage.isoFile.DeleteFile(picture);
-                DbFMCommonData.DownSongIdList.Remove(playingSong.aid);
+                DbFMCommonData.DownSongIdList.Remove(playingSong.sid);
                 DbFMCommonData.DownSongsList.Remove(playingSong);
 
                 if (DbFMCommonData.DownSongsList.Count > 0)
@@ -377,14 +415,35 @@ namespace DouBanFMBase
                         int channelIndex = 0;
                         if (FirstLoadMusicIsPlaying && WpStorage.GetIsoSetting("LastedChannelId") != null)
                         {
-                            string index = WpStorage.GetIsoSetting("LastedChannelId").ToString();
-                            channelIndex = Convert.ToInt32(index);
+                            //string index = WpStorage.GetIsoSetting("LastedChannelId").ToString();
+                            //channelIndex = Convert.ToInt32(index);
+                            channelIndex = (int)WpStorage.GetIsoSetting("LastedChannelId");
                             if (channelIndex == -1)
                             {
                                 channelIndex = 0;
                             }
+                            if (LastPivotIndex == 1)
+                            {
+                                AllChannels.SelectedIndex = channelIndex;
+                            }
+                            else if(LastPivotIndex == 2)
+                            {
+                                CollectChannels.SelectedIndex = channelIndex;
+                            }
                         }
-                        AllChannels.SelectedIndex = channelIndex;
+                        else
+                        {
+                            //已经登陆则播放红心赫兹
+                            if (DbFMCommonData.loginSuccess)
+                            {
+                                AllChannels.SelectedIndex = channelIndex;
+                            }
+                            else
+                            {
+                                AllChannels.SelectedIndex = 1;
+                            }
+                        }
+                       
                     }
                 }
                 LoadChannelGrid.Visibility = System.Windows.Visibility.Collapsed;

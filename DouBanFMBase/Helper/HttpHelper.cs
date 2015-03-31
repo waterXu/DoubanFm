@@ -148,8 +148,12 @@ namespace DouBanFMBase
         /// <param name="type"> 报告类型b=bye e=end s=skip r=rate u=urate以上需要songid n=new p=playing</param>
         /// <param name="channelId">hz id</param>
         /// /// <param name="songId">要操作的歌曲id</param>
-        public static void GetChannelSongs(string type, string channelId, string songId = null)
+        public static void OperationChannelSongs(string type, string channelId = null, string songId = null)
         {
+            if (string.IsNullOrEmpty(type))
+            {
+                return;
+            }
             if (WpStorage.isoFile.FileExists("SongsLoaded"))
             {
                 WpStorage.isoFile.DeleteFile("SongsLoaded");
@@ -184,11 +188,10 @@ namespace DouBanFMBase
                 {
                     string result = SyncResultTostring(ar);
 
-                    //标识新列表请求已经返回
-                    WpStorage.CreateFile("SongsLoaded");
-
                     if (!string.IsNullOrEmpty(result))
                     {
+                        //标识新列表请求已经返回
+                        WpStorage.CreateFile("SongsLoaded");
                         WpStorage.SaveStringToIsoStore("CurrentSongs.dat", result);
                         SongResult songresult = JsonConvert.DeserializeObject<SongResult>(result);
                         if (songresult.r == 0)
@@ -196,18 +199,26 @@ namespace DouBanFMBase
                             DbFMCommonData.PlayingSongs = songresult.song;
                             loadSuccess = true;
                         }
+                       
+                    }
+                    //表示操作的是歌曲
+                    if (songId == null)
+                    {
+                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadSongBack, loadSuccess);
                     }
                     else
                     {
-                        //加载失败
+                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.OperationBack, loadSuccess,type);
                     }
-                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadSongBack, loadSuccess);
                 }));
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("GetChannelList Exception：" + e.Message);
-                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadSongBack, loadSuccess);
+                if (songId == null)
+                {
+                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadSongBack, loadSuccess);
+                }
             }
         }
         public static void GetCollectChannelList()
@@ -241,17 +252,17 @@ namespace DouBanFMBase
                     byte[] data = SyncResultToByte(ar);
                     if (data != null)
                     {
-                        WpStorage.SaveFilesToIsoStore(DbFMCommonData.DownSongsIsoName + song.aid + ".mp3", data);
+                        WpStorage.SaveFilesToIsoStore(DbFMCommonData.DownSongsIsoName + song.sid + ".mp3", data);
                         HttpHelper.httpGet(song.picture, new AsyncCallback((imgar) =>
                         {
                             byte[] imgdata = SyncResultToByte(imgar);
                             if (imgdata != null)
                             {
                                 string imageType = song.picture.Remove(0, song.picture.Length - 4);
-                                WpStorage.SaveFilesToIsoStore(DbFMCommonData.DownSongsIsoName + song.aid + imageType, imgdata);
-                                song.url = DbFMCommonData.DownSongsIsoName + song.aid + ".mp3";
-                                song.picture = DbFMCommonData.DownSongsIsoName + song.aid + imageType;
-                                DbFMCommonData.DownSongIdList.Add(song.aid);
+                                WpStorage.SaveFilesToIsoStore(DbFMCommonData.DownSongsIsoName + song.sid + imageType, imgdata);
+                                song.url = DbFMCommonData.DownSongsIsoName + song.sid + ".mp3";
+                                song.picture = DbFMCommonData.DownSongsIsoName + song.sid + imageType;
+                                DbFMCommonData.DownSongIdList.Add(song.sid);
                                 DbFMCommonData.DownSongsList.Add(song);
                                 //App.ViewModel.LocalSongs.Add(song);
                                 App.ViewModel.SaveDownSongs();
@@ -275,13 +286,13 @@ namespace DouBanFMBase
         /// 下载歌词
         /// </summary>
         /// <param name="song"></param>
-        public static void DownLoadSongLyr(SongInfo song)
+        public static void DownLoadSongLyr(SongInfo song,bool fromDownSong = false)
         {
             bool downLoadSuccess = false;
             try
             {
-                //string loadLycUrl = DbFMCommonData.LyricUrl + song.title + "/" + song.artist;
-                string loadLycUrl = DbFMCommonData.LyricUrl +"天路/韩红";
+                string loadLycUrl = DbFMCommonData.LyricUrl + song.title + "/" + song.artist;
+                //string loadLycUrl = DbFMCommonData.LyricUrl +"天路/韩红";
                 System.Diagnostics.Debug.WriteLine("歌词地址请求： " + loadLycUrl);
                 HttpHelper.httpGet(loadLycUrl, new AsyncCallback((ar) =>
                 {
@@ -293,44 +304,65 @@ namespace DouBanFMBase
                         {
                             if(lyric.result != null && lyric.result.Count>0)
                             {
+                                System.Diagnostics.Debug.WriteLine("歌词请求： " + lyric.result[0].lrc);
                                 HttpHelper.httpGet(lyric.result[0].lrc, new AsyncCallback((lyricAr) =>
                                 {
                                     byte[] lyricData = SyncResultToByte(lyricAr);
                                     if (lyricData != null)
                                     {
-                                        string lycUrl = DbFMCommonData.DownSongsIsoName + song.aid + ".lrc";
+                                        string lycUrl = DbFMCommonData.DownSongsIsoName + song.sid + ".lrc";
                                         WpStorage.SaveFilesToIsoStore(lycUrl, lyricData);
                                         string lyricInfo = null;
-                                        if (WpStorage.isoFile.FileExists(lycUrl))
+                                        if (!fromDownSong)
                                         {
-                                            lyricInfo = WpStorage.ReadIsolatedStorageFile(lycUrl);
-                                            WpStorage.isoFile.DeleteFile(lycUrl);
+                                            if (WpStorage.isoFile.FileExists(lycUrl))
+                                            {
+                                                lyricInfo = WpStorage.ReadIsolatedStorageFile(lycUrl);
+                                                WpStorage.isoFile.DeleteFile(lycUrl);
+                                            }
+                                            App.MusicViewModel.Lrc = lyricInfo;
+                                            downLoadSuccess = true;
                                         }
-                                        App.MusicViewModel.Lrc = lyricInfo;
-                                        downLoadSuccess = true;
+                                      
                                     }
-                                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                                    if (!fromDownSong)
+                                    {
+                                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                                    }
+                                  
                                 }));
                             }else{
-                                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                                if (!fromDownSong)
+                                {
+                                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                                }
                             }
                           
                         }
                         else
                         {
-                            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                            if (!fromDownSong)
+                            {
+                                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                            }
                         }
                     }
                     else
                     {
-                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                        if (!fromDownSong)
+                        {
+                            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                        }
                     }
                 }));
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("DownLoadMusic ex" + e.Message);
-                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                if (!fromDownSong)
+                {
+                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                }
             }
         }
         /// <summary>

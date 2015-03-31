@@ -11,7 +11,7 @@ namespace DouBanFMBase
         public static MainPage Mainpage{get;set;}
         public static StartPage Startpage{get;set;}
         public static MusicPage musicPage{get;set;}
-        public static void CallBackTrigger(int action,bool isSuccess)
+        public static void CallBackTrigger(int action,bool isSuccess,string type =null)
         {
             switch (action)
             {
@@ -69,6 +69,12 @@ namespace DouBanFMBase
                     if (musicPage != null)
                     {
                         musicPage.LoadSongLyricBack(isSuccess);
+                    }
+                    break;
+                case (int)DbFMCommonData.CallbackType.OperationBack:
+                    if (musicPage != null)
+                    {
+                        musicPage.OperationSongBack(isSuccess,type);
                     }
                     break;
                 default:

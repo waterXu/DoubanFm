@@ -8,6 +8,13 @@ namespace DouBanAudioAgent
 {
     public class SongInfo
     {
+        /// <summary>
+        /// 歌曲id
+        /// </summary>
+        public string sid { get; set; }
+        /// <summary>
+        /// 专辑id
+        /// </summary>
         public string aid { get; set; }
         /// <summary>
         /// 专辑位置

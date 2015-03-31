@@ -86,6 +86,14 @@ namespace  DouBanAudioAgent
 
         public static void SaveStringToIsoStore(string fileName, string data)
         {
+            if (data == null)
+            {
+                if (isoFile.FileExists(fileName))
+                {
+                    isoFile.DeleteFile(fileName);
+                }
+                return;
+            }
             SaveFilesToIsoStore(fileName, System.Text.UTF8Encoding.UTF8.GetBytes(data));
         }
         /// <summary>

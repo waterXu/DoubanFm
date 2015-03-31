@@ -18,13 +18,13 @@
         <MVM:ChannelViewModel ChannelId="6" Name="Le Sang Song 系 MHz" IsChecked="False"/>
         <MVM:ChannelViewModel ChannelId="7" Name="我的私人赫兹" IsChecked="True"/>
     </MVM:MainViewModel.Channels>
-    <MVM:MainViewModel.LocalSongs>
-        <DBAA:SongInfo title="测试歌曲测试歌曲测试歌曲测试歌曲测试歌曲测试歌曲测试歌曲测试歌曲测试歌曲测试歌曲测试歌曲测试歌曲测试歌曲1" artist="zhangjie" picture="/Images/theme/theme1.jpg"></DBAA:SongInfo>
+    <!--<MVM:MainViewModel.LocalSongs>
+        <DBAA:SongInfo title="测试" artist="zhangjie" picture="/Images/theme/theme1.jpg"></DBAA:SongInfo>
         <DBAA:SongInfo title="测试歌曲2" artist="zhangjie" picture="/Images/theme/theme2.jpg"></DBAA:SongInfo>
         <DBAA:SongInfo title="测试歌曲3" artist="zhangjie" picture="/Images/theme/theme3.jpg"></DBAA:SongInfo>
         <DBAA:SongInfo title="测试歌曲4" artist="zhangjie" picture="/Images/theme/theme4.jpg"></DBAA:SongInfo>
         <DBAA:SongInfo title="测试歌曲5" artist="zhangjie" picture="/Images/theme/theme5.jpg"></DBAA:SongInfo>
         <DBAA:SongInfo title="测试歌曲6" artist="zhangjie" picture="/Images/theme/theme7.jpg"></DBAA:SongInfo>
         <DBAA:SongInfo title="测试歌曲7" artist="zhangjie" picture="/Images/theme/theme8.jpg"></DBAA:SongInfo>
-    </MVM:MainViewModel.LocalSongs>
+    </MVM:MainViewModel.LocalSongs>-->
 </MVM:MainViewModel>

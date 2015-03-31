@@ -381,6 +381,16 @@ namespace DouBanFMBase.ViewModel
                     //获取独立存储中收藏列表的 channelid
                     collectHashSet = JsonConvert.DeserializeObject<HashSet<string>>(WpStorage.GetIsoSetting(DbFMCommonData.CollectName).ToString());
                 }
+                if (collectHashSet.Contains(DbFMCommonData.HotChannelId))
+                {
+                    ischecked = true;
+                }
+                Channels.Add(new ChannelViewModel()
+                {
+                    Name = "我的红心赫兹",
+                    ChannelId = DbFMCommonData.HotChannelId,
+                    IsChecked = ischecked
+                });
                 if (DbFMCommonData.ChannelList.Channels != null && DbFMCommonData.ChannelList.Channels.Count > 0)
                 {
                     foreach (ChannelInfo channelInfo in DbFMCommonData.ChannelList.Channels)
