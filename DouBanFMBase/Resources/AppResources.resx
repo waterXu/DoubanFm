@@ -135,7 +135,7 @@
     <value>菜单项</value>
   </data>
   <data name="AccountLogin" xml:space="preserve">
-    <value>账号登陆</value>
+    <value>登录</value>
   </data>
   <data name="AllHz" xml:space="preserve">
     <value>全部赫兹</value>
@@ -175,5 +175,81 @@
   </data>
   <data name="ThemeSettingTip" xml:space="preserve">
     <value>点击右上角图标可从本地图库选择你喜欢的主题图片哦~~</value>
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="AccountEmpty" xml:space="preserve">
+    <value>用户名不能为空</value>
+  </data>
+  <data name="AccountTip" xml:space="preserve">
+    <value>请输入你要登录的账号</value>
+  </data>
+  <data name="DbLoginTitle" xml:space="preserve">
+    <value>豆瓣FM登录</value>
+  </data>
+  <data name="HaveAccount" xml:space="preserve">
+    <value>已有账号,登录</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="PasswordEmpty" xml:space="preserve">
+    <value>密码不能为空</value>
+  </data>
+  <data name="PasswordTip" xml:space="preserve">
+    <value>包含英文和数字,最少8位</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pivot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\pivot1.png;System.Byte[], mscorlib, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>注册新账号</value>
+  </data>
+  <data name="RegisterNow" xml:space="preserve">
+    <value>立即注册</value>
+  </data>
+  <data name="RegisterTip" xml:space="preserve">
+    <value>由英文和数字组成</value>
+  </data>
+  <data name="RePassword" xml:space="preserve">
+    <value>重复密码</value>
+  </data>
+  <data name="StartApp" xml:space="preserve">
+    <value>开始体验</value>
+  </data>
+  <data name="MyLoveHz" xml:space="preserve">
+    <value>我的红心赫兹</value>
+  </data>
+  <data name="OperationError" xml:space="preserve">
+    <value>操作失败,请检查网络或重试</value>
+  </data>
+  <data name="PasswordEqual" xml:space="preserve">
+    <value>密码不一致</value>
+  </data>
+  <data name="AppSetting" xml:space="preserve">
+    <value>应用设置</value>
+  </data>
+  <data name="EnLang" xml:space="preserve">
+    <value>英语</value>
+  </data>
+  <data name="LangSetting" xml:space="preserve">
+    <value>语言设置</value>
+  </data>
+  <data name="ZhLang" xml:space="preserve">
+    <value>中文简体</value>
+  </data>
+  <data name="ZhTwLang" xml:space="preserve">
+    <value>中文繁体</value>
+  </data>
+  <data name="AddLoveSongTip" xml:space="preserve">
+    <value>请先登录，才能添加红心歌曲</value>
+  </data>
+  <data name="LoadThemeFirst" xml:space="preserve">
+    <value>请先从本地图库添加主题图片</value>
+  </data>
+  <data name="SongIsDown" xml:space="preserve">
+    <value>该歌曲已经下载</value>
   </data>
 </root>

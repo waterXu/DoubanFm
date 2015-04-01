@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using DouBanFMBase.ViewModel;
 using System.IO.IsolatedStorage;
 using System.IO;
+using System.Threading;
 
 
 namespace DouBanFMBase
@@ -157,6 +158,10 @@ namespace DouBanFMBase
            
             ListBox lb = sender as ListBox;
             ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
+            if (cv == null)
+            {
+                return;
+            }
             if (!DbFMCommonData.loginSuccess && cv.ChannelId == DbFMCommonData.HotChannelId)
             {
                 MessageBox.Show("请先登录，才能收听红心赫兹");
@@ -188,6 +193,10 @@ namespace DouBanFMBase
             //WpStorage.SetIsoSetting("ChangeChannels", true);
             ListBox lb = sender as ListBox;
             ChannelViewModel cv = lb.SelectedItem as ChannelViewModel;
+            if (cv == null)
+            {
+                return;
+            }
             if (!DbFMCommonData.loginSuccess && cv.ChannelId == DbFMCommonData.HotChannelId)
             {
                 MessageBox.Show("请先登录，才能收听红心赫兹");
@@ -449,6 +458,25 @@ namespace DouBanFMBase
                 LoadChannelGrid.Visibility = System.Windows.Visibility.Collapsed;
             });
            
+        }
+        public void BindingHzName()
+        {
+            //Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+            //Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+            //Thread.CurrentThread.CurrentCulture = new CultureInfo("ar-SA");
+            Binding hzName = new Binding();
+            string native = Thread.CurrentThread.CurrentCulture.Name;
+            if (native == "zh" || native == "zh-TW")
+            {
+                hzName.Path = new PropertyPath("Name");
+            }
+            else 
+            {
+                hzName.Path = new PropertyPath("NameEn");
+            }
+            //ChannelsText.SetBinding(TextBlock.TextProperty, hzName);
+            //CollectText.SetBinding(TextBlock.TextProperty, hzName);
+            //if(AppResources.Culture.NativeName)
         }
         public void DataContextLoadedFail()
         {

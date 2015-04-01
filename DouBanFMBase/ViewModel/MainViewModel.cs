@@ -14,6 +14,12 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using System.Windows;
 using Microsoft.Phone.Tasks;
+using DouBanFMBase.Resources;
+using System.Resources;
+using System.Reflection;
+using System.Threading;
+using System.Globalization;
+using System.Windows.Markup;
 
 namespace DouBanFMBase.ViewModel
 {
@@ -56,11 +62,8 @@ namespace DouBanFMBase.ViewModel
             get { return _loginSuccess; }
             set
             {
-                if (_loginSuccess != value)
-                {
-                    _loginSuccess = value;
-                    NotifyPropertyChanged("LoginSuccess");
-                }
+                _loginSuccess = value;
+                NotifyPropertyChanged("LoginSuccess");
             }
         }
         
@@ -144,6 +147,27 @@ namespace DouBanFMBase.ViewModel
         #endregion
 
         #region Command
+         private DelegateCommand<string> _resourceManager;
+         public DelegateCommand<string> ResourceManager
+         {
+             get
+             {
+                 return _resourceManager ?? (_resourceManager = new DelegateCommand<string>((culture) =>
+                 {
+                     string native = Thread.CurrentThread.CurrentCulture.Name;
+                     if (culture == native)
+                     {
+                         return;
+                     }
+                     CultureInfo newCulture = new CultureInfo(culture);
+                     Thread.CurrentThread.CurrentCulture = newCulture;
+                     Thread.CurrentThread.CurrentUICulture = newCulture;
+                     ((LocalizedStrings)App.Current.Resources["LocalizedStrings"]).ChangeCulture(culture);
+                     App.ViewModel.LoginSuccess = DbFMCommonData.loginSuccess;
+                     ReLoadData();
+                 }));
+             }
+         }
         private DelegateCommand<string> _selectThemeCommand;
         public DelegateCommand<string> SelectThemeCommand
         {
@@ -158,7 +182,7 @@ namespace DouBanFMBase.ViewModel
                 }));
             }
         }
-  
+     
         //使用自定义主题
         private DelegateCommand _selectCustomCommand;
         public DelegateCommand SelectCustomCommand
@@ -185,7 +209,7 @@ namespace DouBanFMBase.ViewModel
                     else
                     {
                         CallbackManager.Mainpage.Dispatcher.BeginInvoke(() => {
-                            MessageBox.Show("请先从本地图库添加主题图片");
+                            MessageBox.Show(AppResources.LoadThemeFirst);
                         });
                     }
                 }));
@@ -385,9 +409,12 @@ namespace DouBanFMBase.ViewModel
                 {
                     ischecked = true;
                 }
+                string native = Thread.CurrentThread.CurrentCulture.Name;
                 Channels.Add(new ChannelViewModel()
                 {
                     Name = "我的红心赫兹",
+                    NameEn = "My Love Radio",
+                    ShowName = AppResources.MyLoveHz,
                     ChannelId = DbFMCommonData.HotChannelId,
                     IsChecked = ischecked
                 });
@@ -403,12 +430,42 @@ namespace DouBanFMBase.ViewModel
                         {
                             ischecked = false;
                         }
+                        string name = "";
+                        if (native == "zh-CN" || native == "zh-TW")
+                        {
+                            name = channelInfo.name;
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(channelInfo.name_en))
+                            {
+                                name = channelInfo.name;
+                            }
+                            else
+                            {
+                                name = channelInfo.name_en;
+                            }
+                        }
                         Channels.Add(new ChannelViewModel()
                         {
                             Name = channelInfo.name,
+                            NameEn = channelInfo.name_en,
+                            ShowName = name,
                             ChannelId = channelInfo.channel_id,
                             IsChecked = ischecked
                         });
+                    }
+                    //如果用户未收藏  自动添加几项收藏
+                    if (collectHashSet.Count == 0)
+                    {
+                        Channels[0].IsChecked = true;
+                        for (int i = 1; i < (Channels.Count - 1) / 8; i++)
+                        {
+                            Random random = new Random();
+                            int index = random.Next(1,Channels.Count-1);
+                            Channels[index].IsChecked = true;
+                            System.Diagnostics.Debug.WriteLine("随机 index：" + index);
+                        }
                     }
                     DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadedData, IsLoaded);
                 }
@@ -428,7 +485,49 @@ namespace DouBanFMBase.ViewModel
             }
            
         }
-
+        private void ReLoadData()
+        {
+            string native = Thread.CurrentThread.CurrentCulture.Name;
+            string name = "";
+            foreach (ChannelViewModel channelInfo in Channels)
+            {
+                if (native == "zh-CN" || native == "zh-TW")
+                {
+                    name = channelInfo.Name;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(channelInfo.NameEn))
+                    {
+                        name = channelInfo.Name;
+                    }
+                    else
+                    {
+                        name = channelInfo.NameEn;
+                    }
+                }
+                channelInfo.ShowName = name;
+            }
+            foreach (ChannelViewModel channelInfo in CollectChannels)
+            {
+                if (native == "zh-CN" || native == "zh-TW")
+                {
+                    name = channelInfo.Name;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(channelInfo.NameEn))
+                    {
+                        name = channelInfo.Name;
+                    }
+                    else
+                    {
+                        name = channelInfo.NameEn;
+                    }
+                }
+                channelInfo.ShowName = name;
+            }
+        }
         public void TriggerChangeCollectChannels(ChannelViewModel channelInfo,bool isChecked)
         {
             try

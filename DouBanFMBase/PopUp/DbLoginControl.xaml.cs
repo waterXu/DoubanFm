@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Microsoft.Phone.Shell;
 using System.IO;
 using DouBanAudioAgent;
+using DouBanFMBase.Resources;
 
 namespace DouBanFMBase.PopUp
 {
@@ -22,9 +23,21 @@ namespace DouBanFMBase.PopUp
 
         private void Input_GotFocus(object sender, RoutedEventArgs e)
         {
+            TextBox input = sender as TextBox;
+            if (input == null)
+            {
+                return;
+            }
+            if (input.Text == AppResources.AccountTip)
+            {
+                input.Text = "";
+            }
             PopupManager.Input_GotFocus((Control)sender,this.LayoutRoot);
         }
-
+        private void PassWordInput_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PopupManager.Input_GotFocus((Control)sender, this.LayoutRoot);
+        }
         private void Input_LostFocus(object sender, RoutedEventArgs e)
         {
             PopupManager.Input_LostFocus(this.LayoutRoot);
@@ -45,13 +58,13 @@ namespace DouBanFMBase.PopUp
             username = DbFmAccount.Text.Trim();
             if (string.IsNullOrEmpty(username))
             {
-                MessageBox.Show("用户名不能为空");
+                MessageBox.Show(AppResources.AccountEmpty);
                 return;
             }
             password = DbFmPassword.Password.Trim();
             if (string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("密码不能为空");
+                MessageBox.Show(AppResources.PasswordEmpty);
                 return;
             }
             string loginUrlInfo = DbFMCommonData.LoginUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;

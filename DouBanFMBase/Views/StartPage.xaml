@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     SupportedOrientations="Portrait" Orientation="Portrait"
+    xmlns:CB ="clr-namespace:DouBanFMBase"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True"
     shell:SystemTray.Opacity="0"
@@ -26,7 +27,7 @@
             <phone:Pivot SelectionChanged="Pivot_SelectionChanged" x:Name="pivotItems" SelectedIndex="0">
                 <phone:PivotItem Margin="0" >
                     <phone:PivotItem.Background>
-                        <ImageBrush ImageSource="/Images/db.png" Stretch="Fill"></ImageBrush>
+                        <ImageBrush ImageSource="{Binding Path=LocalizedResources.pivot1,Source={StaticResource LocalizedStrings}}" Stretch="Fill"></ImageBrush>
                     </phone:PivotItem.Background>
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0" >
@@ -44,9 +45,15 @@
                         <ImageBrush ImageSource="/Images/db.png" Stretch="Fill"></ImageBrush>
                     </phone:PivotItem.Background>
                     <Grid>
-                        <Button Content="开始体验" Background="#FFAFE4D4" Width="250" Height="100" FontSize="50" Margin="100,451,106,179" FontWeight="Bold" Style="{StaticResource S_Button}" Click="ExperienceBtn_Click">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Button CB:TiltEffect.IsTiltEnabled="true" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{Binding Path=LocalizedResources.StartApp,Source={StaticResource LocalizedStrings}}" Background="#FFAFE4D4" FontSize="40" FontWeight="Bold" Style="{StaticResource S_Button}" Click="ExperienceBtn_Click">
                         </Button>
-                        <Button Content="登录" Background="#FFAFE4D4" Width="200" Height="100" FontSize="50" Margin="125,556,131,74" FontWeight="Bold" Style="{StaticResource S_Button}" Click="LoginBtn_Click"></Button>
+                        <Button CB:TiltEffect.IsTiltEnabled="true" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Content="{Binding Path=LocalizedResources.AccountLogin,Source={StaticResource LocalizedStrings}}" Background="#FFAFE4D4"  FontSize="40" FontWeight="Bold" Style="{StaticResource S_Button}" Click="LoginBtn_Click"></Button>
                     </Grid>
                 </phone:PivotItem>
             </phone:Pivot>

@@ -117,7 +117,7 @@
                         <ListBox x:Name="AllChannels" SelectionChanged="All_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30"  Text="{Binding Name}"/>
+                                    <TextBlock VerticalAlignment="Center" x:Name="ChannelsText" Margin="10,0,0,0" FontSize="30" Text="{Binding ShowName}" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
@@ -135,7 +135,7 @@
                     <ListBox x:Name="CollectChannels" SelectionChanged="Collect_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30"  Text="{Binding Name}"/>
+                                <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30" Text="{Binding ShowName}"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -169,7 +169,12 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
+                                  <Grid Background="#FFB0DBE3" Opacity=".7">
+                                    <TextBlock Text="{Binding Path=LocalizedResources.ThemeSetting,Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" FontSize="30" Margin="10,0,0,0"></TextBlock>
+                                </Grid>
                                 <Grid Background="#FFB0DBE3" Opacity=".7">
                                     <TextBlock Text="{Binding Path=LocalizedResources.ThemeSetting,Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" FontSize="30" Margin="10,0,0,0"></TextBlock>
                                 </Grid>
@@ -180,7 +185,7 @@
                                         </Rectangle.Fill>
                                     </Rectangle>
                                     <TextBlock Text="{Binding Path=LocalizedResources.DoyouLike,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
-
+                                   
                                 </StackPanel>
                                 <Grid Grid.Row="2" CB:TiltEffect.IsTiltEnabled="true" HorizontalAlignment="Center" CacheMode="BitmapCache">
                                     <tool:WrapPanel >
@@ -222,17 +227,20 @@
                                         </coding4fun:Tile>
                                     </tool:WrapPanel>
                                 </Grid>
-                                <StackPanel Grid.Row="3" Orientation="Horizontal" >
-                                    <Rectangle HorizontalAlignment="Left" Height="40" Margin="12,5,0,-0"  Width="12" Opacity=".5">
-                                        <Rectangle.Fill>
-                                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
-                                        </Rectangle.Fill>
-                                    </Rectangle>
-                                    <TextBlock Text="{Binding Path=LocalizedResources.CustomTheme,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
+                                <Grid Grid.Row="3">
+
+                                    <StackPanel  Orientation="Horizontal" >
+                                        <Rectangle HorizontalAlignment="Left" Height="40" Margin="12,5,0,-0"  Width="12" Opacity=".5">
+                                            <Rectangle.Fill>
+                                                <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                        <TextBlock Text="{Binding Path=LocalizedResources.CustomTheme,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
+                                    </StackPanel>
                                     <coding4fun:Tile Background="{x:Null}" CB:TiltEffect.IsTiltEnabled="true" Command="{Binding CustomThemeCommand}" CommandParameter="9">
-                                        <Image Margin="250,0,0,0" Source="/Images/camera.png"  Stretch="Fill" Width="40" Height="40" Opacity=".5"/>
+                                        <Image Margin="0,0,30,0" HorizontalAlignment="Right" Source="/Images/camera.png"  Stretch="Fill" Width="40" Height="40" Opacity=".5"/>
                                     </coding4fun:Tile>
-                                </StackPanel>
+                                </Grid>
                                 <StackPanel Grid.Row="4" Orientation="Vertical" x:Name="AddThemePanel" HorizontalAlignment="Center">
                                     <coding4fun:Tile x:Name="aboutTile" CB:TiltEffect.IsTiltEnabled="true" Loaded="aboutTile_Loaded"
                                              HorizontalAlignment="Left"
@@ -253,6 +261,22 @@
                                             </Canvas>
                                         </Grid>
                                     </coding4fun:Tile>
+                                </StackPanel>
+                                <Grid Background="#FFB0DBE3" Grid.Row="5" Opacity=".7" Margin="0,15,0,0">
+                                    <TextBlock Text="{Binding Path=LocalizedResources.AppSetting,Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" FontSize="30" Margin="10,0,0,0"></TextBlock>
+                                </Grid>
+                                <StackPanel Grid.Row="6" Orientation="Horizontal" >
+                                    <Rectangle HorizontalAlignment="Left" Height="40" Margin="12,10,0,-0"  Width="12" Opacity=".5">
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <TextBlock Text="{Binding Path=LocalizedResources.LangSetting,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center" FontSize="25" Margin="5,0,0,0"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Row="7" Margin="25,10,0,-0">
+                                    <RadioButton GroupName="LangButton" HorizontalAlignment="Left" Background="#FFB0DBE3" Foreground="Black" BorderBrush="Black" Content="{Binding Path=LocalizedResources.ZhLang,Source={StaticResource LocalizedStrings}}" Command="{Binding ResourceManager}" CommandParameter="zh-CN"/>
+                                    <RadioButton GroupName="LangButton" BorderBrush="Black" HorizontalAlignment="Left" Foreground="Black" Background="#FFB0DBE3" Content="{Binding Path=LocalizedResources.ZhTwLang,Source={StaticResource LocalizedStrings}}" Command="{Binding ResourceManager}" CommandParameter="zh-TW"/>
+                                    <RadioButton GroupName="LangButton" HorizontalAlignment="Left" BorderBrush="Black" Foreground="Black" Background="#FFB0DBE3" Content="{Binding Path=LocalizedResources.EnLang,Source={StaticResource LocalizedStrings}}" Command="{Binding ResourceManager}" CommandParameter="en"/>
                                 </StackPanel>
                             </Grid>
                         </ScrollViewer>

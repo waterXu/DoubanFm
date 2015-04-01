@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using DouBanAudioAgent;
+using DouBanFMBase.Resources;
 
 namespace DouBanFMBase.PopUp
 {
@@ -21,6 +22,15 @@ namespace DouBanFMBase.PopUp
 
         private void Input_GotFocus(object sender, RoutedEventArgs e)
         {
+            TextBox input = sender as TextBox;
+            if (input == null)
+            {
+                return;
+            }
+            if (input.Text == AppResources.RegisterTip || input.Text == AppResources.PasswordTip)
+            {
+                input.Text = "";
+            }
             PopupManager.Input_GotFocus((Control)sender, this.LayoutRoot);
         }
 
@@ -41,24 +51,24 @@ namespace DouBanFMBase.PopUp
             userName = Account.Text.Trim();
             if (string.IsNullOrEmpty(userName))
             {
-                MessageBox.Show("用户名不能为空");
+                MessageBox.Show(AppResources.AccountEmpty);
                 return;
             }
-            password = AccountPwdInput.Password.Trim();
+            password = AccountPwdInput.Text.Trim();
             if (string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("密码不能为空");
+                MessageBox.Show(AppResources.PasswordEmpty);
                 return;
             }
-            string repassword = ReAccountPwdInput.Password.Trim();
+            string repassword = ReAccountPwdInput.Text.Trim();
             if (string.IsNullOrEmpty(repassword))
             {
-                MessageBox.Show("请重复密码");
+                MessageBox.Show(AppResources.PasswordEmpty);
                 return;
             }
             if (!password.Equals(repassword))
             {
-                MessageBox.Show("密码不一致");
+                MessageBox.Show(AppResources.PasswordEqual);
                 return;
             }
             string registerUrl = DbFMCommonData.RegisterUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
@@ -89,7 +99,8 @@ namespace DouBanFMBase.PopUp
                 }
                 catch
                 {
-                    MessageBox.Show("登录失败，请检查网络设置");
+                    //toast todo
+                    MessageBox.Show(AppResources.OperationError);
                     DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, false);
                     //MessageBox.Show("登录失败，请检查网络设置");
                 }

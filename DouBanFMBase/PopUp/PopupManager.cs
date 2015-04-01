@@ -300,15 +300,6 @@ namespace DouBanFMBase.PopUp
         /// <param name="e"></param>
         public static void Input_GotFocus(Control inputBox, Grid layoutRoot)
         {
-            if (inputBox.GetType().ToString() == "System.Windows.Controls.TextBox")
-            {
-                TextBox input = (TextBox)inputBox;
-                if (Regex.IsMatch(input.Text.Trim(), "^[\u4e00-\u9fa5]*$"))
-                {
-                    //清空带中文的提示
-                    input.Text = "";
-                }
-            }
             //改变输入框的背景色
             inputBox.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
 

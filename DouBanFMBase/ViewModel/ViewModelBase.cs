@@ -29,7 +29,7 @@ namespace DouBanFMBase.ViewModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyPropertyChanged(String propertyName)
+        public void NotifyPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (null != handler)

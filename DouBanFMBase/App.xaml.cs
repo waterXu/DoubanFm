@@ -94,13 +94,18 @@ namespace DouBanFMBase
                 // 并且消耗电池电量。
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-
+          
         }
 
         // 应用程序启动(例如，从“开始”菜单启动)时执行的代码
         // 此代码在重新激活应用程序时不执行
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            if (WpStorage.GetIsoSetting(DbFMCommonData.NativeName) != null)
+            {
+                string native = WpStorage.GetIsoSetting(DbFMCommonData.NativeName).ToString();
+                ((LocalizedStrings)App.Current.Resources["LocalizedStrings"]).ChangeCulture(native);
+            }
             if (BackgroundAudioPlayer.Instance.Track != null)
             {
                 MainPage.FirstLoadMusicIsPlaying = true;
@@ -129,6 +134,11 @@ namespace DouBanFMBase
             //{
             //    App.ViewModel.LoadData();
             //}
+            if (WpStorage.GetIsoSetting(DbFMCommonData.NativeName) != null)
+            {
+                string native = WpStorage.GetIsoSetting(DbFMCommonData.NativeName).ToString();
+                ((LocalizedStrings)App.Current.Resources["LocalizedStrings"]).ChangeCulture(native);
+            }
             if (DbFMCommonData.ChannelList == null)
             {
                 HttpHelper.GetChannelList();

@@ -117,14 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="AccountEmpty" xml:space="preserve">
+    <value>Account can not be empty</value>
+  </data>
   <data name="AccountLogin" xml:space="preserve">
     <value>Login</value>
+  </data>
+  <data name="AccountTip" xml:space="preserve">
+    <value>please input your account</value>
   </data>
   <data name="AllHz" xml:space="preserve">
     <value>All Radio</value>
   </data>
   <data name="ChangeAccount" xml:space="preserve">
-    <value>Change Account</value>
+    <value>Change User</value>
   </data>
   <data name="CollectHz" xml:space="preserve">
     <value>Collect Radio</value>
@@ -132,8 +141,14 @@
   <data name="CustomTheme" xml:space="preserve">
     <value>Custom Theme</value>
   </data>
+  <data name="DbLoginTitle" xml:space="preserve">
+    <value>Login Douban FM</value>
+  </data>
   <data name="DoyouLike" xml:space="preserve">
     <value>Do You Like</value>
+  </data>
+  <data name="HaveAccount" xml:space="preserve">
+    <value>Have Account</value>
   </data>
   <data name="LoadChannelTip" xml:space="preserve">
     <value>Tap for load radio list</value>
@@ -150,6 +165,34 @@
   <data name="MyHz" xml:space="preserve">
     <value>My Radio</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordEmpty" xml:space="preserve">
+    <value>Password can not be empty</value>
+  </data>
+  <data name="PasswordTip" xml:space="preserve">
+    <value>Contain Letter And Numbers at least 8</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pivot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\pivot2.jpg;System.Byte[], mscorlib, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="RegisterNow" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="RegisterTip" xml:space="preserve">
+    <value>Composed of  Letter and Numbers</value>
+  </data>
+  <data name="RePassword" xml:space="preserve">
+    <value>Re Password</value>
+  </data>
+  <data name="StartApp" xml:space="preserve">
+    <value>Start App</value>
+  </data>
   <data name="TapLoadLyr" xml:space="preserve">
     <value>Tap for load lyric</value>
   </data>
@@ -158,5 +201,41 @@
   </data>
   <data name="ThemeSettingTip" xml:space="preserve">
     <value>Click on the upper right corner of the camera icon can choose  the picture what you like from the local media library for theme ~ ~</value>
+  </data>
+  <data name="MyLoveHz" xml:space="preserve">
+    <value>My Love Radio</value>
+  </data>
+  <data name="OperationError" xml:space="preserve">
+    <value>Operation error,please check network or retry</value>
+  </data>
+  <data name="PasswordEqual" xml:space="preserve">
+    <value>Passwords need equal</value>
+  </data>
+  <data name="AppSetting" xml:space="preserve">
+    <value>App Setting</value>
+  </data>
+  <data name="EnLang" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="LangSetting" xml:space="preserve">
+    <value>Language Setting</value>
+  </data>
+  <data name="ResourceLanguage" xml:space="preserve">
+    <value>en</value>
+  </data>
+  <data name="ZhLang" xml:space="preserve">
+    <value>Chinese simplified</value>
+  </data>
+  <data name="ZhTwLang" xml:space="preserve">
+    <value>Chinese traditional</value>
+  </data>
+  <data name="AddLoveSongTip" xml:space="preserve">
+    <value>You can add love song after you logined</value>
+  </data>
+  <data name="LoadThemeFirst" xml:space="preserve">
+    <value>Please chose a picture form media library</value>
+  </data>
+  <data name="SongIsDown" xml:space="preserve">
+    <value>This song has download</value>
   </data>
 </root>

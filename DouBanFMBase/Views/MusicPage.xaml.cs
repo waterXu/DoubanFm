@@ -18,6 +18,7 @@ using System.IO;
 using System.Windows.Documents;
 using System.Windows.Data;
 using DouBanFMBase.ViewModel;
+using DouBanFMBase.Resources;
 
 namespace DouBanFMBase
 {
@@ -128,7 +129,7 @@ namespace DouBanFMBase
             //查看该歌曲是否已经下载
             if (DbFMCommonData.DownSongIdList.Contains(currentSongInfo.sid))
             {
-                MessageBox.Show("该歌曲已下载");
+                MessageBox.Show(AppResources.SongIsDown);
                 return;
             }
             DownSong.Visibility = System.Windows.Visibility.Collapsed;
@@ -142,7 +143,7 @@ namespace DouBanFMBase
             //u	sid	unrate，歌曲正在播放，标记取消喜欢当前歌曲
             if (!DbFMCommonData.loginSuccess)
             {
-                MessageBox.Show("请先登录，才能添加红心歌曲");
+                MessageBox.Show(AppResources.AddLoveSongTip);
                 LoveImage.IsChecked = currentSongInfo.like=="1"?false:true;
                 return;
             }
@@ -414,7 +415,7 @@ namespace DouBanFMBase
                         LoveImage.IsChecked = LoveImage.IsChecked ? false : true;
                     }
                     //todo toast
-                    MessageBox.Show("操作失败");
+                    MessageBox.Show(AppResources.OperationError);
                 }
             });
         }

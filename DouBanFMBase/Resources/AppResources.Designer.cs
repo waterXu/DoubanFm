@@ -61,11 +61,47 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
-        ///   查找类似 账号登陆 的本地化字符串。
+        ///   查找类似 用户名 的本地化字符串。
+        /// </summary>
+        public static string Account {
+            get {
+                return ResourceManager.GetString("Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 用户名不能为空 的本地化字符串。
+        /// </summary>
+        public static string AccountEmpty {
+            get {
+                return ResourceManager.GetString("AccountEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 登录 的本地化字符串。
         /// </summary>
         public static string AccountLogin {
             get {
                 return ResourceManager.GetString("AccountLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请输入你要登录的账号 的本地化字符串。
+        /// </summary>
+        public static string AccountTip {
+            get {
+                return ResourceManager.GetString("AccountTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请先登录，才能添加红心歌曲 的本地化字符串。
+        /// </summary>
+        public static string AddLoveSongTip {
+            get {
+                return ResourceManager.GetString("AddLoveSongTip", resourceCulture);
             }
         }
         
@@ -106,6 +142,15 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 应用设置 的本地化字符串。
+        /// </summary>
+        public static string AppSetting {
+            get {
+                return ResourceManager.GetString("AppSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 切换账号 的本地化字符串。
         /// </summary>
         public static string ChangeAccount {
@@ -133,6 +178,15 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 豆瓣FM登录 的本地化字符串。
+        /// </summary>
+        public static string DbLoginTitle {
+            get {
+                return ResourceManager.GetString("DbLoginTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 猜你喜欢 的本地化字符串。
         /// </summary>
         public static string DoyouLike {
@@ -142,11 +196,47 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 英语 的本地化字符串。
+        /// </summary>
+        public static string EnLang {
+            get {
+                return ResourceManager.GetString("EnLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 已有账号,登录 的本地化字符串。
+        /// </summary>
+        public static string HaveAccount {
+            get {
+                return ResourceManager.GetString("HaveAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 语言设置 的本地化字符串。
+        /// </summary>
+        public static string LangSetting {
+            get {
+                return ResourceManager.GetString("LangSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 点击加载频道列表 的本地化字符串。
         /// </summary>
         public static string LoadChannelTip {
             get {
                 return ResourceManager.GetString("LoadChannelTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请先从本地图库添加主题图片 的本地化字符串。
+        /// </summary>
+        public static string LoadThemeFirst {
+            get {
+                return ResourceManager.GetString("LoadThemeFirst", resourceCulture);
             }
         }
         
@@ -187,6 +277,106 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 我的红心赫兹 的本地化字符串。
+        /// </summary>
+        public static string MyLoveHz {
+            get {
+                return ResourceManager.GetString("MyLoveHz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 操作失败,请检查网络或重试 的本地化字符串。
+        /// </summary>
+        public static string OperationError {
+            get {
+                return ResourceManager.GetString("OperationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 密码 的本地化字符串。
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 密码不能为空 的本地化字符串。
+        /// </summary>
+        public static string PasswordEmpty {
+            get {
+                return ResourceManager.GetString("PasswordEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 密码不一致 的本地化字符串。
+        /// </summary>
+        public static string PasswordEqual {
+            get {
+                return ResourceManager.GetString("PasswordEqual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 包含英文和数字,最少8位 的本地化字符串。
+        /// </summary>
+        public static string PasswordTip {
+            get {
+                return ResourceManager.GetString("PasswordTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
+        public static byte[] pivot1 {
+            get {
+                object obj = ResourceManager.GetObject("pivot1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 注册新账号 的本地化字符串。
+        /// </summary>
+        public static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 立即注册 的本地化字符串。
+        /// </summary>
+        public static string RegisterNow {
+            get {
+                return ResourceManager.GetString("RegisterNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 由英文和数字组成 的本地化字符串。
+        /// </summary>
+        public static string RegisterTip {
+            get {
+                return ResourceManager.GetString("RegisterTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 重复密码 的本地化字符串。
+        /// </summary>
+        public static string RePassword {
+            get {
+                return ResourceManager.GetString("RePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 LeftToRight 的本地化字符串。
         /// </summary>
         public static string ResourceFlowDirection {
@@ -201,6 +391,24 @@ namespace DouBanFMBase.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 该歌曲已经下载 的本地化字符串。
+        /// </summary>
+        public static string SongIsDown {
+            get {
+                return ResourceManager.GetString("SongIsDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 开始体验 的本地化字符串。
+        /// </summary>
+        public static string StartApp {
+            get {
+                return ResourceManager.GetString("StartApp", resourceCulture);
             }
         }
         
@@ -228,6 +436,24 @@ namespace DouBanFMBase.Resources {
         public static string ThemeSettingTip {
             get {
                 return ResourceManager.GetString("ThemeSettingTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 中文简体 的本地化字符串。
+        /// </summary>
+        public static string ZhLang {
+            get {
+                return ResourceManager.GetString("ZhLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 中文繁体 的本地化字符串。
+        /// </summary>
+        public static string ZhTwLang {
+            get {
+                return ResourceManager.GetString("ZhTwLang", resourceCulture);
             }
         }
     }

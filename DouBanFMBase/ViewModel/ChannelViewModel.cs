@@ -9,10 +9,6 @@ namespace DouBanFMBase.ViewModel
 {
     public class ChannelViewModel : ViewModelBase
     {
-        public ChannelViewModel()
-        {
-            string a = "i am here";
-        }
         private string _name;
         /// <summary>
         /// 示例 ViewModel 属性；此属性在视图中用于使用绑定显示它的值。
@@ -30,6 +26,46 @@ namespace DouBanFMBase.ViewModel
                 {
                     _name = value;
                     NotifyPropertyChanged("Name");
+                }
+            }
+        }
+        private string _nameen;
+        /// <summary>
+        /// 示例 ViewModel 属性；此属性在视图中用于使用绑定显示它的值。
+        /// </summary>
+        /// <returns></returns>
+        public string NameEn
+        {
+            get
+            {
+                return _nameen;
+            }
+            set
+            {
+                if (value != _nameen)
+                {
+                    _nameen = value;
+                    NotifyPropertyChanged("NameEn");
+                }
+            }
+        }
+        private string _showname;
+        /// <summary>
+        /// 示例 ViewModel 属性；此属性在视图中用于使用绑定显示它的值。
+        /// </summary>
+        /// <returns></returns>
+        public string ShowName
+        {
+            get
+            {
+                return _showname;
+            }
+            set
+            {
+                if (value != _showname)
+                {
+                    _showname = value;
+                    NotifyPropertyChanged("ShowName");
                 }
             }
         }

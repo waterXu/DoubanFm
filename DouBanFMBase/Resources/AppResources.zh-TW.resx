@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Account" xml:space="preserve">
+    <value>用戶名</value>
+  </data>
+  <data name="AccountEmpty" xml:space="preserve">
+    <value>用戶名不能為空</value>
+  </data>
   <data name="AccountLogin" xml:space="preserve">
-    <value>賬號登錄</value>
+    <value>登錄</value>
+  </data>
+  <data name="AccountTip" xml:space="preserve">
+    <value>請輸入你要登錄的賬號</value>
   </data>
   <data name="AllHz" xml:space="preserve">
     <value>全部電臺</value>
@@ -132,8 +141,14 @@
   <data name="CustomTheme" xml:space="preserve">
     <value>自定義主題</value>
   </data>
+  <data name="DbLoginTitle" xml:space="preserve">
+    <value>豆瓣FM登錄</value>
+  </data>
   <data name="DoyouLike" xml:space="preserve">
     <value>猜你喜歡</value>
+  </data>
+  <data name="HaveAccount" xml:space="preserve">
+    <value>已有賬號,登錄</value>
   </data>
   <data name="LoadChannelTip" xml:space="preserve">
     <value>點擊加載頻道列表</value>
@@ -150,6 +165,34 @@
   <data name="MyHz" xml:space="preserve">
     <value>我的電臺</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>密碼</value>
+  </data>
+  <data name="PasswordEmpty" xml:space="preserve">
+    <value>密碼名不能為空</value>
+  </data>
+  <data name="PasswordTip" xml:space="preserve">
+    <value>包含英文和數字,最少8位</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pivot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\pivot1.png;System.Byte[], mscorlib, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>註冊新賬號</value>
+  </data>
+  <data name="RegisterNow" xml:space="preserve">
+    <value>立即註冊</value>
+  </data>
+  <data name="RegisterTip" xml:space="preserve">
+    <value>由英文和數字組成</value>
+  </data>
+  <data name="RePassword" xml:space="preserve">
+    <value>重復密碼</value>
+  </data>
+  <data name="StartApp" xml:space="preserve">
+    <value>開始體驗</value>
+  </data>
   <data name="TapLoadLyr" xml:space="preserve">
     <value>點擊搜索歌詞</value>
   </data>
@@ -158,5 +201,41 @@
   </data>
   <data name="ThemeSettingTip" xml:space="preserve">
     <value>點擊右上角圖標可從本地圖庫選擇你喜歡的主題圖片哦~~</value>
+  </data>
+  <data name="MyLoveHz" xml:space="preserve">
+    <value>我的紅心赫茲</value>
+  </data>
+  <data name="OperationError" xml:space="preserve">
+    <value>操作失敗,請檢查網絡或重試</value>
+  </data>
+  <data name="PasswordEqual" xml:space="preserve">
+    <value>密碼不一致</value>
+  </data>
+  <data name="AppSetting" xml:space="preserve">
+    <value>應用設置</value>
+  </data>
+  <data name="EnLang" xml:space="preserve">
+    <value>英語</value>
+  </data>
+  <data name="LangSetting" xml:space="preserve">
+    <value>語言設置</value>
+  </data>
+  <data name="ResourceLanguage" xml:space="preserve">
+    <value>zh-TW</value>
+  </data>
+  <data name="ZhLang" xml:space="preserve">
+    <value>中文簡體</value>
+  </data>
+  <data name="ZhTwLang" xml:space="preserve">
+    <value>中文繁體</value>
+  </data>
+  <data name="AddLoveSongTip" xml:space="preserve">
+    <value>請先登錄，才能添加紅心歌曲</value>
+  </data>
+  <data name="LoadThemeFirst" xml:space="preserve">
+    <value>請先從本地圖庫添加主題圖片</value>
+  </data>
+  <data name="SongIsDown" xml:space="preserve">
+    <value>該歌曲已經下載</value>
   </data>
 </root>

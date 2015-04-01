@@ -48,7 +48,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Name="GiantMLogin" FontSize="30" Grid.Column="0" Text="豆瓣FM登录" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="45" Margin="22,17,21,17" Width="160"/>
+                    <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Name="GiantMLogin" FontSize="30" Grid.Column="0" Text="{Binding Path=LocalizedResources.DbLoginTitle,Source={StaticResource LocalizedStrings}}" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
                     <Grid Grid.ColumnSpan="2" Grid.Row="1" Margin="10,0,10,0">
                         <Grid.Background>
                             <ImageBrush ImageSource="/Images/input.png" Opacity=".3"/>
@@ -60,8 +60,8 @@
                             <ColumnDefinition Width="131*"/>
                             <ColumnDefinition Width="265*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="用户名" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="27" Margin="13,14,10,14" Width="108"/>
-                        <TextBox Text="请输入您要登录的账号" Grid.Column="1" Name="DbFmAccount" FontSize="20" Foreground="White"  VerticalAlignment="Center" Background="Transparent" BorderThickness="0" GotFocus="Input_GotFocus" LostFocus="Input_LostFocus" CacheMode="BitmapCache" Height="59"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.Account,Source={StaticResource LocalizedStrings}}" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="27" Margin="13,14,10,14" Width="108"/>
+                        <TextBox Text="{Binding Path=LocalizedResources.AccountTip,Source={StaticResource LocalizedStrings}}" Grid.Column="1" Name="DbFmAccount" FontSize="20" Foreground="White"  VerticalAlignment="Center" Background="Transparent" BorderThickness="0" GotFocus="Input_GotFocus" LostFocus="Input_LostFocus" CacheMode="BitmapCache" Height="59"/>
 
                     </Grid>
                     <Grid Grid.ColumnSpan="2" Grid.Row="3" Margin="10,0,10,0">
@@ -75,17 +75,17 @@
                             <ColumnDefinition Width="50*"/>
                             <ColumnDefinition Width="123*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="密码" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <PasswordBox Grid.Column="1" Name="DbFmPassword" FontSize="20" VerticalAlignment="Center" Foreground="White" Background="Transparent" BorderThickness="0"  GotFocus="Input_GotFocus" LostFocus="Input_LostFocus"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.Password,Source={StaticResource LocalizedStrings}}" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <PasswordBox Grid.Column="1" Name="DbFmPassword" FontSize="20" VerticalAlignment="Center" Foreground="White" Background="Transparent" BorderThickness="0"  GotFocus="PassWordInput_GotFocus" LostFocus="Input_LostFocus"/>
 
                     </Grid>
-                    <TextBlock Name="ForgetPwd" Grid.Row="4" Text="忘记密码?" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Foreground="#FF2C16AA" Tap="ForgetPwd_Tap" Grid.ColumnSpan="3"/>
-                    <Button Name="RegisterAccount" Grid.Column="0" Grid.Row="5" BorderThickness="0" Content="注册新账号" Click="RegisterAccount_Click" Style="{StaticResource S_Button}">
+                    <!--<TextBlock Name="ForgetPwd" Grid.Row="4" Text="忘记密码?" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Foreground="#FF2C16AA" Tap="ForgetPwd_Tap" Grid.ColumnSpan="3"/>-->
+                    <Button Name="RegisterAccount" Grid.Column="0" Grid.Row="5" BorderThickness="0" Content="{Binding Path=LocalizedResources.Register,Source={StaticResource LocalizedStrings}}" Click="RegisterAccount_Click" Style="{StaticResource S_Button}">
                         <Button.Background>
                             <ImageBrush  ImageSource="/Images/btn.png" Opacity=".7"/>
                         </Button.Background>
                     </Button>
-                    <Button Grid.Column="2" Grid.Row="5" BorderThickness="0" Content="登录" Name="LoginBtn" Click="DbFMLogin_Click" Style="{StaticResource S_Button}">
+                    <Button Grid.Column="2" Grid.Row="5" BorderThickness="0" Content="{Binding Path=LocalizedResources.AccountLogin,Source={StaticResource LocalizedStrings}}" Name="LoginBtn" Click="DbFMLogin_Click" Style="{StaticResource S_Button}">
                         <Button.Background>
                             <ImageBrush ImageSource="/Images/btn_on.png"/>
                         </Button.Background>

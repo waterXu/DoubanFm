@@ -6,7 +6,7 @@
     <AssemblyPart x:Name="DouBanAudioAgent" Source="DouBanAudioAgent.dll" />
     <AssemblyPart x:Name="Microsoft.Phone.Controls.Toolkit" Source="Microsoft.Phone.Controls.Toolkit.dll" />
     <AssemblyPart x:Name="Newtonsoft.Json" Source="Newtonsoft.Json.dll" />
-    <AssemblyPart Source="en-US/DouBanFMBase.resources.dll" />
+    <AssemblyPart Source="en/DouBanFMBase.resources.dll" />
     <AssemblyPart Source="zh-TW/DouBanFMBase.resources.dll" />
   </Deployment.Parts>
 </Deployment>

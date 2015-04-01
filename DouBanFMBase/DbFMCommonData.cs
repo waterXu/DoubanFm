@@ -69,6 +69,11 @@ namespace DouBanFMBase
         /// 夜晚小图标
         /// </summary>
         public static string SunPngPath { get { return "/Images/sun.png"; } }
+        /// <summary>
+        /// 保存上次用户选择语言
+        /// </summary>
+        public static string NativeName { get { return "NativeLang"; } }
+
         #endregion
 
         #region IsolatedStorage FileName Or KeyName
@@ -289,5 +294,6 @@ namespace DouBanFMBase
             WpStorage.SaveStringToIsoStore("SongsUrl.dat", getChannelSongsUrl);
             WpStorage.SetIsoSetting("LastedChannelId", selectIndex);
         }
+
     }
 }
