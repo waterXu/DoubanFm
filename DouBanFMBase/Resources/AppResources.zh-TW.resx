@@ -206,7 +206,7 @@
     <value>我的紅心赫茲</value>
   </data>
   <data name="OperationError" xml:space="preserve">
-    <value>操作失敗,請檢查網絡或重試</value>
+    <value>當前操作失敗,請檢查網絡或重試</value>
   </data>
   <data name="PasswordEqual" xml:space="preserve">
     <value>密碼不一致</value>
@@ -237,5 +237,32 @@
   </data>
   <data name="SongIsDown" xml:space="preserve">
     <value>該歌曲已經下載</value>
+  </data>
+  <data name="AutoDownSongInWifi" xml:space="preserve">
+    <value>Wifi網絡下自動下載當前添加的紅心歌曲</value>
+  </data>
+  <data name="ConfirmExit" xml:space="preserve">
+    <value>確定要退出應用?</value>
+  </data>
+  <data name="DeleteSongsTip" xml:space="preserve">
+    <value>確定要刪除選定歌曲?</value>
+  </data>
+  <data name="ExitStopMusicTip" xml:space="preserve">
+    <value>退出時停止播放音樂</value>
+  </data>
+  <data name="ListenLoveRadioTip" xml:space="preserve">
+    <value>請先登錄，才能收聽紅心HZ</value>
+  </data>
+  <data name="NoneNetwork" xml:space="preserve">
+    <value>無可用網絡</value>
+  </data>
+  <data name="OtherSetting" xml:space="preserve">
+    <value>其他设置</value>
+  </data>
+  <data name="ShowNetwork" xml:space="preserve">
+    <value>正在使用#name#網絡</value>
+  </data>
+  <data name="SongLoaded" xml:space="preserve">
+    <value>下載完成</value>
   </data>
 </root>

@@ -12,6 +12,7 @@ using Microsoft.Phone.Info;
 using System.IO;
 using Windows.Networking.Connectivity;
 using DouBanAudioAgent;
+using DouBanFMBase.Resources;
 
 namespace DouBanFMBase
 {
@@ -267,6 +268,7 @@ namespace DouBanFMBase
                                 //App.ViewModel.LocalSongs.Add(song);
                                 App.ViewModel.SaveDownSongs();
                                 downLoadSuccess = true;
+                                App.ShowToast("《"+song.title+"》" + AppResources.SongLoaded);
                             }
                             DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongBack, downLoadSuccess);
                         }));

@@ -145,7 +145,7 @@
     <value>Login Douban FM</value>
   </data>
   <data name="DoyouLike" xml:space="preserve">
-    <value>Do You Like</value>
+    <value>Do You Like?</value>
   </data>
   <data name="HaveAccount" xml:space="preserve">
     <value>Have Account</value>
@@ -172,7 +172,7 @@
     <value>Password can not be empty</value>
   </data>
   <data name="PasswordTip" xml:space="preserve">
-    <value>Contain Letter And Numbers at least 8</value>
+    <value>Contain Letter And Numbers at least 8 length</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="pivot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -237,5 +237,32 @@
   </data>
   <data name="SongIsDown" xml:space="preserve">
     <value>This song has download</value>
+  </data>
+  <data name="AutoDownSongInWifi" xml:space="preserve">
+    <value>Automatically download the song what add love mark in Wifi</value>
+  </data>
+  <data name="ConfirmExit" xml:space="preserve">
+    <value>Sure you want to exit the application?</value>
+  </data>
+  <data name="DeleteSongsTip" xml:space="preserve">
+    <value>Sure you want to delete the selected songs?</value>
+  </data>
+  <data name="ExitStopMusicTip" xml:space="preserve">
+    <value>Stop music after exit application </value>
+  </data>
+  <data name="ListenLoveRadioTip" xml:space="preserve">
+    <value>You can listen love radio after you logined</value>
+  </data>
+  <data name="NoneNetwork" xml:space="preserve">
+    <value>Network is useless</value>
+  </data>
+  <data name="OtherSetting" xml:space="preserve">
+    <value>Other Setting</value>
+  </data>
+  <data name="ShowNetwork" xml:space="preserve">
+    <value>Using #name# network</value>
+  </data>
+  <data name="SongLoaded" xml:space="preserve">
+    <value>  downloaded</value>
   </data>
 </root>

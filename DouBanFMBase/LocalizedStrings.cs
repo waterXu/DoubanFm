@@ -16,14 +16,14 @@ namespace DouBanFMBase
             { 
                 return _localizedResources; 
             }
-            set
-            {
-                if (_localizedResources != value)
-                {
-                    _localizedResources = value;
-                    NotifyPropertyChanged("LocalizedStrings");
-                }
-            }
+            //set
+            //{
+            //    if (_localizedResources != value)
+            //    {
+            //        _localizedResources = value;
+            //        NotifyPropertyChanged("LocalizedStrings");
+            //    }
+            //}
         }
         internal void ChangeCulture(string cultureName)
         {

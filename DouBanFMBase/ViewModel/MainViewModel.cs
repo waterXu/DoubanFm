@@ -66,6 +66,46 @@ namespace DouBanFMBase.ViewModel
                 NotifyPropertyChanged("LoginSuccess");
             }
         }
+        private bool _exitStopMusic;
+        public bool ExitStopMusic
+
+        {
+            get 
+            {
+                return _exitStopMusic; 
+            }
+            set
+            {
+                if (_exitStopMusic != value)
+                {
+                    _exitStopMusic = value;
+                    WpStorage.SetIsoSetting("ExitStopMusic",_exitStopMusic);
+                    NotifyPropertyChanged("ExitStopMusic");
+                }
+            }
+        }
+        private bool _downMusicWithWifi;
+        /// <summary>
+        /// wifi下自动下载当前播放的红心歌曲
+        /// </summary>
+         public bool AutoDownLoveSongInWifi
+
+        {
+            get 
+            {
+                return _downMusicWithWifi; 
+            }
+            set
+            {
+                if (_downMusicWithWifi != value)
+                {
+                    _downMusicWithWifi = value;
+                    DbFMCommonData.AutoDownLoveSongInWifi = value;
+                    WpStorage.SetIsoSetting("AutoDownLoveSongInWifi", _exitStopMusic);
+                    NotifyPropertyChanged("AutoDownLoveSongInWifi");
+                }
+            }
+        }
         
         private bool _themeMode;
          public bool ThemeMode
@@ -350,6 +390,23 @@ namespace DouBanFMBase.ViewModel
         }
         public void InitPropertyValue()
         {
+            if (WpStorage.GetIsoSetting("ExitStopMusic") != null)
+            {
+                ExitStopMusic = (bool)WpStorage.GetIsoSetting("ExitStopMusic");
+            }
+            else
+            {
+                ExitStopMusic = false;
+            }
+            if (WpStorage.GetIsoSetting("AutoDownLoveSongInWifi") != null)
+            {
+                AutoDownLoveSongInWifi = (bool)WpStorage.GetIsoSetting("AutoDownLoveSongInWifi");
+            }
+            else
+            {
+                AutoDownLoveSongInWifi = false;
+            }
+            
             //获取用户自定义主题
             if (WpStorage.isoFile.FileExists(DbFMCommonData.CustomJpgPath))
             {
@@ -409,7 +466,14 @@ namespace DouBanFMBase.ViewModel
                 {
                     ischecked = true;
                 }
-                string native = Thread.CurrentThread.CurrentCulture.Name;
+                string native = null;
+                if(AppResources.Culture !=null)
+                {
+                     native = AppResources.Culture.Name;
+                }
+                else{
+                     native = Thread.CurrentThread.CurrentCulture.Name;
+                }
                 Channels.Add(new ChannelViewModel()
                 {
                     Name = "我的红心赫兹",
@@ -477,8 +541,6 @@ namespace DouBanFMBase.ViewModel
             }
             catch(Exception e)
             {
-                //todo  显示没有加载成功
-                //重新加载按钮。。。。
                 DbFMCommonData.DownLoadSuccess = false;
                 DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.LoadedData, IsLoaded);
                 System.Diagnostics.Debug.WriteLine("LoadData异常：" + e.Message);
@@ -487,7 +549,15 @@ namespace DouBanFMBase.ViewModel
         }
         private void ReLoadData()
         {
-            string native = Thread.CurrentThread.CurrentCulture.Name;
+            string native = null;
+            if (AppResources.Culture != null)
+            {
+                native = AppResources.Culture.Name;
+            }
+            else
+            {
+                native = Thread.CurrentThread.CurrentCulture.Name;
+            }
             string name = "";
             foreach (ChannelViewModel channelInfo in Channels)
             {

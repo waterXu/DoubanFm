@@ -22,6 +22,7 @@ namespace DouBanFMBase
         public StartPage()
         {
             InitializeComponent();
+            App.GetNetName();
             //开始异步获取全部赫兹
             HttpHelper.GetChannelList();
             DbFMCommonData.informCallback = CallbackManager.CallBackTrigger;
@@ -67,7 +68,7 @@ namespace DouBanFMBase
                             this.NavigationService.Navigate(new Uri(DbFMCommonData.MianPageUrl, UriKind.RelativeOrAbsolute));
                         });
                     }));
-                    //登录验证 todo
+                    //登录验证
                     //验证成功 保存token
 
                 }

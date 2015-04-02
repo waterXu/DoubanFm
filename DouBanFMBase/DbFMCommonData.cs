@@ -152,6 +152,15 @@ namespace DouBanFMBase
         /// 豆瓣绑定邮箱
         /// </summary>
         public static string Email { get; set; }
+        /// <summary>
+        /// 当前网络状态
+        /// </summary>
+        public static string NetworkStatus { get; set; }
+        /// <summary>
+        /// 是否自动下载添加的红心歌曲
+        /// </summary>
+        public static bool AutoDownLoveSongInWifi { get; set; }
+
 
         public enum CallbackType
         {
@@ -294,6 +303,9 @@ namespace DouBanFMBase
             WpStorage.SaveStringToIsoStore("SongsUrl.dat", getChannelSongsUrl);
             WpStorage.SetIsoSetting("LastedChannelId", selectIndex);
         }
+
+
+
 
     }
 }

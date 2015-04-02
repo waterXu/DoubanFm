@@ -86,16 +86,14 @@ namespace DouBanFMBase.PopUp
                     }
                     else
                     {
-                        //todo
-                        //MessageBox.Show("用户名或密码错误");
+                        App.ShowToast(AppResources.OperationError);
                     }
                     DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, DbFMCommonData.loginSuccess);
                 }
                 catch
                 {
-                    MessageBox.Show("登录失败，请检查网络设置");
+                    App.ShowToast(AppResources.OperationError);
                     DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.Login, false);
-                    //MessageBox.Show("登录失败，请检查网络设置");
                 }
                 isLogining = false;
             });

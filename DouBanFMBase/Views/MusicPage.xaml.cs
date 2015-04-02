@@ -45,7 +45,6 @@ namespace DouBanFMBase
             InitializeComponent();
             BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
             DataContext = App.ViewModel;
-            //LrcControl.DataContext = App.MusicViewModel;
         }
         #region Page EventHandler Method
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -78,7 +77,11 @@ namespace DouBanFMBase
             BackgroundAudioPlayer.Instance.PlayStateChanged -= new EventHandler(Instance_PlayStateChanged);
             CallbackManager.musicPage = null;
             MainPage.IsFromMusicPage = true;
-            LrcControl.DataContext = null;
+            //当用户按win键 或者长按返回键时  不清空 datacontext  否则从墓碑模式返回时会丢失当前数据
+            if (e.Content != null)
+            {
+                LrcControl.DataContext = null;
+            }
         }
         #endregion
 
@@ -150,6 +153,13 @@ namespace DouBanFMBase
             string type = "";
             type = LoveImage.IsChecked? "u":"r";
             HttpHelper.OperationChannelSongs(type, DbFMCommonData.CurrentChannelId, currentSongInfo.sid);
+
+            if (!DbFMCommonData.AutoDownLoveSongInWifi && DbFMCommonData.DownSongIdList.Contains(currentSongInfo.sid) && type == "u")
+            {
+                return;
+            }
+            HttpHelper.DownLoadSongLyr(currentSongInfo, true);
+            HttpHelper.DownLoadMusic(currentSongInfo);
         }
         private void DeleteSong_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -414,8 +424,7 @@ namespace DouBanFMBase
                     {
                         LoveImage.IsChecked = LoveImage.IsChecked ? false : true;
                     }
-                    //todo toast
-                    MessageBox.Show(AppResources.OperationError);
+                    App.ShowToast(AppResources.OperationError);
                 }
             });
         }

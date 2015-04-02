@@ -151,6 +151,15 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Wifi网络下自动下载当前添加的红心歌曲 的本地化字符串。
+        /// </summary>
+        public static string AutoDownSongInWifi {
+            get {
+                return ResourceManager.GetString("AutoDownSongInWifi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 切换账号 的本地化字符串。
         /// </summary>
         public static string ChangeAccount {
@@ -165,6 +174,15 @@ namespace DouBanFMBase.Resources {
         public static string CollectHz {
             get {
                 return ResourceManager.GetString("CollectHz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 确定要退出应用 的本地化字符串。
+        /// </summary>
+        public static string ConfirmExit {
+            get {
+                return ResourceManager.GetString("ConfirmExit", resourceCulture);
             }
         }
         
@@ -187,6 +205,15 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 确定要删除选定歌曲 的本地化字符串。
+        /// </summary>
+        public static string DeleteSongsTip {
+            get {
+                return ResourceManager.GetString("DeleteSongsTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 猜你喜欢 的本地化字符串。
         /// </summary>
         public static string DoyouLike {
@@ -205,6 +232,15 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 退出时停止播放音乐 的本地化字符串。
+        /// </summary>
+        public static string ExitStopMusicTip {
+            get {
+                return ResourceManager.GetString("ExitStopMusicTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 已有账号,登录 的本地化字符串。
         /// </summary>
         public static string HaveAccount {
@@ -219,6 +255,15 @@ namespace DouBanFMBase.Resources {
         public static string LangSetting {
             get {
                 return ResourceManager.GetString("LangSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请先登录，才能收听红心HZ 的本地化字符串。
+        /// </summary>
+        public static string ListenLoveRadioTip {
+            get {
+                return ResourceManager.GetString("ListenLoveRadioTip", resourceCulture);
             }
         }
         
@@ -286,11 +331,29 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
-        ///   查找类似 操作失败,请检查网络或重试 的本地化字符串。
+        ///   查找类似 无可用网络 的本地化字符串。
+        /// </summary>
+        public static string NoneNetwork {
+            get {
+                return ResourceManager.GetString("NoneNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 当前操作失败,请检查网络或重试 的本地化字符串。
         /// </summary>
         public static string OperationError {
             get {
                 return ResourceManager.GetString("OperationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 其他设置 的本地化字符串。
+        /// </summary>
+        public static string OtherSetting {
+            get {
+                return ResourceManager.GetString("OtherSetting", resourceCulture);
             }
         }
         
@@ -395,11 +458,29 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 正在使用#name#网络 的本地化字符串。
+        /// </summary>
+        public static string ShowNetwork {
+            get {
+                return ResourceManager.GetString("ShowNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 该歌曲已经下载 的本地化字符串。
         /// </summary>
         public static string SongIsDown {
             get {
                 return ResourceManager.GetString("SongIsDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 下载完成 的本地化字符串。
+        /// </summary>
+        public static string SongLoaded {
+            get {
+                return ResourceManager.GetString("SongLoaded", resourceCulture);
             }
         }
         

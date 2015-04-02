@@ -100,8 +100,13 @@ namespace DouBanFMBase
             }
             else
             {
-                if (MessageBox.Show("确定要退出应用？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                if (MessageBox.Show(AppResources.ConfirmExit, "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
+                    if (App.ViewModel.ExitStopMusic && BackgroundAudioPlayer.Instance.Track != null)
+                    {
+                        BackgroundAudioPlayer.Instance.Stop();
+                        BackgroundAudioPlayer.Instance.Track = null;
+                    }
                     Application.Current.Terminate();
                 }
                 else
@@ -150,6 +155,12 @@ namespace DouBanFMBase
                 FirstLoadMusicIsPlaying = false;
                 return;
             }
+            if (DbFMCommonData.NetworkStatus != null && DbFMCommonData.NetworkStatus == "None")
+            {
+                AllChannels.SelectedIndex = DbFMCommonData.LastedIndex;
+                App.ShowToast(AppResources.OperationError);
+                return;
+            }
             if (IsFormLoveChannel)
             {
                 IsFormLoveChannel = false;
@@ -164,7 +175,7 @@ namespace DouBanFMBase
             }
             if (!DbFMCommonData.loginSuccess && cv.ChannelId == DbFMCommonData.HotChannelId)
             {
-                MessageBox.Show("请先登录，才能收听红心赫兹");
+                MessageBox.Show(AppResources.ListenLoveRadioTip);
                 IsFormLoveChannel = true;
                 AllChannels.SelectedIndex = DbFMCommonData.LastedIndex;
                 return;
@@ -185,6 +196,12 @@ namespace DouBanFMBase
                 FirstLoadMusicIsPlaying = false;
                 return;
             }
+            if (DbFMCommonData.NetworkStatus != null && DbFMCommonData.NetworkStatus == "None")
+            {
+                CollectChannels.SelectedIndex = DbFMCommonData.LastedCollectIndex;
+                App.ShowToast(AppResources.OperationError);
+                return;
+            }
             if (IsFormLoveChannel)
             {
                 IsFormLoveChannel = false;
@@ -199,7 +216,7 @@ namespace DouBanFMBase
             }
             if (!DbFMCommonData.loginSuccess && cv.ChannelId == DbFMCommonData.HotChannelId)
             {
-                MessageBox.Show("请先登录，才能收听红心赫兹");
+                MessageBox.Show(AppResources.ListenLoveRadioTip);
                 IsFormLoveChannel = true;
                 CollectChannels.SelectedIndex = DbFMCommonData.LastedCollectIndex;
                 return;
@@ -282,7 +299,7 @@ namespace DouBanFMBase
                 return;
             }
 
-            if (MessageBox.Show("确定要删除选定歌曲？", "", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+            if (MessageBox.Show(AppResources.DeleteSongsTip, "", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
             {
                 return;
             }
@@ -376,6 +393,7 @@ namespace DouBanFMBase
         {
             this.trexStoryboard.Begin();
         }
+       
         #endregion
 
         #region Audio Method
@@ -424,8 +442,6 @@ namespace DouBanFMBase
                         int channelIndex = 0;
                         if (FirstLoadMusicIsPlaying && WpStorage.GetIsoSetting("LastedChannelId") != null)
                         {
-                            //string index = WpStorage.GetIsoSetting("LastedChannelId").ToString();
-                            //channelIndex = Convert.ToInt32(index);
                             channelIndex = (int)WpStorage.GetIsoSetting("LastedChannelId");
                             if (channelIndex == -1)
                             {
@@ -452,40 +468,19 @@ namespace DouBanFMBase
                                 AllChannels.SelectedIndex = 1;
                             }
                         }
-                       
                     }
                 }
                 LoadChannelGrid.Visibility = System.Windows.Visibility.Collapsed;
             });
            
         }
-        public void BindingHzName()
-        {
-            //Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
-            //Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-            //Thread.CurrentThread.CurrentCulture = new CultureInfo("ar-SA");
-            Binding hzName = new Binding();
-            string native = Thread.CurrentThread.CurrentCulture.Name;
-            if (native == "zh" || native == "zh-TW")
-            {
-                hzName.Path = new PropertyPath("Name");
-            }
-            else 
-            {
-                hzName.Path = new PropertyPath("NameEn");
-            }
-            //ChannelsText.SetBinding(TextBlock.TextProperty, hzName);
-            //CollectText.SetBinding(TextBlock.TextProperty, hzName);
-            //if(AppResources.Culture.NativeName)
-        }
         public void DataContextLoadedFail()
         {
-            //添加 重新加载按钮
-            //。。。。
             this.Dispatcher.BeginInvoke(() => 
             {
                 LoadChannelGrid.Visibility = System.Windows.Visibility.Visible;
             });
+            App.ShowToast(AppResources.OperationError);
         }
 
         public void GetSongSuccess(int p)
@@ -496,8 +491,7 @@ namespace DouBanFMBase
         }
         public void GetSongFail()
         {
-            //....show err
-            //SongGrid.DataContext = DbFMCommonData.PlayingSongs[playIndex];
+            App.ShowToast(AppResources.OperationError);
         }
         /// <summary>
         /// 登录成功
@@ -533,10 +527,6 @@ namespace DouBanFMBase
             long memoryMax = DeviceStatus.ApplicationPeakMemoryUsage / 1048576;
             MessageBox.Show("当前内存使用情况："+memory.ToString() + " MB 当前最大内存使用情况： "+memoryMax.ToString()+ "MB  当前可分配最大内存： " + memoryLimit.ToString()+"  MB");
         }
-
-
-
-
 
 
         // 用于生成本地化 ApplicationBar 的示例代码

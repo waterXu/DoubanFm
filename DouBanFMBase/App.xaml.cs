@@ -13,6 +13,15 @@ using Newtonsoft.Json;
 using DouBanAudioAgent;
 using System.Collections.ObjectModel;
 using DouBanFMBase.ViewModel;
+using Windows.Networking.Connectivity;
+using Microsoft.Phone.Net.NetworkInformation;
+using System.Net;
+using System.Windows.Media;
+using System.Windows.Threading;
+using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
+using System.Globalization;
+using System.Threading;
 
 namespace DouBanFMBase
 {
@@ -104,6 +113,9 @@ namespace DouBanFMBase
             if (WpStorage.GetIsoSetting(DbFMCommonData.NativeName) != null)
             {
                 string native = WpStorage.GetIsoSetting(DbFMCommonData.NativeName).ToString();
+                CultureInfo newCulture = new CultureInfo(native);
+                Thread.CurrentThread.CurrentCulture = newCulture;
+                Thread.CurrentThread.CurrentUICulture = newCulture;
                 ((LocalizedStrings)App.Current.Resources["LocalizedStrings"]).ChangeCulture(native);
             }
             if (BackgroundAudioPlayer.Instance.Track != null)
@@ -123,8 +135,200 @@ namespace DouBanFMBase
                 string songIds = WpStorage.GetIsoSetting(DbFMCommonData.DownSongIdsName).ToString();
                 DbFMCommonData.DownSongIdList = JsonConvert.DeserializeObject<HashSet<string>>(songIds);
             }
+            NetworkInformation.NetworkStatusChanged += new NetworkStatusChangedEventHandler(NetworkChanged);
         }
 
+        private void NetworkChanged(object sender)
+        {
+            GetNetName();
+        }
+        public static void GetNetName()
+        {
+            DeviceNetworkInformation.ResolveHostNameAsync(
+                new DnsEndPoint("www.microsoft.com", 80),
+                new NameResolutionCallback(handle =>
+                {
+                    string Name = "";
+                    string NetName = "";
+                    NetworkInterfaceInfo info = handle.NetworkInterface;
+                    if (info != null)
+                    {
+                        Name = info.InterfaceName + " " + info.Description + " ";
+
+                        switch (info.InterfaceType)
+                        {
+                            case NetworkInterfaceType.Ethernet:
+                                NetName = "Ethernet";
+                                break;
+                            case NetworkInterfaceType.MobileBroadbandCdma:
+                            case NetworkInterfaceType.MobileBroadbandGsm:
+                                switch (info.InterfaceSubtype)
+                                {
+                                    case NetworkInterfaceSubType.Cellular_3G:
+                                        //NetName = "Cellular_3G + 3G";
+                                        NetName = "3G";
+                                        break;
+                                    case NetworkInterfaceSubType.Cellular_EVDO:
+                                        //NetName = "Cellular_EVDO + 3G";
+                                        NetName = "3G";
+                                        break;
+                                    case NetworkInterfaceSubType.Cellular_EVDV:
+                                        //NetName = "Cellular_EVDV + 3G";
+                                        NetName = "3G";
+                                        break;
+                                    case NetworkInterfaceSubType.Cellular_HSPA:
+                                        NetName = "3G";
+                                        //NetName = "Cellular_HSPA + 3G";
+                                        break;
+                                    case NetworkInterfaceSubType.Cellular_GPRS:
+                                        //NetName = "Cellular_GPRS + 2G";
+                                        NetName = "2G";
+                                        break;
+                                    case NetworkInterfaceSubType.Cellular_EDGE:
+                                        NetName = "2G";
+                                        // NetName = "Cellular_EDGE + 2G";
+                                        break;
+                                    case NetworkInterfaceSubType.Cellular_1XRTT:
+                                        //NetName = "Cellular_1XRTT + 2G";
+                                        NetName = "2G";
+                                        break;
+                                    default:
+                                        NetName = "None";
+                                        break;
+                                }
+                                break;
+                            case NetworkInterfaceType.Wireless80211:
+                                NetName = "WiFi";
+                                break;
+                            default:
+                                NetName = "None";
+                                break;
+                        }
+                    }
+                    else
+                        NetName = "None";
+
+                    DbFMCommonData.NetworkStatus = NetName;
+                    string tip = "";
+                    if (NetName == "None")
+                    {
+                        tip = AppResources.NoneNetwork;
+                    }
+                    else
+                    {
+                        tip = AppResources.ShowNetwork.Replace("#name#", NetName);
+                    }
+                  
+                    ShowToast(tip);
+
+                }), null);
+        }
+
+        private static DispatcherTimer dispatcherTimer = new DispatcherTimer();
+        private static Popup _popUp;
+        private static Grid grid;
+        public static void ShowToast(string name)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(delegate() {
+                if (_popUp == null)
+                {
+                    _popUp = new Popup
+                    {
+                        Height = 50,
+                        Width = Application.Current.Host.Content.ActualWidth,
+                    };
+                }
+                TextBlock textBlock = CreateTextBlock(name);
+                if (grid == null)
+                {
+                    grid = new Grid();
+                    grid.Height = 50;
+                    grid.Width = Application.Current.Host.Content.ActualWidth;
+                    grid.Background = new SolidColorBrush(Color.FromArgb(250, 242, 79, 91));
+                }
+                grid.Opacity = 0;
+                grid.Children.Clear();
+                grid.Children.Add(textBlock);
+                _popUp.Child = grid;
+                _popUp.IsOpen = true;
+                PopupShowAnimation();
+                startTimer();
+            });
+        }
+        private static void startTimer()
+        {
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000);
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            sencond = 2;
+            dispatcherTimer.Start();
+        }
+        private static int sencond = 2;
+        private static void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            if (sencond == 0)
+            {
+                dispatcherTimer.Stop();
+                dispatcherTimer.Tick -= new EventHandler(dispatcherTimer_Tick);
+                PopupOffAnimation();
+                sencond = 2;
+            }
+            else
+            {
+                sencond --;
+            }
+        }
+        private static TextBlock _textBlock;
+        private static TextBlock CreateTextBlock(string text)
+        {
+            if (_textBlock == null)
+            {
+                _textBlock = new TextBlock();
+                _textBlock.TextAlignment = TextAlignment.Center;
+                _textBlock.VerticalAlignment = VerticalAlignment.Center;
+                _textBlock.FontSize = 20;
+                _textBlock.Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+            }
+            _textBlock.Text = text;
+            return _textBlock;
+        }
+        private static  SlideTransition st;
+        private static void PopupShowAnimation()
+        {
+            if (st == null)
+            {
+                st = new SlideTransition();
+            }
+            st.Mode = SlideTransitionMode.SlideRightFadeIn;
+            ITransition transition = st.GetTransition(_popUp.Child);
+            transition.Completed += delegate
+            {
+                transition.Stop();
+            };
+            transition.Begin();
+            _popUp.Child.Opacity = 1;
+
+        }
+        private static void PopupOffAnimation()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(()=> {
+                if (st == null)
+                {
+                    st = new SlideTransition();
+                }
+                st.Mode = SlideTransitionMode.SlideRightFadeOut;
+                ITransition transition = st.GetTransition(_popUp.Child);
+                transition.Completed += delegate
+                {
+                    transition.Stop();
+                    if (_popUp != null)
+                    {
+                        _popUp.Child = null;
+                        _popUp = null;
+                    }
+                };
+                transition.Begin();
+            });
+        }
         // 激活应用程序(置于前台)时执行的代码
         // 此代码在首次启动应用程序时不执行
         private void Application_Activated(object sender, ActivatedEventArgs e)
@@ -134,6 +338,14 @@ namespace DouBanFMBase
             //{
             //    App.ViewModel.LoadData();
             //}
+            if (WpStorage.GetIsoSetting(DbFMCommonData.NativeName) != null)
+            {
+                string native = WpStorage.GetIsoSetting(DbFMCommonData.NativeName).ToString();
+                CultureInfo newCulture = new CultureInfo(native);
+                Thread.CurrentThread.CurrentCulture = newCulture;
+                Thread.CurrentThread.CurrentUICulture = newCulture;
+                ((LocalizedStrings)App.Current.Resources["LocalizedStrings"]).ChangeCulture(native);
+            }
             if (WpStorage.GetIsoSetting(DbFMCommonData.NativeName) != null)
             {
                 string native = WpStorage.GetIsoSetting(DbFMCommonData.NativeName).ToString();
