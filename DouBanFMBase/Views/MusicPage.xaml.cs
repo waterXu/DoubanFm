@@ -154,10 +154,11 @@ namespace DouBanFMBase
             type = LoveImage.IsChecked? "u":"r";
             HttpHelper.OperationChannelSongs(type, DbFMCommonData.CurrentChannelId, currentSongInfo.sid);
 
-            if (!DbFMCommonData.AutoDownLoveSongInWifi && DbFMCommonData.DownSongIdList.Contains(currentSongInfo.sid) && type == "u")
+            if (!DbFMCommonData.AutoDownLoveSongInWifi || DbFMCommonData.DownSongIdList.Contains(currentSongInfo.sid) || type == "u")
             {
                 return;
             }
+            DownSong.Visibility = System.Windows.Visibility.Visible;
             HttpHelper.DownLoadSongLyr(currentSongInfo, true);
             HttpHelper.DownLoadMusic(currentSongInfo);
         }
@@ -300,7 +301,7 @@ namespace DouBanFMBase
             if (albumArtURL != null && latestAlbumArtPath != albumArtURL.ToString())
             {
                 latestAlbumArtPath = albumArtURL.ToString();
-                if (DbFMCommonData.SongFormDown)
+                if (WpStorage.isoFile.FileExists(DbFMCommonData.SongFormDown))
                 {
                     if (WpStorage.isoFile.FileExists(latestAlbumArtPath))
                     {

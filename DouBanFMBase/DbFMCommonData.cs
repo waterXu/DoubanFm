@@ -183,7 +183,12 @@ namespace DouBanFMBase
         /// <summary>
         /// 播放歌曲是否来自本地
         /// </summary>
-        public static bool SongFormDown { get; set; }
+        public static string SongFormDown { get { return "SongFormDown.dat"; } }
+        /// <summary>
+        /// 记录用户所在的区域
+        /// </summary>
+        public static string LocalNative { get; set; }
+
         /// <summary>
         /// 当前播放歌曲用户是否改变红心（红心显示一致性）
         /// </summary>
@@ -303,6 +308,7 @@ namespace DouBanFMBase
             WpStorage.SaveStringToIsoStore("SongsUrl.dat", getChannelSongsUrl);
             WpStorage.SetIsoSetting("LastedChannelId", selectIndex);
         }
+
 
 
 

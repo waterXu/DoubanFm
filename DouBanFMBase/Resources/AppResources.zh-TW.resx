@@ -257,12 +257,39 @@
     <value>無可用網絡</value>
   </data>
   <data name="OtherSetting" xml:space="preserve">
-    <value>其他设置</value>
+    <value>其他設置</value>
   </data>
   <data name="ShowNetwork" xml:space="preserve">
     <value>正在使用#name#網絡</value>
   </data>
   <data name="SongLoaded" xml:space="preserve">
     <value>下載完成</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>關於此應用</value>
+  </data>
+  <data name="AboutAppTip" xml:space="preserve">
+    <value>掌三豆瓣FM是一款第三方的豆瓣FM應用，應用版權歸開發者所有</value>
+  </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>意見反饋</value>
+  </data>
+  <data name="GradeForMe" xml:space="preserve">
+    <value>為我打分</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>版本號 :</value>
+  </data>
+  <data name="Weibo" xml:space="preserve">
+    <value>臉書</value>
+  </data>
+  <data name="CostTip" xml:space="preserve">
+    <value>正在使用手機移動網絡，將產生手機流量消耗</value>
+  </data>
+  <data name="OffExitTip" xml:space="preserve">
+    <value>關閉退出應用提醒</value>
+  </data>
+  <data name="PlayLocalSongError" xml:space="preserve">
+    <value>當前歌曲文件出錯，請重新下載</value>
   </data>
 </root>

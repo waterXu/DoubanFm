@@ -33,15 +33,13 @@ namespace DouBanFMBase
             CallbackManager.Startpage = this;
             if (WpStorage.GetIsoSetting(DbFMCommonData.IsFirstUse) == null)
             {
-                WpStorage.SetIsoSetting(DbFMCommonData.IsFirstUse,true);
+                WpStorage.SetIsoSetting(DbFMCommonData.IsFirstUse, true);
+                versionText.Text = DeviceUtil.GetAppVersion();
             }
             else
             {
                 bgImg.Visibility = System.Windows.Visibility.Visible;
                 firstStartGrid.Visibility = System.Windows.Visibility.Collapsed;
-                //BgImgTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
-                //BgImgTimer.Tick += new EventHandler(BgImgTimer_Tick);
-                //BgImgTimer.Start();
                 BgImgTimer_Tick();
             }
         }

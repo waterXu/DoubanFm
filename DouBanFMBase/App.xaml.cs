@@ -110,6 +110,7 @@ namespace DouBanFMBase
         // 此代码在重新激活应用程序时不执行
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            DbFMCommonData.LocalNative = Thread.CurrentThread.CurrentCulture.Name;
             if (WpStorage.GetIsoSetting(DbFMCommonData.NativeName) != null)
             {
                 string native = WpStorage.GetIsoSetting(DbFMCommonData.NativeName).ToString();
@@ -218,7 +219,7 @@ namespace DouBanFMBase
                     {
                         tip = AppResources.ShowNetwork.Replace("#name#", NetName);
                     }
-                  
+                    
                     ShowToast(tip);
 
                 }), null);

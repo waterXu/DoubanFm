@@ -101,8 +101,29 @@ namespace DouBanFMBase.ViewModel
                 {
                     _downMusicWithWifi = value;
                     DbFMCommonData.AutoDownLoveSongInWifi = value;
-                    WpStorage.SetIsoSetting("AutoDownLoveSongInWifi", _exitStopMusic);
+                    WpStorage.SetIsoSetting("AutoDownLoveSongInWifi", value);
                     NotifyPropertyChanged("AutoDownLoveSongInWifi");
+                }
+            }
+        }
+         private bool _offExitTip;
+        /// <summary>
+        /// wifi下自动下载当前播放的红心歌曲
+        /// </summary>
+         public bool OffExitTip
+
+        {
+            get 
+            {
+                return _offExitTip; 
+            }
+            set
+            {
+                if (_offExitTip != value)
+                {
+                    _offExitTip = value;
+                    WpStorage.SetIsoSetting("OffExitTip", _offExitTip);
+                    NotifyPropertyChanged("OffExitTip");
                 }
             }
         }
@@ -207,6 +228,81 @@ namespace DouBanFMBase.ViewModel
                      ReLoadData();
                  }));
              }
+         }
+         private DelegateCommand<string> _AppSettingCommand;
+         public DelegateCommand<string> AppSettingCommand
+         {
+            get
+            {
+                return _AppSettingCommand ?? (_AppSettingCommand = new DelegateCommand<string>((settingIndex) =>
+                {
+                    switch (settingIndex)
+                    {
+                            //打分
+                        case "1":
+                            //MarketplaceDetailTask marketplaceTask = new MarketplaceDetailTask();
+                            //Guid appid = Windows.ApplicationModel.Store.CurrentApp.AppId;
+                            //marketplaceTask.ContentIdentifier = appid.ToString();;
+                            //try
+                            //{
+                            //    marketplaceTask.Show();
+                            //}
+                            //catch
+                            //{
+                            //}
+                            //Windows.System.Launcher.LaunchUriAsync(new Uri("zune:navigate?appid=869aa398-8ee3-4440-bae9-1f344d248922"));
+                            //Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
+                            break;
+                            //反馈
+                        case "2":
+                             string strForamt = string.Format(" Device Info：\r\n {0} \r\n OS Version: \r\n {1} \r\n App Version:{2} \r\n NetWorkInfo:\r\n {3} \r\n "
+                            , DeviceUtil.GetDeviceName() + DeviceUtil.GetManufactor(), DeviceUtil.GetOSVersion(), DeviceUtil.GetAppVersion(), DeviceUtil.GetNetWorkType());
+
+                            EmailComposeTask emailTask = new EmailComposeTask()
+                            {
+                                To = "xuyanlan@outlook.com",
+                                Subject = "豆瓣FM意见反馈",
+                                Body = strForamt,
+                            };
+                            try
+                            {
+                                emailTask.Show();
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                            break;
+                        //微博
+                        case "3":
+                            string url = "";
+                            if (DbFMCommonData.LocalNative == "zh-CN")
+                            {
+                                url = "http://weibo.com/xuyanlanTC";
+                            }
+                            else
+                            {
+                                url = "http://www.facebook.com/1000yearscold";
+                            }
+                            WebBrowserTask task = new WebBrowserTask();
+                            task.Uri = new Uri(url, UriKind.Absolute);
+                            try
+                            {
+                                task.Show();
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                            break;
+                        //关于
+                        case "4":
+                            break;
+                        default:
+                            break;
+                    }
+                }));
+            }
          }
         private DelegateCommand<string> _selectThemeCommand;
         public DelegateCommand<string> SelectThemeCommand
@@ -406,7 +502,14 @@ namespace DouBanFMBase.ViewModel
             {
                 AutoDownLoveSongInWifi = false;
             }
-            
+            if (WpStorage.GetIsoSetting("OffExitTip") != null)
+            {
+                OffExitTip = (bool)WpStorage.GetIsoSetting("OffExitTip");
+            }
+            else
+            {
+                OffExitTip = false;
+            }
             //获取用户自定义主题
             if (WpStorage.isoFile.FileExists(DbFMCommonData.CustomJpgPath))
             {

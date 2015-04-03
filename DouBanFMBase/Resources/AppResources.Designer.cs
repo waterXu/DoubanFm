@@ -61,6 +61,24 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 关于此应用 的本地化字符串。
+        /// </summary>
+        public static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 掌三豆瓣FM是一款第三方的豆瓣FM应用，应用版权归开发者所有 的本地化字符串。
+        /// </summary>
+        public static string AboutAppTip {
+            get {
+                return ResourceManager.GetString("AboutAppTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 用户名 的本地化字符串。
         /// </summary>
         public static string Account {
@@ -187,6 +205,15 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 正在使用手机移动网络，将产生手机流量消耗 的本地化字符串。
+        /// </summary>
+        public static string CostTip {
+            get {
+                return ResourceManager.GetString("CostTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 自定义主题 的本地化字符串。
         /// </summary>
         public static string CustomTheme {
@@ -237,6 +264,24 @@ namespace DouBanFMBase.Resources {
         public static string ExitStopMusicTip {
             get {
                 return ResourceManager.GetString("ExitStopMusicTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 意见反馈 的本地化字符串。
+        /// </summary>
+        public static string Feedback {
+            get {
+                return ResourceManager.GetString("Feedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 为我打分 的本地化字符串。
+        /// </summary>
+        public static string GradeForMe {
+            get {
+                return ResourceManager.GetString("GradeForMe", resourceCulture);
             }
         }
         
@@ -340,6 +385,15 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 关闭退出应用提醒 的本地化字符串。
+        /// </summary>
+        public static string OffExitTip {
+            get {
+                return ResourceManager.GetString("OffExitTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 当前操作失败,请检查网络或重试 的本地化字符串。
         /// </summary>
         public static string OperationError {
@@ -400,6 +454,15 @@ namespace DouBanFMBase.Resources {
             get {
                 object obj = ResourceManager.GetObject("pivot1", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 当前歌曲文件出错，请重新下载 的本地化字符串。
+        /// </summary>
+        public static string PlayLocalSongError {
+            get {
+                return ResourceManager.GetString("PlayLocalSongError", resourceCulture);
             }
         }
         
@@ -517,6 +580,24 @@ namespace DouBanFMBase.Resources {
         public static string ThemeSettingTip {
             get {
                 return ResourceManager.GetString("ThemeSettingTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 版本号 :  的本地化字符串。
+        /// </summary>
+        public static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 微博 的本地化字符串。
+        /// </summary>
+        public static string Weibo {
+            get {
+                return ResourceManager.GetString("Weibo", resourceCulture);
             }
         }
         

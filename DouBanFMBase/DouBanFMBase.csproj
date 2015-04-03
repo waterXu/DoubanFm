@@ -97,6 +97,7 @@
     <Compile Include="CallbackManager.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Helper\AlphaKeyGroup.cs" />
+    <Compile Include="Helper\DeviceUtil.cs" />
     <Compile Include="Models\LrcFragment.cs" />
     <Compile Include="Models\Lyric.cs" />
     <Compile Include="Converts\TextConverter.cs" />

@@ -3,3 +3,4 @@ C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\Bin
 C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\Bin\Debug\Newtonsoft.Json.dll
 C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\obj\Debug\DouBanAudioAgent.dll
 C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\obj\Debug\DouBanAudioAgent.pdb
+C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\obj\Debug\DouBanAudioAgent.csprojResolveAssemblyReference.cache

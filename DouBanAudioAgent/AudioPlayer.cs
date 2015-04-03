@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO.IsolatedStorage;
 using System.Net;
+using System.Collections.ObjectModel;
 
 namespace DouBanAudioAgent
 {
@@ -122,45 +123,35 @@ namespace DouBanAudioAgent
             switch (action)
             {
                 case UserAction.Play:
-                    //查看是否有 切换频道标识， 有则更新playerList
-                    if (WpStorage.isoFile.FileExists("ChangeChannels"))
+                    if (WpStorage.isoFile.FileExists("SongFormDown.dat"))
                     {
-                        //清除切换频道标识
-                        WpStorage.isoFile.DeleteFile("ChangeChannels");
-
-                        // load play list from isolated storage 
-                        LoadPlayListFromIsolatedStorage();
-                        if (playList.Count == 0)
-                        {
-                            System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
-                            return;
-                        }
-                        // start playing
-                        UpdatePlayTrack(player);
+                        string sid = WpStorage.ReadIsolatedStorageFile("SongFormDown.dat");
+                        LoadPlayListFromDownsongs(sid, player);
                     }
                     else
                     {
-                        player.Play();
+                        //查看是否有 切换频道标识， 有则更新playerList
+                        if (WpStorage.isoFile.FileExists("ChangeChannels"))
+                        {
+                            //清除切换频道标识
+                            WpStorage.isoFile.DeleteFile("ChangeChannels");
 
-                        //if (player.PlayerState == PlayState.Paused)
-                        //{
-                        //    // start playing again
-                        //    player.Play();
-                        //}
-                        //else if (player.PlayerState != PlayState.Playing)
-                        //{
-                        //    // load play list from isolated storage 
-                        //    LoadPlayListFromIsolatedStorage();
-
-                        //    // start playing
-                        //    if (playList.Count == 0)
-                        //    {
-                        //        System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
-                        //        return;
-                        //    }
-                        //    UpdatePlayTrack(player);
-                        //}
+                            // load play list from isolated storage 
+                            LoadPlayListFromIsolatedStorage();
+                            if (playList.Count == 0)
+                            {
+                                System.Diagnostics.Debug.WriteLine("没有可播放的歌曲");
+                                return;
+                            }
+                            // start playing
+                            UpdatePlayTrack(player);
+                        }
+                        else
+                        {
+                            player.Play();
+                        }
                     }
+                   
                     break;
                 case UserAction.Stop:
                     player.Stop();
@@ -191,7 +182,54 @@ namespace DouBanAudioAgent
 
             NotifyComplete();
         }
+
+       
         #region load New Songs Method
+        //load songs form localSongs
+        private void LoadPlayListFromDownsongs(string sid,BackgroundAudioPlayer player)
+        {
+            string songs = WpStorage.ReadIsolatedStorageFile("DownSongsInfo.dat");
+            if (!string.IsNullOrEmpty(songs))
+            {
+                List<SongInfo> localSongs = JsonConvert.DeserializeObject<List<SongInfo>>(songs);
+                playList.Clear();
+                SongInfo songInfo;
+                // Find songs details
+                string tag;
+                currentSongIndex = 0;
+                for (int i = 0; i < localSongs.Count; i++)
+                {
+                    songInfo = localSongs[i];
+                    if (sid == songInfo.sid)
+                    {
+                        currentSongIndex = i;
+                    }
+                    tag = JsonConvert.SerializeObject(songInfo);
+                    if (!WpStorage.isoFile.FileExists(songInfo.url))
+                    {
+                        continue;
+                    }
+                    System.Diagnostics.Debug.WriteLine("SONG = " + songInfo.url + songInfo.albumtitle);
+                    // Create a new AudioTrack object
+                    AudioTrack audioTrack = new AudioTrack(
+                        new Uri(songInfo.url, UriKind.Relative), // URL
+                        songInfo.title,         // MP3 Music Title
+                        songInfo.artist,        // MP3 Music Artist
+                        songInfo.albumtitle,         // MP3 Music Album name
+                        new Uri(songInfo.picture, UriKind.Relative),  // MP3 Music Artwork URL
+                        tag,
+                        EnabledPlayerControls.All
+                        );
+                    // add song to PlayList
+                    playList.Add(audioTrack);
+                }
+                player.Track = playList[currentSongIndex];
+                // start playing
+                player.Play();
+               
+            }
+            else { return ; }
+        }
         // load all playlist from isoloated storage
         private void LoadPlayListFromIsolatedStorage()
         {
@@ -296,25 +334,38 @@ namespace DouBanAudioAgent
             AudioTrack track = null;
 
             currentSongIndex++;
-            if (currentSongIndex > playList.Count - 1) 
+            if (WpStorage.isoFile.FileExists("SongFormDown.dat"))
             {
-                if (WpStorage.isoFile.FileExists("SongsLoaded"))
+                if (currentSongIndex > playList.Count - 1)
+                    currentSongIndex = 0;
+
+                if (playList != null && playList.Count > 0)
                 {
-                    LoadPlayListFromIsolatedStorage();
+                    track = playList[currentSongIndex];
                 }
-                currentSongIndex = 0;
             }
-            //else if (currentSongIndex == 1)
-            //{
-            //    //预加载其他歌曲保存 到独立存储
-            //    //GetHttpSongs.GetChannelSongs();
-            //    PlayListHelper.ReFreshSongList();
-            //}
-            System.Diagnostics.Debug.WriteLine("Current now = " + currentSongIndex);
-            System.Diagnostics.Debug.WriteLine("Playlist count = " + playList.Count);
-            if (playList != null && playList.Count > 0)
+            else
             {
-                track = playList[currentSongIndex];
+                if (currentSongIndex > playList.Count - 1)
+                {
+                    if (WpStorage.isoFile.FileExists("SongsLoaded"))
+                    {
+                        LoadPlayListFromIsolatedStorage();
+                    }
+                    currentSongIndex = 0;
+                }
+                //else if (currentSongIndex == 1)
+                //{
+                //    //预加载其他歌曲保存 到独立存储
+                //    //GetHttpSongs.GetChannelSongs();
+                //    PlayListHelper.ReFreshSongList();
+                //}
+                System.Diagnostics.Debug.WriteLine("Current now = " + currentSongIndex);
+                System.Diagnostics.Debug.WriteLine("Playlist count = " + playList.Count);
+                if (playList != null && playList.Count > 0)
+                {
+                    track = playList[currentSongIndex];
+                }
             }
             // specify the track
 
@@ -333,11 +384,7 @@ namespace DouBanAudioAgent
         /// <returns>AudioTrack 实例，或如果不允许前一曲目，则返回 null</returns>
         private AudioTrack GetPreviousTrack()
         {
-            if (WpStorage.GetIsoSetting("AllowPrev") != null)
-            {
-                AllowPrev = (bool)WpStorage.GetIsoSetting("AllowPrev");
-            }
-            if (AllowPrev)
+            if (WpStorage.isoFile.FileExists("SongFormDown.dat"))
             {
                 System.Diagnostics.Debug.WriteLine("GetPreviousrack");
 

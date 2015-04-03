@@ -100,7 +100,24 @@ namespace DouBanFMBase
             }
             else
             {
-                if (MessageBox.Show(AppResources.ConfirmExit, "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                if (!App.ViewModel.OffExitTip)
+                {
+                    if (MessageBox.Show(AppResources.ConfirmExit, "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        if (App.ViewModel.ExitStopMusic && BackgroundAudioPlayer.Instance.Track != null)
+                        {
+                            BackgroundAudioPlayer.Instance.Stop();
+                            BackgroundAudioPlayer.Instance.Track = null;
+                        }
+                        Application.Current.Terminate();
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+                }
+                else
                 {
                     if (App.ViewModel.ExitStopMusic && BackgroundAudioPlayer.Instance.Track != null)
                     {
@@ -108,11 +125,6 @@ namespace DouBanFMBase
                         BackgroundAudioPlayer.Instance.Track = null;
                     }
                     Application.Current.Terminate();
-                }
-                else
-                {
-                    e.Cancel = true;
-                    return;
                 }
             }
         }
@@ -161,6 +173,10 @@ namespace DouBanFMBase
                 App.ShowToast(AppResources.OperationError);
                 return;
             }
+            else if (DbFMCommonData.NetworkStatus != "WiFi")
+            {
+                App.ShowToast(AppResources.CostTip);
+            }
             if (IsFormLoveChannel)
             {
                 IsFormLoveChannel = false;
@@ -181,7 +197,10 @@ namespace DouBanFMBase
                 return;
             }
             WpStorage.SetIsoSetting("LastedPlayPivotIndex",1);
-            DbFMCommonData.SongFormDown = false;
+            if (WpStorage.isoFile.FileExists(DbFMCommonData.SongFormDown))
+            {
+                WpStorage.isoFile.DeleteFile(DbFMCommonData.SongFormDown);
+            }
             DbFMCommonData.SetSongsUrl("n", cv.ChannelId, lb.SelectedIndex);
             HttpHelper.OperationChannelSongs("n", cv.ChannelId);
             // 保存获取新列表 url 以便给background audio调用
@@ -201,6 +220,9 @@ namespace DouBanFMBase
                 CollectChannels.SelectedIndex = DbFMCommonData.LastedCollectIndex;
                 App.ShowToast(AppResources.OperationError);
                 return;
+            }else if (DbFMCommonData.NetworkStatus != "WiFi")
+            {
+                App.ShowToast(AppResources.CostTip);
             }
             if (IsFormLoveChannel)
             {
@@ -221,7 +243,10 @@ namespace DouBanFMBase
                 CollectChannels.SelectedIndex = DbFMCommonData.LastedCollectIndex;
                 return;
             }
-            DbFMCommonData.SongFormDown = false;
+            if (WpStorage.isoFile.FileExists(DbFMCommonData.SongFormDown))
+            {
+                WpStorage.isoFile.DeleteFile(DbFMCommonData.SongFormDown);
+            }
             WpStorage.SetIsoSetting("LastedPlayPivotIndex", 2);
             //保存获取新列表 url
             HttpHelper.OperationChannelSongs("n", cv.ChannelId);
@@ -282,12 +307,21 @@ namespace DouBanFMBase
                 //判断是否多选删除模式  不是则播放该歌曲
                 if (!CheckSongs.IsChecked)
                 {
-                    WpStorage.SetIsoSetting("LastedPlayPivotIndex", 0);
-                    string tag = JsonConvert.SerializeObject(songinfo);
-                    AudioTrack track = new AudioTrack(new Uri(songinfo.url,UriKind.Relative),songinfo.title,songinfo.artist,songinfo.albumtitle,new Uri(songinfo.picture,UriKind.Relative),tag ,EnabledPlayerControls.All);
-                    BackgroundAudioPlayer.Instance.Track = track;
-                    BackgroundAudioPlayer.Instance.Play();
-                    DbFMCommonData.SongFormDown = true;
+                    if (WpStorage.isoFile.FileExists(songinfo.url)) 
+                    {
+                        WpStorage.SetIsoSetting("LastedPlayPivotIndex", 0);
+                        WpStorage.SaveStringToIsoStore(DbFMCommonData.SongFormDown, songinfo.sid);
+                        BackgroundAudioPlayer.Instance.Play();
+                    }
+                    else
+                    {
+                        if(WpStorage.isoFile.FileExists(songinfo.picture))
+                            WpStorage.isoFile.DeleteFile(songinfo.picture);
+                        DbFMCommonData.DownSongIdList.Remove(songinfo.sid);
+                        DbFMCommonData.DownSongsList.Remove(songinfo);
+                        App.ShowToast(AppResources.PlayLocalSongError);
+                        App.ViewModel.SaveDownSongs();
+                    }
                 }
             }
         }
@@ -307,12 +341,12 @@ namespace DouBanFMBase
             SongInfo playingSong = null;
             foreach (SongInfo song in DownSongList.SelectedItems)
             {
-                
                 //判断是否正在播放下载歌曲
-                if (DbFMCommonData.SongFormDown)
+                if (WpStorage.isoFile.FileExists(DbFMCommonData.SongFormDown))
                 {
                     string playUrl = "";
-                    if(BackgroundAudioPlayer.Instance.Track!=null){
+                    if(BackgroundAudioPlayer.Instance.Track!=null)
+                    {
                         playUrl = BackgroundAudioPlayer.Instance.Track.Source.ToString().Replace("/","\\");
                     }
                     if (playUrl == song.url)
@@ -322,11 +356,8 @@ namespace DouBanFMBase
                         continue;
                     }
                 }
-                string imageType = song.picture.Remove(0, song.picture.Length - 4);
-                string localurl = DbFMCommonData.DownSongsIsoName + song.sid + ".mp3";
-                string picture = DbFMCommonData.DownSongsIsoName + song.sid + imageType;
-                WpStorage.isoFile.DeleteFile(localurl);
-                WpStorage.isoFile.DeleteFile(picture);
+                WpStorage.isoFile.DeleteFile(song.url);
+                WpStorage.isoFile.DeleteFile(song.picture);
                 DbFMCommonData.DownSongIdList.Remove(song.sid);
                 DbFMCommonData.DownSongsList.Remove(song);
             }
@@ -335,20 +366,15 @@ namespace DouBanFMBase
                 //删除当前播放歌曲
                 BackgroundAudioPlayer.Instance.Stop();
                 BackgroundAudioPlayer.Instance.Track = null;
-                string imageType = playingSong.picture.Remove(0, playingSong.picture.Length - 4);
-                string localurl = DbFMCommonData.DownSongsIsoName + playingSong.sid + ".mp3";
-                string picture = DbFMCommonData.DownSongsIsoName + playingSong.sid + imageType;
-                WpStorage.isoFile.DeleteFile(localurl);
-                WpStorage.isoFile.DeleteFile(picture);
+                WpStorage.isoFile.DeleteFile(playingSong.url);
+                WpStorage.isoFile.DeleteFile(playingSong.picture);
                 DbFMCommonData.DownSongIdList.Remove(playingSong.sid);
                 DbFMCommonData.DownSongsList.Remove(playingSong);
 
                 if (DbFMCommonData.DownSongsList.Count > 0)
                 {
                     playingSong = DbFMCommonData.DownSongsList[0];
-                    string tag = JsonConvert.SerializeObject(playingSong);
-                    AudioTrack track = new AudioTrack(new Uri(playingSong.url, UriKind.Relative), playingSong.title, playingSong.artist, playingSong.albumtitle, new Uri(playingSong.picture, UriKind.Relative), tag, EnabledPlayerControls.All);
-                    BackgroundAudioPlayer.Instance.Track = track;
+                    WpStorage.SaveStringToIsoStore(DbFMCommonData.SongFormDown, playingSong.sid);
                     BackgroundAudioPlayer.Instance.Play();
                 }
             }
@@ -437,7 +463,7 @@ namespace DouBanFMBase
                 CollectChannels.SetBinding(ListBox.ItemsSourceProperty, collectChannels);
                 if (App.ViewModel.Channels != null && App.ViewModel.Channels.Count > 0)
                 {
-                    if (AllChannels.ItemsSource != null)
+                    if (AllChannels.ItemsSource != null && DbFMCommonData.NetworkStatus=="WiFi")
                     {
                         int channelIndex = 0;
                         if (FirstLoadMusicIsPlaying && WpStorage.GetIsoSetting("LastedChannelId") != null)
@@ -492,6 +518,8 @@ namespace DouBanFMBase
         public void GetSongFail()
         {
             App.ShowToast(AppResources.OperationError);
+            AllChannels.SelectedIndex = -1;
+            CollectChannels.SelectedIndex = -1;
         }
         /// <summary>
         /// 登录成功

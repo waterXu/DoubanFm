@@ -279,4 +279,31 @@
   <data name="SongLoaded" xml:space="preserve">
     <value>下载完成</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>关于此应用</value>
+  </data>
+  <data name="AboutAppTip" xml:space="preserve">
+    <value>掌三豆瓣FM是一款第三方的豆瓣FM应用，应用版权归开发者所有</value>
+  </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>意见反馈</value>
+  </data>
+  <data name="GradeForMe" xml:space="preserve">
+    <value>为我打分</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>版本号 : </value>
+  </data>
+  <data name="Weibo" xml:space="preserve">
+    <value>微博</value>
+  </data>
+  <data name="CostTip" xml:space="preserve">
+    <value>正在使用手机移动网络，将产生手机流量消耗</value>
+  </data>
+  <data name="OffExitTip" xml:space="preserve">
+    <value>关闭退出应用提醒</value>
+  </data>
+  <data name="PlayLocalSongError" xml:space="preserve">
+    <value>当前歌曲文件出错，请重新下载</value>
+  </data>
 </root>
