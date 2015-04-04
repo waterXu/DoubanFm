@@ -20,6 +20,8 @@ namespace DouBanFMBase
         /// 注册url
         /// </summary>
         public static string RegisterUrl { get { return "http://www.douban.com/j/app/register"; } }
+        public static string GetcaptchaId { get { return "http://douban.fm/j/reg_captcha"; } }
+        public static string GetcaptchaImgUrl { get { return "http://douban.fm/misc/captcha?size=m&id="; } }
         /// <summary>
         /// 获取频道列表
         /// </summary>
@@ -160,8 +162,10 @@ namespace DouBanFMBase
         /// 是否自动下载添加的红心歌曲
         /// </summary>
         public static bool AutoDownLoveSongInWifi { get; set; }
-
-
+        /// <summary>
+        /// 验证码 图片地址
+        /// </summary>
+        public static string CaptchaImgUrl { get; set; }
         public enum CallbackType
         {
             Login = 1,

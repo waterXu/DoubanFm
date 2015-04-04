@@ -292,4 +292,16 @@
   <data name="PlayLocalSongError" xml:space="preserve">
     <value>Sorry, this songs error, please download again</value>
   </data>
+  <data name="Agreement" xml:space="preserve">
+    <value>I'm readed and agree</value>
+  </data>
+  <data name="AgreementInfo" xml:space="preserve">
+    <value>&lt;douban.fm agreement&gt;</value>
+  </data>
+  <data name="AgreementTip" xml:space="preserve">
+    <value>Please checked the agreement</value>
+  </data>
+  <data name="Captcha" xml:space="preserve">
+    <value>Captcha</value>
+  </data>
 </root>

@@ -124,7 +124,34 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
-        ///   查找类似 全部赫兹 的本地化字符串。
+        ///   查找类似 我已阅读并同意 的本地化字符串。
+        /// </summary>
+        public static string Agreement {
+            get {
+                return ResourceManager.GetString("Agreement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &lt;账号协议和隐私条款&gt; 的本地化字符串。
+        /// </summary>
+        public static string AgreementInfo {
+            get {
+                return ResourceManager.GetString("AgreementInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 勾选用户协议后，才可进行注册 的本地化字符串。
+        /// </summary>
+        public static string AgreementTip {
+            get {
+                return ResourceManager.GetString("AgreementTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 全部兆赫 的本地化字符串。
         /// </summary>
         public static string AllHz {
             get {
@@ -178,6 +205,15 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 验证码 的本地化字符串。
+        /// </summary>
+        public static string Captcha {
+            get {
+                return ResourceManager.GetString("Captcha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 切换账号 的本地化字符串。
         /// </summary>
         public static string ChangeAccount {
@@ -187,7 +223,7 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
-        ///   查找类似 收藏赫兹 的本地化字符串。
+        ///   查找类似 收藏兆赫 的本地化字符串。
         /// </summary>
         public static string CollectHz {
             get {
@@ -358,7 +394,7 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
-        ///   查找类似 我的赫兹 的本地化字符串。
+        ///   查找类似 我的兆赫 的本地化字符串。
         /// </summary>
         public static string MyHz {
             get {
@@ -367,7 +403,7 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
-        ///   查找类似 我的红心赫兹 的本地化字符串。
+        ///   查找类似 我的红心兆赫 的本地化字符串。
         /// </summary>
         public static string MyLoveHz {
             get {

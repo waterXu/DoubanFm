@@ -242,7 +242,8 @@ namespace DouBanFMBase.ViewModel
                         case "1":
                             //MarketplaceDetailTask marketplaceTask = new MarketplaceDetailTask();
                             //Guid appid = Windows.ApplicationModel.Store.CurrentApp.AppId;
-                            //marketplaceTask.ContentIdentifier = appid.ToString();;
+                            //marketplaceTask.ContentIdentifier = appid.ToString();
+                            //marketplaceTask.ContentType = MarketplaceContentType.Applications;
                             //try
                             //{
                             //    marketplaceTask.Show();
@@ -250,8 +251,9 @@ namespace DouBanFMBase.ViewModel
                             //catch
                             //{
                             //}
-                            //Windows.System.Launcher.LaunchUriAsync(new Uri("zune:navigate?appid=869aa398-8ee3-4440-bae9-1f344d248922"));
-                            //Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings-lock:"));
+                            Guid appid = Windows.ApplicationModel.Store.CurrentApp.AppId;
+                            Windows.System.Launcher.LaunchUriAsync(new Uri("zune:reviewapp?appid="+appid.ToString()+"\""));
+                            break;
                             break;
                             //反馈
                         case "2":
@@ -579,7 +581,7 @@ namespace DouBanFMBase.ViewModel
                 }
                 Channels.Add(new ChannelViewModel()
                 {
-                    Name = "我的红心赫兹",
+                    Name = "我的红心兆赫",
                     NameEn = "My Love Radio",
                     ShowName = AppResources.MyLoveHz,
                     ChannelId = DbFMCommonData.HotChannelId,

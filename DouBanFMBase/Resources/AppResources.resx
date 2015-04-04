@@ -138,13 +138,13 @@
     <value>登录</value>
   </data>
   <data name="AllHz" xml:space="preserve">
-    <value>全部赫兹</value>
+    <value>全部兆赫</value>
   </data>
   <data name="ChangeAccount" xml:space="preserve">
     <value>切换账号</value>
   </data>
   <data name="CollectHz" xml:space="preserve">
-    <value>收藏赫兹</value>
+    <value>收藏兆赫</value>
   </data>
   <data name="CustomTheme" xml:space="preserve">
     <value>自定义主题</value>
@@ -165,7 +165,7 @@
     <value>我的下载</value>
   </data>
   <data name="MyHz" xml:space="preserve">
-    <value>我的赫兹</value>
+    <value>我的兆赫</value>
   </data>
   <data name="TapLoadLyr" xml:space="preserve">
     <value>点击搜索歌词</value>
@@ -220,7 +220,7 @@
     <value>开始体验</value>
   </data>
   <data name="MyLoveHz" xml:space="preserve">
-    <value>我的红心赫兹</value>
+    <value>我的红心兆赫</value>
   </data>
   <data name="OperationError" xml:space="preserve">
     <value>当前操作失败,请检查网络或重试</value>
@@ -305,5 +305,17 @@
   </data>
   <data name="PlayLocalSongError" xml:space="preserve">
     <value>当前歌曲文件出错，请重新下载</value>
+  </data>
+  <data name="Agreement" xml:space="preserve">
+    <value>我已阅读并同意</value>
+  </data>
+  <data name="AgreementInfo" xml:space="preserve">
+    <value>&lt;账号协议和隐私条款&gt;</value>
+  </data>
+  <data name="AgreementTip" xml:space="preserve">
+    <value>勾选用户协议后，才可进行注册</value>
+  </data>
+  <data name="Captcha" xml:space="preserve">
+    <value>验证码</value>
   </data>
 </root>

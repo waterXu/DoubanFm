@@ -11,6 +11,7 @@ using Microsoft.Phone.Shell;
 using System.IO;
 using DouBanAudioAgent;
 using DouBanFMBase.Resources;
+using Microsoft.Phone.Tasks;
 
 namespace DouBanFMBase.PopUp
 {
@@ -56,7 +57,7 @@ namespace DouBanFMBase.PopUp
                 isLogining = true;
             }
             username = DbFmAccount.Text.Trim();
-            if (string.IsNullOrEmpty(username))
+            if (string.IsNullOrEmpty(username) || username == AppResources.AccountTip)
             {
                 MessageBox.Show(AppResources.AccountEmpty);
                 return;
@@ -101,32 +102,60 @@ namespace DouBanFMBase.PopUp
 
         private void RegisterAccount_Click(object sender, RoutedEventArgs e)
         {
-            //string registerUrl = DbFMCommonData.RegisterUrl + "?app_name=radio_desktop_win&version=100";
-            //System.Diagnostics.Debug.WriteLine("注册页面请求url：" + registerUrl);
+            //System.Diagnostics.Debug.WriteLine("注册页面GetcaptchaId请求url：" + DbFMCommonData.GetcaptchaId);
             //try
             //{
-            //    HttpHelper.httpGet(registerUrl, new AsyncCallback((ar) =>
+            //    HttpHelper.httpGet(DbFMCommonData.GetcaptchaId, new AsyncCallback((ar) =>
             //    {
-            //        WebResponse response = ((HttpWebRequest)ar.AsyncState).EndGetResponse(ar);
-            //        Stream stream = response.GetResponseStream();
-            //        byte[] data = new byte[stream.Length];
-            //        stream.Read(data, 0, (int)stream.Length);
-            //        string result = System.Text.UTF8Encoding.UTF8.GetString(data, 0, data.Length);
+            //        string result = HttpHelper.SyncResultTostring(ar);
             //        if (!string.IsNullOrEmpty(result))
             //        {
-            //            WebRegisterControl.registerHtml = result;
-            //            this.Dispatcher.BeginInvoke(() =>
+            //            DbFMCommonData.CaptchaImgUrl = DbFMCommonData.GetcaptchaImgUrl + result;
+            //            HttpHelper.httpGet(DbFMCommonData.CaptchaImgUrl, new AsyncCallback((arr) =>
             //            {
-            //                PopupManager.ShowUserControl(PopupManager.UserControlType.WebRegisterControl);
-            //            });
-            //        }
+            //                WebResponse response;
+            //                try
+            //                {
+            //                    response = ((HttpWebRequest)arr.AsyncState).EndGetResponse(arr);
+                    //        }
+                    //        catch
+                    //        {
+                    //            return;
+                    //        }
+                    //        Stream stream = response.GetResponseStream();
+                    //        if (stream != null)
+                    //        {
+                    //        }
+                    //    }));
+                    //}
+                    //else
+                    //{
+                    //    //App.ShowToast(AppResources.OperationError);
+                    //}
+            //        this.Dispatcher.BeginInvoke(() =>
+            //        {
+            //            PopupManager.ShowUserControl(PopupManager.UserControlType.RegisterControl);
+            //        });
             //    }));
             //}
             //catch
             //{
-            //    MessageBox.Show("注册请求失败，请确保网络设置正常");
+            //    //App.ShowToast(AppResources.OperationError);
+            //    PopupManager.ShowUserControl(PopupManager.UserControlType.RegisterControl);
             //}
-            PopupManager.ShowUserControl(PopupManager.UserControlType.RegisterControl);
+           // string url = "http://www.douban.com/about/agreement";
+            string registerUrl = DbFMCommonData.RegisterUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
+            System.Diagnostics.Debug.WriteLine("注册请求url：" + registerUrl);
+            WebBrowserTask task = new WebBrowserTask();
+            task.Uri = new Uri(registerUrl, UriKind.Absolute);
+            try
+            {
+                task.Show();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void ForgetPwd_Tap(object sender, System.Windows.Input.GestureEventArgs e)

@@ -36,7 +36,7 @@ namespace DouBanFMBase.PopUp
              /// <summary>
              /// web注册界面  WebRegisterControl.xaml
              /// </summary>
-             WebRegisterControl,
+             //WebRegisterControl,
              /// <summary>
              /// 忘记密码页面
              /// </summary>
@@ -44,7 +44,7 @@ namespace DouBanFMBase.PopUp
              /// <summary>
              /// 协议隐私条款信息页面
              /// </summary>
-             LicenseControl,
+             //LicenseControl,
          };
 
         /// <summary>

@@ -130,13 +130,13 @@
     <value>請輸入你要登錄的賬號</value>
   </data>
   <data name="AllHz" xml:space="preserve">
-    <value>全部電臺</value>
+    <value>全部兆赫</value>
   </data>
   <data name="ChangeAccount" xml:space="preserve">
     <value>切換賬號</value>
   </data>
   <data name="CollectHz" xml:space="preserve">
-    <value>收藏電臺</value>
+    <value>收藏兆赫</value>
   </data>
   <data name="CustomTheme" xml:space="preserve">
     <value>自定義主題</value>
@@ -163,7 +163,7 @@
     <value>我的下載</value>
   </data>
   <data name="MyHz" xml:space="preserve">
-    <value>我的電臺</value>
+    <value>我的兆赫</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>密碼</value>
@@ -203,7 +203,7 @@
     <value>點擊右上角圖標可從本地圖庫選擇你喜歡的主題圖片哦~~</value>
   </data>
   <data name="MyLoveHz" xml:space="preserve">
-    <value>我的紅心赫茲</value>
+    <value>我的紅心兆赫</value>
   </data>
   <data name="OperationError" xml:space="preserve">
     <value>當前操作失敗,請檢查網絡或重試</value>
@@ -291,5 +291,17 @@
   </data>
   <data name="PlayLocalSongError" xml:space="preserve">
     <value>當前歌曲文件出錯，請重新下載</value>
+  </data>
+  <data name="Agreement" xml:space="preserve">
+    <value>我已閱讀並同意</value>
+  </data>
+  <data name="AgreementInfo" xml:space="preserve">
+    <value>&lt;賬號協議和隱私條款&gt;</value>
+  </data>
+  <data name="AgreementTip" xml:space="preserve">
+    <value>勾選用戶協議後，才可進行註冊</value>
+  </data>
+  <data name="Captcha" xml:space="preserve">
+    <value>註冊碼</value>
   </data>
 </root>
