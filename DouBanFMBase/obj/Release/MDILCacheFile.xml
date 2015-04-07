@@ -1,7 +1,7 @@
-﻿<xapCache source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\Bin\Release\DouBanFMBase_Release_AnyCPU.xap" wasSigned="False" wasTritonized="False" certificateThumbprint="" TimeStampUrl="" signKeyFile="" signKeyPassword="" lastWriteTime="2015/4/7 19:17:16">
-  <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\obj\Release\DouBanFMBase.dll" archivePath="DouBanFMBase.dll" lastWriteTime="2015/4/7 19:17:15" />
-  <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\obj\Release\en\DouBanFMBase.resources.dll" archivePath="en\DouBanFMBase.resources.dll" lastWriteTime="2015/4/7 19:17:15" />
-  <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\obj\Release\zh-TW\DouBanFMBase.resources.dll" archivePath="zh-TW\DouBanFMBase.resources.dll" lastWriteTime="2015/4/7 19:17:15" />
+﻿<xapCache source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\Bin\Release\DouBanFMBase_Release_AnyCPU.xap" wasSigned="False" wasTritonized="False" certificateThumbprint="" TimeStampUrl="" signKeyFile="" signKeyPassword="" lastWriteTime="2015/4/7 19:38:11">
+  <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\obj\Release\DouBanFMBase.dll" archivePath="DouBanFMBase.dll" lastWriteTime="2015/4/7 19:38:10" />
+  <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\obj\Release\en\DouBanFMBase.resources.dll" archivePath="en\DouBanFMBase.resources.dll" lastWriteTime="2015/4/7 19:38:10" />
+  <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\obj\Release\zh-TW\DouBanFMBase.resources.dll" archivePath="zh-TW\DouBanFMBase.resources.dll" lastWriteTime="2015/4/7 19:38:10" />
   <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\Assets\AlignmentGrid.png" archivePath="Assets\AlignmentGrid.png" lastWriteTime="2015/3/6 15:47:50" />
   <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\Assets\ApplicationIcon.png" archivePath="Assets\ApplicationIcon.png" lastWriteTime="2015/3/6 15:47:50" />
   <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\Images\add.png" archivePath="Images\add.png" lastWriteTime="2015/3/26 11:39:40" />
@@ -72,5 +72,5 @@
   <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\Bin\Debug\Newtonsoft.Json.dll" archivePath="Newtonsoft.Json.dll" lastWriteTime="2014/12/15 12:33:08" />
   <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\QQ图片20150407174508.png" archivePath="QQ图片20150407174508.png" lastWriteTime="2015/4/7 17:44:55" />
   <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\send_app_logo@2x.png" archivePath="send_app_logo@2x.png" lastWriteTime="2015/4/7 17:43:00" />
-  <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\Bin\Release\Properties\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="2015/4/7 19:17:16" />
+  <file source="C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanFMBase\Bin\Release\Properties\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="2015/4/7 19:38:11" />
 </xapCache>

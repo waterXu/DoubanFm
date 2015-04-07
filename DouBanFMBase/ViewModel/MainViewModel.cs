@@ -278,16 +278,16 @@ namespace DouBanFMBase.ViewModel
                         //微博
                         case "3":
                             string url = "";
-                            if (DbFMCommonData.LocalNative == "zh-CN")
-                            {
-                                url = "http://weibo.com/xuyanlanTC";
-                            }
-                            else
-                            {
-                                url = "http://www.facebook.com/1000yearscold";
-                            }
+                            //if (DbFMCommonData.LocalNative == "zh-CN")
+                            //{
+                            //    url = "http://weibo.com/xuyanlanTC";
+                            //}
+                            //else
+                            //{
+                            //    url = "http://www.facebook.com/1000yearscold";
+                            //}
                             WebBrowserTask task = new WebBrowserTask();
-                            task.Uri = new Uri(url, UriKind.Absolute);
+                            task.Uri = new Uri("http://weibo.com/xuyanlanTC", UriKind.Absolute);
                             try
                             {
                                 task.Show();
