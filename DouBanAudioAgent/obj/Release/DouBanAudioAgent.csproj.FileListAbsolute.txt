@@ -1,0 +1,5 @@
+C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\Bin\Release\DouBanAudioAgent.dll
+C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\Bin\Release\DouBanAudioAgent.pdb
+C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\Bin\Release\Newtonsoft.Json.dll
+C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\obj\Release\DouBanAudioAgent.dll
+C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DouBanAudioAgent\obj\Release\DouBanAudioAgent.pdb

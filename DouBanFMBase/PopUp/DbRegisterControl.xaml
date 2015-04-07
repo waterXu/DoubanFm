@@ -10,7 +10,7 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="120*"/>
-            <RowDefinition Height="400*"/>
+            <RowDefinition Height="360*"/>
             <RowDefinition Height="120*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -41,10 +41,10 @@
                         <RowDefinition Height="58*"/>
                         <RowDefinition Height="10"/>
                         <RowDefinition Height="58*"/>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="25"/>
                         <RowDefinition Height="58*"/>
-                        <RowDefinition Height="27"/>
-                        <RowDefinition Height="78*"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="80*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -62,8 +62,8 @@
                             <ColumnDefinition Width="50*"/>
                             <ColumnDefinition Width="123*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Path=LocalizedResources.Account,Source={StaticResource LocalizedStrings}}" Name="Account"  Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBox  FontSize="15" Text="{Binding Path=LocalizedResources.RegisterTip,Source={StaticResource LocalizedStrings}}" Grid.Column="1" Name="PhoneInput" Foreground="White"  VerticalAlignment="Center" Background="Transparent" BorderThickness="0" GotFocus="Input_GotFocus" LostFocus="Input_LostFocus"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.Account,Source={StaticResource LocalizedStrings}}"   Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBox  FontSize="15" Name="Account" Text="{Binding Path=LocalizedResources.RegisterTip,Source={StaticResource LocalizedStrings}}" Grid.Column="1" Foreground="White"  VerticalAlignment="Center" Background="Transparent" BorderThickness="0" GotFocus="Input_GotFocus" LostFocus="Input_LostFocus"/>
                     </Grid>
                     <Grid x:Name="PwdGrid" Grid.ColumnSpan="3" Grid.Row="3" Margin="10,0,10,0" Visibility="Visible" >
                         <Grid.Background>
@@ -91,7 +91,7 @@
                             <ColumnDefinition Width="123*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding Path=LocalizedResources.RePassword,Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBox Grid.Column="1" FontSize="20" Name="ReAccountPwdInput" VerticalAlignment="Center" Foreground="White" Background="Transparent"  BorderThickness="0" GotFocus="Input_GotFocus" LostFocus="Input_LostFocus"/>
+                        <TextBox Grid.Column="1" FontSize="15" Name="ReAccountPwdInput" VerticalAlignment="Center" Foreground="White" Background="Transparent"  BorderThickness="0" GotFocus="Input_GotFocus" LostFocus="Input_LostFocus"/>
                     </Grid>
                     <Grid x:Name="AuthCodeGrid" Grid.ColumnSpan="3" Grid.Row="7" Margin="10,0,10,0" Visibility="Visible">
                         <Grid.Background>
@@ -101,15 +101,15 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="104*"/>
-                            <ColumnDefinition Width="133*"/>
-                            <ColumnDefinition Width="123*"/>
+                            <ColumnDefinition Width=".6*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width=".8*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Path=LocalizedResources.Captcha,Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <TextBox  FontSize="20" Name="AuthCodeInput" VerticalAlignment="Center" Foreground="White" Background="Transparent"  BorderThickness="0" GotFocus="Input_GotFocus" LostFocus="Input_LostFocus" Grid.Column="1" />
-                        <Image Name="GetAuthCode" Loaded="GetAuthCode_Loaded" Stretch="UniformToFill" Grid.Column="2" Tap="GetAuthCode_Tap"/>
-
+                        <TextBox  FontSize="15" Name="AuthCodeInput" VerticalAlignment="Center" Foreground="White" Background="Transparent"  BorderThickness="0" GotFocus="Input_GotFocus" LostFocus="Input_LostFocus" Grid.Column="1" />
+                        <Image Name="GetAuthCode" Loaded="GetAuthCode_Loaded" Stretch="Fill" Grid.Column="2" Tap="GetAuthCode_Tap"/>
                     </Grid>
+                    <HyperlinkButton Content="{Binding Path=LocalizedResources.CaptchaChange,Source={StaticResource LocalizedStrings}}" Foreground="#FF2C16AA" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Right" Click="HyperlinkButton_Click"></HyperlinkButton>
                     <StackPanel Grid.Row="8" Orientation="Horizontal" Grid.ColumnSpan="3">
                         <CheckBox IsChecked="true"  Name="LicenseCheckBox" Content="{Binding Path=LocalizedResources.Agreement,Source={StaticResource LocalizedStrings}}" FontSize="15"  Foreground="Black" Background="Black" BorderBrush="Transparent"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="64" />
                         <TextBlock Text="{Binding Path=LocalizedResources.AgreementInfo,Source={StaticResource LocalizedStrings}}" Foreground="White" FontSize="15" VerticalAlignment="Center" Tap="ShowLicense_Tap" />

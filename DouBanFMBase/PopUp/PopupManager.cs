@@ -208,11 +208,14 @@ namespace DouBanFMBase.PopUp
              transition.Completed += delegate
              {
                  transition.Stop();
-                 _popUp.Child.Opacity = 0;
                  if (_popUp != null)
                  {
-                     _popUp.Child = null;
-                     _popUp = null;
+                     _popUp.Child.Opacity = 0;
+                     if (_popUp != null)
+                     {
+                         _popUp.Child = null;
+                         _popUp = null;
+                     }
                  }
              };
              transition.Begin();
@@ -223,7 +226,6 @@ namespace DouBanFMBase.PopUp
          public static void OffPopUp() 
          {
              PopupOffAnimation();
-             
          }
          private static int _keyboardPortraitHeight = 0;
          private static int _keyboardLandscapeHeight = 0;

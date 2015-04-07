@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using System.IO.IsolatedStorage;
 using System.Net;
 using System.Collections.ObjectModel;
+using Microsoft.Phone.Info;
+using System.Threading;
 
 namespace DouBanAudioAgent
 {
@@ -283,6 +285,10 @@ namespace DouBanAudioAgent
                 {
                     songInfo = songList[i];
                     tag =  JsonConvert.SerializeObject(songInfo);
+                    if (i == 0)
+                    {
+                        WpStorage.SaveStringToIsoStore("CurrentSongId.dat", songInfo.sid);
+                    }
                     System.Diagnostics.Debug.WriteLine("SONG = " + songInfo.url + songInfo.albumtitle);
                     // Create a new AudioTrack object
                     AudioTrack audioTrack = new AudioTrack(
@@ -354,12 +360,13 @@ namespace DouBanAudioAgent
                     }
                     currentSongIndex = 0;
                 }
-                //else if (currentSongIndex == 1)
-                //{
-                //    //预加载其他歌曲保存 到独立存储
-                //    //GetHttpSongs.GetChannelSongs();
-                //    PlayListHelper.ReFreshSongList();
-                //}
+                else if (currentSongIndex == 1)
+                {
+                    //预加载其他歌曲保存 到独立存储
+                    ReFreshSongList();
+                     //PlayListHelper.ReFreshSongList();
+                    //PlayListHelper.OperationChannelSongs();
+                }
                 System.Diagnostics.Debug.WriteLine("Current now = " + currentSongIndex);
                 System.Diagnostics.Debug.WriteLine("Playlist count = " + playList.Count);
                 if (playList != null && playList.Count > 0)
@@ -445,16 +452,16 @@ namespace DouBanAudioAgent
 
         static void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
-            WpStorage.CreateFile("SongsLoaded");
 
             if (e.Error != null)
             {
                 System.Diagnostics.Debug.WriteLine("wc_DownloadStringCompleted  error：" + e.Error);
-                return;
             }
             if (e.Result != "")
             {
+                WpStorage.CreateFile("SongsLoaded");
                 WpStorage.SaveStringToIsoStore("CurrentSongs.dat", e.Result);
+                System.Diagnostics.Debug.WriteLine("wc_DownloadStringCompleted  Result：" + e.Result);
             }
         }
 
@@ -482,21 +489,25 @@ namespace DouBanAudioAgent
             }
             string getChannelSongsUrl = null;
             getChannelSongsUrl = WpStorage.ReadIsolatedStorageFile("SongsUrl.dat");
+            string sid = WpStorage.ReadIsolatedStorageFile("CurrentSongId.dat");
+            getChannelSongsUrl += "&sid=" + sid;
             if (string.IsNullOrEmpty(getChannelSongsUrl))
             {
                 return;
             }
             try
             {
-                Random random = new Random();
-                int r = random.Next();
-                //getChannelSongsUrl += "&r=" + r;
                 System.Diagnostics.Debug.WriteLine("操作歌曲url：" + getChannelSongsUrl);
 
                 wc.DownloadStringCompleted -= new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
                 wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
-
                 wc.DownloadStringAsync(new Uri(getChannelSongsUrl, UriKind.Absolute));
+
+                Thread.Sleep(2000);
+                long memory = DeviceStatus.ApplicationCurrentMemoryUsage / (1024 * 1024);
+                long memoryLimit = DeviceStatus.ApplicationMemoryUsageLimit / (1024 * 1024);
+                long memoryMax = DeviceStatus.ApplicationPeakMemoryUsage / (1024 * 1024);
+                System.Diagnostics.Debug.WriteLine("当前内存使用情况：" + memory.ToString() + " MB 当前最大内存使用情况： " + memoryMax.ToString() + "MB  当前可分配最大内存： " + memoryLimit.ToString() + "  MB");
             }
             catch (Exception e)
             {

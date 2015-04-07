@@ -559,6 +559,8 @@ namespace DouBanFMBase.ViewModel
         {
             bool ischecked = false;
             IsLoaded = true;
+            Channels.Clear();
+            CollectChannels.Clear();
             HashSet<string> collectHashSet = new HashSet<string>();
             try
             {

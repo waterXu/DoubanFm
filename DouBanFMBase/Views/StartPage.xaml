@@ -9,9 +9,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     xmlns:CB ="clr-namespace:DouBanFMBase"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="True"
-    shell:SystemTray.Opacity="0"
-    shell:SystemTray.ForegroundColor="Black"
+    shell:SystemTray.IsVisible="False"
     Loaded="StartPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -27,17 +25,22 @@
             <phone:Pivot SelectionChanged="Pivot_SelectionChanged" x:Name="pivotItems" SelectedIndex="0">
                 <phone:PivotItem Margin="0" >
                     <phone:PivotItem.Background>
-                        <ImageBrush ImageSource="/Images/pivot1.png" Stretch="Fill"></ImageBrush>
+                        <ImageBrush ImageSource="/Images/pivot1.jpg" Stretch="UniformToFill"></ImageBrush>
                     </phone:PivotItem.Background>
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0" >
                     <phone:PivotItem.Background>
-                        <ImageBrush ImageSource="/Images/pivot1.png" Stretch="Fill"></ImageBrush>
+                        <ImageBrush ImageSource="/Images/pivot2.jpg" Stretch="Fill"></ImageBrush>
                     </phone:PivotItem.Background>
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Background>
-                        <ImageBrush ImageSource="/Images/pivot2.jpg" Stretch="Fill"></ImageBrush>
+                        <ImageBrush ImageSource="/Images/pivot3.jpg" Stretch="Fill"></ImageBrush>
+                    </phone:PivotItem.Background>
+                </phone:PivotItem>
+                <phone:PivotItem Margin="0">
+                    <phone:PivotItem.Background>
+                        <ImageBrush ImageSource="/Images/pivot4.jpg" Stretch="Fill"></ImageBrush>
                     </phone:PivotItem.Background>
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0">
@@ -77,11 +80,13 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Ellipse Name="ellipse0" Grid.Column="0" Fill="Gray" Height="13" Width="13" Tag="0"/>
                     <Ellipse Name="ellipse1" Grid.Column="1" Fill="#FFEF6B6B" Height="13" Tag="1" Width="13"/>
                     <Ellipse Name="ellipse2" Grid.Column="2" Fill="Gray" Height="13" Tag="2" Width="13"/>
                     <Ellipse Name="ellipse3" Grid.Column="3" Fill="Gray" Height="13" Tag="3" Width="13"/>
+                    <Ellipse Name="ellipse4" Grid.Column="4" Fill="Gray" Height="13" Tag="4" Width="13"/>
                 </Grid>
             </Grid>
         </Grid>

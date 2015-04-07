@@ -68,6 +68,10 @@ namespace DouBanFMBase
             {
                 DbFMCommonData.loginSuccess = false;
                 string result = SyncResultTostring(syncResult);
+                if (string.IsNullOrEmpty(result))
+                {
+                    return false;
+                }
                 LoginResult loginresult = JsonConvert.DeserializeObject<LoginResult>(result);
                 if (loginresult.r == 0)
                 {
@@ -98,21 +102,7 @@ namespace DouBanFMBase
         }
 
      
-        /// <summary>
-        /// HttpPsot功能函数
-        /// </summary>
-        /// <param name="url">请求url</param>
-        /// <param name="asyncCallback">请求返回</param>
-        public static void httpPost(string url, AsyncCallback asyncCallback)
-        {
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
-            req.Method = "POST";
-            req.Headers["Cache-Control"] = "no-cache";
-            req.Headers["Pragma"] = "no-cache";
-            //req.Headers["Content-Type"] = "application/x-www-form-urlencoded";
-            req.AllowAutoRedirect = true;
-            IAsyncResult token = req.BeginGetResponse(asyncCallback, req);
-        }
+        
         public static void GetChannelList()
         {
             App.ViewModel.IsLoaded = false;
@@ -367,13 +357,7 @@ namespace DouBanFMBase
                 }
             }
         }
-        /// <summary>
-        /// 更改歌曲是否红心状态
-        /// </summary>
-        /// <param name="status"></param>
-        public static void SetSongLoveStatus(bool status)
-        {
-        }
+     
         /// <summary>
         /// HttpGet功能函数
         /// </summary>
@@ -381,17 +365,35 @@ namespace DouBanFMBase
         /// <param name="asyncCallback">请求返回</param>
         public static void httpGet(string url, AsyncCallback asyncCallback,string cookieTag = null)
         {
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
-            req.Method = "GET";
-            req.AllowAutoRedirect = true;
-            //if (!string.IsNullOrEmpty(cookieTag))
-            //{
-            //    req.Headers["Cookie"] = "Tag="+cookieTag ;
-            //    //Cookie c = new Cookie("Tag",cookieTag);
-            //    //req.CookieContainer = new CookieContainer();
-            //    //req.CookieContainer.Add(url,c);
-            //}
-            IAsyncResult token = req.BeginGetResponse(asyncCallback, req);
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
+                req.Method = "GET";
+                req.AllowAutoRedirect = true;
+                IAsyncResult token = req.BeginGetResponse(asyncCallback, req);
+            }
+            catch { }
+        }
+        /// <summary>
+        /// HttpPsot功能函数
+        /// </summary>
+        /// <param name="url">请求url</param>
+        /// <param name="asyncCallback">请求返回</param>
+        public static void httpPost(string url, AsyncCallback asyncCallback)
+        {
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
+                req.Method = "POST";
+                //req.Headers["Cache-Control"] = "no-cache";
+                //req.Headers["Pragma"] = "no-cache";
+                req.ContentType = "application/x-www-form-urlencoded";
+                req.UserAgent = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 Safari/537.36";
+                //req.Headers["Content-Type"] = "application/x-www-form-urlencoded";
+                req.AllowAutoRedirect = true;
+                IAsyncResult token = req.BeginGetResponse(asyncCallback, req);
+            }
+            catch { }
         }
     }
 }

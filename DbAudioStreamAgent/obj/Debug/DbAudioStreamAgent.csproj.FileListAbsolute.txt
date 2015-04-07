@@ -1,4 +1,0 @@
-C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DbAudioStreamAgent\Bin\Debug\DbAudioStreamAgent.dll
-C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DbAudioStreamAgent\Bin\Debug\DbAudioStreamAgent.pdb
-C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DbAudioStreamAgent\obj\Debug\DbAudioStreamAgent.dll
-C:\Users\xyl\Documents\Visual Studio 2013\Projects\DouBanFM\DbAudioStreamAgent\obj\Debug\DbAudioStreamAgent.pdb

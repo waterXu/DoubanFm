@@ -3,10 +3,19 @@
   <DefaultLanguage xmlns="" code="zh-CN" />
   <Languages xmlns="">
     <Language code="en" />
-    <Language code="en-AU" />
+    <Language code="zh-Hant" />
+    <Language code="zh-TW" />
+    <Language code="zh-CN" />
+    <Language code="zh-MO" />
+    <Language code="zh-HK" />
+    <Language code="zh" />
+    <Language code="zh-CHT" />
+    <Language code="zh-Hans" />
+    <Language code="zh-CHS" />
+    <Language code="zh-SG" />
   </Languages>
-  <App xmlns="" ProductID="{572dc2aa-91a4-4e59-85d5-38f3fd14ec65}" Title="DouBanFMBase" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="DouBanFMBase author" Description="Sample description" Publisher="DouBanFMBase" PublisherID="{cbd6d1a3-c541-4933-bd5d-7b7339aacf76}" HubType="1">
-    <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
+  <App xmlns="" ProductID="{572dc2aa-91a4-4e59-85d5-38f3fd14ec65}" Title="掌上豆瓣FM" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="xuyanlan" Description="掌上豆瓣FM是一款第三方的豆瓣FM应用" Publisher="xuyanlan" PublisherID="{cbd6d1a3-c541-4933-bd5d-7b7339aacf76}" HubType="1">
+    <IconPath IsRelative="true" IsResource="false">send_app_logo@2x.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
@@ -25,10 +34,10 @@
     <Tokens>
       <PrimaryToken TokenID="DouBanFMBaseToken" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileSmall.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">send_app_logo@2x.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileMedium.png</BackgroundImageURI>
-          <Title>DouBanFMBase</Title>
+          <BackgroundImageURI IsRelative="true" IsResource="false">QQ图片20150407174508.png</BackgroundImageURI>
+          <Title>豆瓣FM</Title>
           <BackContent>
           </BackContent>
           <BackBackgroundImageURI>

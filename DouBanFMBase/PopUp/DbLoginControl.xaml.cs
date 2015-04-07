@@ -102,59 +102,31 @@ namespace DouBanFMBase.PopUp
 
         private void RegisterAccount_Click(object sender, RoutedEventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("注册页面GetcaptchaId请求url：" + DbFMCommonData.GetcaptchaId);
-            //try
-            //{
-            //    HttpHelper.httpGet(DbFMCommonData.GetcaptchaId, new AsyncCallback((ar) =>
-            //    {
-            //        string result = HttpHelper.SyncResultTostring(ar);
-            //        if (!string.IsNullOrEmpty(result))
-            //        {
-            //            DbFMCommonData.CaptchaImgUrl = DbFMCommonData.GetcaptchaImgUrl + result;
-            //            HttpHelper.httpGet(DbFMCommonData.CaptchaImgUrl, new AsyncCallback((arr) =>
-            //            {
-            //                WebResponse response;
-            //                try
-            //                {
-            //                    response = ((HttpWebRequest)arr.AsyncState).EndGetResponse(arr);
-                    //        }
-                    //        catch
-                    //        {
-                    //            return;
-                    //        }
-                    //        Stream stream = response.GetResponseStream();
-                    //        if (stream != null)
-                    //        {
-                    //        }
-                    //    }));
-                    //}
-                    //else
-                    //{
-                    //    //App.ShowToast(AppResources.OperationError);
-                    //}
-            //        this.Dispatcher.BeginInvoke(() =>
-            //        {
-            //            PopupManager.ShowUserControl(PopupManager.UserControlType.RegisterControl);
-            //        });
-            //    }));
-            //}
-            //catch
-            //{
-            //    //App.ShowToast(AppResources.OperationError);
-            //    PopupManager.ShowUserControl(PopupManager.UserControlType.RegisterControl);
-            //}
-           // string url = "http://www.douban.com/about/agreement";
-            string registerUrl = DbFMCommonData.RegisterUrl + "?app_name=" + DbFMCommonData.AppName + "&version=" + DbFMCommonData.Version;
-            System.Diagnostics.Debug.WriteLine("注册请求url：" + registerUrl);
-            WebBrowserTask task = new WebBrowserTask();
-            task.Uri = new Uri(registerUrl, UriKind.Absolute);
+            System.Diagnostics.Debug.WriteLine("注册页面GetcaptchaId请求url：" + DbFMCommonData.GetcaptchaId);
             try
             {
-                task.Show();
+                HttpHelper.httpGet(DbFMCommonData.GetcaptchaId, new AsyncCallback((ar) =>
+                {
+                    string result = HttpHelper.SyncResultTostring(ar);
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        result = result.Replace("\"","");
+                        DbFMCommonData.CaptchaId = result;
+                        DbFMCommonData.CaptchaImgUrl = DbFMCommonData.GetcaptchaImgUrl + result;
+                    }
+                    else
+                    {
+                        //App.ShowToast(AppResources.OperationError);
+                    }
+                    this.Dispatcher.BeginInvoke(() =>
+                    {
+                        PopupManager.ShowUserControl(PopupManager.UserControlType.RegisterControl);
+                    });
+                }));
             }
-            catch (Exception ex)
+            catch
             {
-
+                PopupManager.ShowUserControl(PopupManager.UserControlType.RegisterControl);
             }
         }
 

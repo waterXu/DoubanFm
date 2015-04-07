@@ -66,7 +66,6 @@
             </Ellipse>
 
             <TextBlock Name="showUserName" Text="{Binding LoginSuccess ,Converter={StaticResource textConverter},ConverterParameter= NickName }" Foreground="Black" Margin="75,0,121,0" VerticalAlignment="Center"/>
-            <Button Content="查看内存使用" Click="Button_Click" Margin="229,-5,103,5" Foreground="Black"></Button>
             <Ellipse Width="40" Height="40" Stroke="AntiqueWhite" StrokeThickness="3" HorizontalAlignment="Right" Tap="ThemeSetting_Tap">
                 <Ellipse.Fill>
                     <ImageBrush ImageSource="/Images/theme.png" Stretch="Uniform"/>

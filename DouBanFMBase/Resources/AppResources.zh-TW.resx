@@ -174,10 +174,6 @@
   <data name="PasswordTip" xml:space="preserve">
     <value>包含英文和數字,最少8位</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pivot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\pivot1.png;System.Byte[], mscorlib, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</value>
-  </data>
   <data name="Register" xml:space="preserve">
     <value>註冊新賬號</value>
   </data>
@@ -269,7 +265,7 @@
     <value>關於此應用</value>
   </data>
   <data name="AboutAppTip" xml:space="preserve">
-    <value>掌三豆瓣FM是一款第三方的豆瓣FM應用，應用版權歸開發者所有</value>
+    <value>掌上豆瓣FM是一款第三方的豆瓣FM應用，應用版權歸開發者所有</value>
   </data>
   <data name="Feedback" xml:space="preserve">
     <value>意見反饋</value>
@@ -303,5 +299,11 @@
   </data>
   <data name="Captcha" xml:space="preserve">
     <value>註冊碼</value>
+  </data>
+  <data name="CaptchaChange" xml:space="preserve">
+    <value>更換驗證碼</value>
+  </data>
+  <data name="CaptchaTip" xml:space="preserve">
+    <value>請輸入驗證碼</value>
   </data>
 </root>

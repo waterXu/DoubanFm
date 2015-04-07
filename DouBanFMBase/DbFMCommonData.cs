@@ -19,7 +19,7 @@ namespace DouBanFMBase
         /// <summary>
         /// 注册url
         /// </summary>
-        public static string RegisterUrl { get { return "http://www.douban.com/j/app/register"; } }
+        public static string RegisterUrl { get { return "http://douban.fm/j/register"; } }
         public static string GetcaptchaId { get { return "http://douban.fm/j/reg_captcha"; } }
         public static string GetcaptchaImgUrl { get { return "http://douban.fm/misc/captcha?size=m&id="; } }
         /// <summary>
@@ -166,6 +166,11 @@ namespace DouBanFMBase
         /// 验证码 图片地址
         /// </summary>
         public static string CaptchaImgUrl { get; set; }
+        /// <summary>
+        /// 验证码id
+        /// </summary>
+        public static string CaptchaId { get; set; }
+
         public enum CallbackType
         {
             Login = 1,
@@ -312,6 +317,7 @@ namespace DouBanFMBase
             WpStorage.SaveStringToIsoStore("SongsUrl.dat", getChannelSongsUrl);
             WpStorage.SetIsoSetting("LastedChannelId", selectIndex);
         }
+
 
 
 

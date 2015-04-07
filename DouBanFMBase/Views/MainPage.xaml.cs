@@ -201,9 +201,9 @@ namespace DouBanFMBase
             {
                 WpStorage.isoFile.DeleteFile(DbFMCommonData.SongFormDown);
             }
-            DbFMCommonData.SetSongsUrl("n", cv.ChannelId, lb.SelectedIndex);
             HttpHelper.OperationChannelSongs("n", cv.ChannelId);
             // 保存获取新列表 url 以便给background audio调用
+            DbFMCommonData.SetSongsUrl("s", cv.ChannelId, lb.SelectedIndex);
             System.Diagnostics.Debug.WriteLine("Hz名称：" + cv.Name + " Hz 是否收藏" + cv.IsChecked.ToString());
             DbFMCommonData.LastedIndex = lb.SelectedIndex;
         }
@@ -250,13 +250,16 @@ namespace DouBanFMBase
             WpStorage.SetIsoSetting("LastedPlayPivotIndex", 2);
             //保存获取新列表 url
             HttpHelper.OperationChannelSongs("n", cv.ChannelId);
-            DbFMCommonData.SetSongsUrl("n",cv.ChannelId, lb.SelectedIndex);
+            DbFMCommonData.SetSongsUrl("s", cv.ChannelId, lb.SelectedIndex);
             DbFMCommonData.LastedCollectIndex = lb.SelectedIndex;
 
         }
         private void Forward_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            BackgroundAudioPlayer.Instance.SkipNext();
+            if (BackgroundAudioPlayer.Instance.Track != null)
+            {
+                BackgroundAudioPlayer.Instance.SkipNext();
+            }
         }
 
         private void SongInfo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -517,9 +520,13 @@ namespace DouBanFMBase
         }
         public void GetSongFail()
         {
+            Dispatcher.BeginInvoke(() => 
+            {
+                AllChannels.SelectedIndex = -1;
+                CollectChannels.SelectedIndex = -1;
+            });
             App.ShowToast(AppResources.OperationError);
-            AllChannels.SelectedIndex = -1;
-            CollectChannels.SelectedIndex = -1;
+         
         }
         /// <summary>
         /// 登录成功
@@ -547,14 +554,6 @@ namespace DouBanFMBase
             });
         }
         #endregion
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            long memory = DeviceStatus.ApplicationCurrentMemoryUsage / 1048576;
-            long memoryLimit= DeviceStatus.ApplicationMemoryUsageLimit / 1048576;
-            long memoryMax = DeviceStatus.ApplicationPeakMemoryUsage / 1048576;
-            MessageBox.Show("当前内存使用情况："+memory.ToString() + " MB 当前最大内存使用情况： "+memoryMax.ToString()+ "MB  当前可分配最大内存： " + memoryLimit.ToString()+"  MB");
-        }
 
 
         // 用于生成本地化 ApplicationBar 的示例代码

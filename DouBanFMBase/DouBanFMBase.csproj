@@ -222,7 +222,7 @@
     <Content Include="Images\night.png" />
     <Content Include="Images\checked.png" />
     <Content Include="Images\pause.png" />
-    <Content Include="Images\pivot1.png" />
+    <Content Include="Images\pivot1.jpg" />
     <Content Include="Images\pivot2.jpg" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -239,9 +239,13 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\pivot3.jpg" />
+    <Content Include="Images\pivot4.jpg" />
     <Content Include="Images\reload.png" />
     <Content Include="Images\reload1.png" />
     <Content Include="Images\trash1.png" />
+    <Content Include="QQ图片20150407174508.png" />
+    <Content Include="send_app_logo%402x.png" />
     <Resource Include="Images\play.gif" />
     <Content Include="Images\play.png" />
     <Content Include="Images\star.png" />
@@ -289,10 +293,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DbAudioStreamAgent\DbAudioStreamAgent.csproj">
-      <Project>{254f9326-7ec9-46e2-9054-1ab33441d4a6}</Project>
-      <Name>DbAudioStreamAgent</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DouBanAudioAgent\DouBanAudioAgent.csproj">
       <Project>{096e4306-57d4-4e04-8882-5b251cc7ad82}</Project>
       <Name>DouBanAudioAgent</Name>

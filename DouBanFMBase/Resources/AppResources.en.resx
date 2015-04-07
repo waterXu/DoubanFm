@@ -174,10 +174,6 @@
   <data name="PasswordTip" xml:space="preserve">
     <value>Contain Letter And Numbers at least 8 length</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pivot1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\pivot2.jpg;System.Byte[], mscorlib, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</value>
-  </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
@@ -303,5 +299,11 @@
   </data>
   <data name="Captcha" xml:space="preserve">
     <value>Captcha</value>
+  </data>
+  <data name="CaptchaChange" xml:space="preserve">
+    <value>Change Captcha</value>
+  </data>
+  <data name="CaptchaTip" xml:space="preserve">
+    <value>Captcha is null</value>
   </data>
 </root>

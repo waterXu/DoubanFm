@@ -70,7 +70,7 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
-        ///   查找类似 掌三豆瓣FM是一款第三方的豆瓣FM应用，应用版权归开发者所有 的本地化字符串。
+        ///   查找类似 掌上豆瓣FM是一款第三方的豆瓣FM应用，应用版权归开发者所有 的本地化字符串。
         /// </summary>
         public static string AboutAppTip {
             get {
@@ -210,6 +210,24 @@ namespace DouBanFMBase.Resources {
         public static string Captcha {
             get {
                 return ResourceManager.GetString("Captcha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 更换验证码 的本地化字符串。
+        /// </summary>
+        public static string CaptchaChange {
+            get {
+                return ResourceManager.GetString("CaptchaChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请输入验证码 的本地化字符串。
+        /// </summary>
+        public static string CaptchaTip {
+            get {
+                return ResourceManager.GetString("CaptchaTip", resourceCulture);
             }
         }
         
@@ -480,16 +498,6 @@ namespace DouBanFMBase.Resources {
         public static string PasswordTip {
             get {
                 return ResourceManager.GetString("PasswordTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        public static byte[] pivot1 {
-            get {
-                object obj = ResourceManager.GetObject("pivot1", resourceCulture);
-                return ((byte[])(obj));
             }
         }
         

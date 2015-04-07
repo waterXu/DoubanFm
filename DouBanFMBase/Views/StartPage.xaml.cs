@@ -100,24 +100,35 @@ namespace DouBanFMBase
                         ellipse1.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse2.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse3.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
+                        ellipse4.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         break;
                     case 1:
                         ellipse0.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse1.Fill = new SolidColorBrush(Color.FromArgb(100, 230, 40, 40));
                         ellipse2.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse3.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
+                        ellipse4.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         break;
                     case 2:
                         ellipse0.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse1.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse2.Fill = new SolidColorBrush(Color.FromArgb(100, 230, 40, 40));
                         ellipse3.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
+                        ellipse4.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         break;
                     case 3:
                         ellipse0.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse1.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse2.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
                         ellipse3.Fill = new SolidColorBrush(Color.FromArgb(100, 230, 40, 40));
+                        ellipse4.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
+                        break;
+                    case 4:
+                        ellipse0.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
+                        ellipse1.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
+                        ellipse2.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
+                        ellipse3.Fill = new SolidColorBrush(Color.FromArgb(100, 128, 128, 128));
+                        ellipse4.Fill = new SolidColorBrush(Color.FromArgb(100, 230, 40, 40));
                         break;
                     default:
                         break;
