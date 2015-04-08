@@ -364,8 +364,6 @@ namespace DouBanAudioAgent
                 {
                     //预加载其他歌曲保存 到独立存储
                     ReFreshSongList();
-                     //PlayListHelper.ReFreshSongList();
-                    //PlayListHelper.OperationChannelSongs();
                 }
                 System.Diagnostics.Debug.WriteLine("Current now = " + currentSongIndex);
                 System.Diagnostics.Debug.WriteLine("Playlist count = " + playList.Count);
@@ -459,9 +457,17 @@ namespace DouBanAudioAgent
             }
             if (e.Result != "")
             {
-                WpStorage.CreateFile("SongsLoaded");
-                WpStorage.SaveStringToIsoStore("CurrentSongs.dat", e.Result);
-                System.Diagnostics.Debug.WriteLine("wc_DownloadStringCompleted  Result：" + e.Result);
+                try
+                {
+                    WpStorage.CreateFile("SongsLoaded");
+                    WpStorage.SaveStringToIsoStore("CurrentSongs.dat", e.Result);
+                    System.Diagnostics.Debug.WriteLine("wc_DownloadStringCompleted  Result：" + e.Result);
+                }
+                catch
+                {
+
+                }
+               
             }
         }
 

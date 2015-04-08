@@ -203,7 +203,7 @@ namespace DouBanFMBase
             }
             HttpHelper.OperationChannelSongs("n", cv.ChannelId);
             // 保存获取新列表 url 以便给background audio调用
-            DbFMCommonData.SetSongsUrl("s", cv.ChannelId, lb.SelectedIndex);
+            DbFMCommonData.SetSongsUrl("p", cv.ChannelId, lb.SelectedIndex);
             System.Diagnostics.Debug.WriteLine("Hz名称：" + cv.Name + " Hz 是否收藏" + cv.IsChecked.ToString());
             DbFMCommonData.LastedIndex = lb.SelectedIndex;
         }
@@ -250,7 +250,7 @@ namespace DouBanFMBase
             WpStorage.SetIsoSetting("LastedPlayPivotIndex", 2);
             //保存获取新列表 url
             HttpHelper.OperationChannelSongs("n", cv.ChannelId);
-            DbFMCommonData.SetSongsUrl("s", cv.ChannelId, lb.SelectedIndex);
+            DbFMCommonData.SetSongsUrl("p", cv.ChannelId, lb.SelectedIndex);
             DbFMCommonData.LastedCollectIndex = lb.SelectedIndex;
 
         }
@@ -433,18 +433,20 @@ namespace DouBanFMBase
             {
                  if (BackgroundAudioPlayer.Instance.Track != null)
                 {
-                    // show soung 
-                    SongName.Text = BackgroundAudioPlayer.Instance.Track.Title;
-                    SongArtist.Text = BackgroundAudioPlayer.Instance.Track.Artist;
-                    if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
+                    try 
                     {
-                        PlayBtn.IsChecked = false;
+                        SongName.Text = BackgroundAudioPlayer.Instance.Track.Title;
+                        SongArtist.Text = BackgroundAudioPlayer.Instance.Track.Artist;
+                        if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
+                        {
+                            PlayBtn.IsChecked = false;
+                        }
+                        else
+                        {
+                            PlayBtn.IsChecked = true;
+                        }
                     }
-                    else
-                    {
-                        PlayBtn.IsChecked = true;
-                    }
-                    
+                    catch { }
                 }
             });
         }

@@ -195,6 +195,7 @@
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="citiemid.png" />
     <Content Include="Images\add.png" />
     <Content Include="Images\btn.png" />
     <Content Include="Images\btn_a.png" />
@@ -244,8 +245,8 @@
     <Content Include="Images\reload.png" />
     <Content Include="Images\reload1.png" />
     <Content Include="Images\trash1.png" />
-    <Content Include="QQ图片20150407174508.png" />
-    <Content Include="send_app_logo%402x.png" />
+    <Content Include="logo.png" />
+    <Content Include="logo1.png" />
     <Resource Include="Images\play.gif" />
     <Content Include="Images\play.png" />
     <Content Include="Images\star.png" />

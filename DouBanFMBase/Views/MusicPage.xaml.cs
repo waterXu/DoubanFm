@@ -219,16 +219,24 @@ namespace DouBanFMBase
             // ff something is playing (a new song)
             if (BackgroundAudioPlayer.Instance.Track != null)
             {
-                DownSong.Visibility = System.Windows.Visibility.Visible;
-                TitleText.Text = BackgroundAudioPlayer.Instance.Track.Title;
-                ArtistText.Text = BackgroundAudioPlayer.Instance.Track.Artist;
-                AlbumText.Text = BackgroundAudioPlayer.Instance.Track.Album;
-                SongSlider.Minimum = 0;
-                SongSlider.Maximum = BackgroundAudioPlayer.Instance.Track.Duration.TotalMilliseconds;
-                string text = BackgroundAudioPlayer.Instance.Track.Duration.ToString();
-                EndTextBlock.Text = text.Substring(3, 5);
-                // album art
-                LoadAlbumArt();
+                try
+                {
+                    DownSong.Visibility = System.Windows.Visibility.Visible;
+                    TitleText.Text = BackgroundAudioPlayer.Instance.Track.Title;
+                    ArtistText.Text = BackgroundAudioPlayer.Instance.Track.Artist;
+                    AlbumText.Text = BackgroundAudioPlayer.Instance.Track.Album;
+                    SongSlider.Minimum = 0;
+                    SongSlider.Maximum = BackgroundAudioPlayer.Instance.Track.Duration.TotalMilliseconds;
+                    string text = BackgroundAudioPlayer.Instance.Track.Duration.ToString();
+                    EndTextBlock.Text = text.Substring(3, 5);
+                    // album art
+                    LoadAlbumArt();
+                }
+                catch
+                {
+
+                }
+               
             }
             if (isFirstComeHere)
             {
