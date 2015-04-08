@@ -240,20 +240,14 @@ namespace DouBanFMBase.ViewModel
                     {
                             //打分
                         case "1":
-                            //MarketplaceDetailTask marketplaceTask = new MarketplaceDetailTask();
-                            //Guid appid = Windows.ApplicationModel.Store.CurrentApp.AppId;
-                            //marketplaceTask.ContentIdentifier = appid.ToString();
-                            //marketplaceTask.ContentType = MarketplaceContentType.Applications;
-                            //try
-                            //{
-                            //    marketplaceTask.Show();
-                            //}
-                            //catch
-                            //{
-                            //}
-                            Guid appid = Windows.ApplicationModel.Store.CurrentApp.AppId;
-                            Windows.System.Launcher.LaunchUriAsync(new Uri("zune:reviewapp?appid="+appid.ToString()+"\""));
-                            break;
+                            try
+                            {
+                                Windows.System.Launcher.LaunchUriAsync(new Uri("zune:reviewapp?appid=56605010-6c29-4268-b7c2-2f97c2280579"));
+                            }
+                            catch
+                            {
+
+                            }
                             break;
                             //反馈
                         case "2":
