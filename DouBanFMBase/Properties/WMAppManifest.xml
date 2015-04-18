@@ -34,7 +34,7 @@
     <Tokens>
       <PrimaryToken TokenID="DouBanFMBaseToken" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">logo.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">logo1.png</SmallImageURI>
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">citiemid.png</BackgroundImageURI>
           <Title>豆瓣FM</Title>
