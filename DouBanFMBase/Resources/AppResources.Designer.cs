@@ -70,7 +70,7 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
-        ///   查找类似 掌上豆瓣FM是一款第三方的豆瓣FM应用，应用版权归开发者所有 的本地化字符串。
+        ///   查找类似 DouBanFM是一款第三方的豆瓣FM应用，应用版权归开发者所有 的本地化字符串。
         /// </summary>
         public static string AboutAppTip {
             get {
@@ -390,6 +390,15 @@ namespace DouBanFMBase.Resources {
         public static string LoginFirst {
             get {
                 return ResourceManager.GetString("LoginFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 抱歉，没搜索到歌词 的本地化字符串。
+        /// </summary>
+        public static string LrcLoadFail {
+            get {
+                return ResourceManager.GetString("LrcLoadFail", resourceCulture);
             }
         }
         

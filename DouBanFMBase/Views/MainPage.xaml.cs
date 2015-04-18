@@ -34,7 +34,7 @@ namespace DouBanFMBase
         /// 是否从专辑页面返回
         /// </summary>
         public static bool IsFromMusicPage = false;
-        public static int LastPivotIndex = 1;
+        public static int LastPivotIndex = 0;
         // 构造函数
         public MainPage()
         {
@@ -43,14 +43,10 @@ namespace DouBanFMBase
         #region Page EventHandler Method
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            DbFMCommonData.MainPageLoaded = true;
-            if (WpStorage.GetIsoSetting("LastedPlayPivotIndex") != null)
-            {
-                LastPivotIndex = (int)WpStorage.GetIsoSetting("LastedPlayPivotIndex");
-            }
-            MainPiovt.SelectedIndex = LastPivotIndex;
             if (!IsFromMusicPage)
             {
+                DbFMCommonData.MainPageLoaded = true;
+               
                 //绑定数据源
                 DataContext = App.ViewModel;
                 bool showMode = false;
@@ -140,6 +136,11 @@ namespace DouBanFMBase
                 localSongs.Path = new PropertyPath("LocalSongs");
                 DownSongList.SetBinding(ListBox.ItemsSourceProperty, localSongs);
             }
+            if (App.ViewModel.Channels == null || App.ViewModel.Channels.Count == 0) 
+            {
+                //从新获取数据
+                LoadChannelGrid.Visibility = System.Windows.Visibility.Visible;
+            }
             BackgroundAudioPlayer.Instance.PlayStateChanged += new EventHandler(Instance_PlayStateChanged);
         }
         // Navigated from this Page
@@ -189,6 +190,7 @@ namespace DouBanFMBase
             {
                 return;
             }
+            //处理未登录用户 收听红心hz
             if (!DbFMCommonData.loginSuccess && cv.ChannelId == DbFMCommonData.HotChannelId)
             {
                 MessageBox.Show(AppResources.ListenLoveRadioTip);
@@ -196,7 +198,7 @@ namespace DouBanFMBase
                 AllChannels.SelectedIndex = DbFMCommonData.LastedIndex;
                 return;
             }
-            WpStorage.SetIsoSetting("LastedPlayPivotIndex",1);
+            WpStorage.SetIsoSetting("LastedPlayPivotIndex",0);
             if (WpStorage.isoFile.FileExists(DbFMCommonData.SongFormDown))
             {
                 WpStorage.isoFile.DeleteFile(DbFMCommonData.SongFormDown);
@@ -236,6 +238,7 @@ namespace DouBanFMBase
             {
                 return;
             }
+            //处理未登录用户 收听红心hz
             if (!DbFMCommonData.loginSuccess && cv.ChannelId == DbFMCommonData.HotChannelId)
             {
                 MessageBox.Show(AppResources.ListenLoveRadioTip);
@@ -247,7 +250,7 @@ namespace DouBanFMBase
             {
                 WpStorage.isoFile.DeleteFile(DbFMCommonData.SongFormDown);
             }
-            WpStorage.SetIsoSetting("LastedPlayPivotIndex", 2);
+            WpStorage.SetIsoSetting("LastedPlayPivotIndex", 1);
             //保存获取新列表 url
             HttpHelper.OperationChannelSongs("n", cv.ChannelId);
             DbFMCommonData.SetSongsUrl("p", cv.ChannelId, lb.SelectedIndex);
@@ -312,7 +315,9 @@ namespace DouBanFMBase
                 {
                     if (WpStorage.isoFile.FileExists(songinfo.url)) 
                     {
-                        WpStorage.SetIsoSetting("LastedPlayPivotIndex", 0);
+                        WpStorage.SetIsoSetting("LastedPlayPivotIndex", 2);
+                        AllChannels.SelectedIndex = -1;
+                        CollectChannels.SelectedIndex = -1;
                         WpStorage.SaveStringToIsoStore(DbFMCommonData.SongFormDown, songinfo.sid);
                         BackgroundAudioPlayer.Instance.Play();
                     }
@@ -421,6 +426,7 @@ namespace DouBanFMBase
         private void aboutTile_Loaded(object sender, RoutedEventArgs e)
         {
             this.trexStoryboard.Begin();
+            this.AppAboutStoryboard.Begin();
         }
        
         #endregion
@@ -473,16 +479,21 @@ namespace DouBanFMBase
                         int channelIndex = 0;
                         if (FirstLoadMusicIsPlaying && WpStorage.GetIsoSetting("LastedChannelId") != null)
                         {
+                            if (WpStorage.GetIsoSetting("LastedPlayPivotIndex") != null)
+                            {
+                                LastPivotIndex = (int)WpStorage.GetIsoSetting("LastedPlayPivotIndex");
+                            }
+                            MainPiovt.SelectedIndex = LastPivotIndex;
                             channelIndex = (int)WpStorage.GetIsoSetting("LastedChannelId");
                             if (channelIndex == -1)
                             {
                                 channelIndex = 0;
                             }
-                            if (LastPivotIndex == 1)
+                            if (LastPivotIndex == 0)
                             {
                                 AllChannels.SelectedIndex = channelIndex;
                             }
-                            else if(LastPivotIndex == 2)
+                            else if(LastPivotIndex == 1)
                             {
                                 CollectChannels.SelectedIndex = channelIndex;
                             }

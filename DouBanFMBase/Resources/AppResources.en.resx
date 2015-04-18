@@ -265,7 +265,7 @@
     <value>About this application</value>
   </data>
   <data name="AboutAppTip" xml:space="preserve">
-    <value>This application is a third-platform application base douban.fm, application all copyright belongs to the developer</value>
+    <value>This  application is a third-platform application base douban.fm, application all copyright belongs to the developer</value>
   </data>
   <data name="Feedback" xml:space="preserve">
     <value>Feedback</value>
@@ -305,5 +305,8 @@
   </data>
   <data name="CaptchaTip" xml:space="preserve">
     <value>Captcha is null</value>
+  </data>
+  <data name="LrcLoadFail" xml:space="preserve">
+    <value>Sorry，Can‘t loaded Lrc</value>
   </data>
 </root>

@@ -37,6 +37,18 @@
                     <SplineDoubleKeyFrame KeyTime="0:0:37" Value="-307" />
                 </DoubleAnimationUsingKeyFrames>
             </Storyboard>
+            <Storyboard 
+            x:Name="AppAboutStoryboard" 
+            AutoReverse="True" 
+            RepeatBehavior="Forever"  >
+                <DoubleAnimationUsingKeyFrames 
+				Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)"
+				Storyboard.TargetName="AboutImg">
+                    <SplineDoubleKeyFrame KeyTime="0:0:1"/>
+                    <SplineDoubleKeyFrame KeyTime="0:0:26" Value="-307"/>
+                    <SplineDoubleKeyFrame KeyTime="0:0:27" Value="-307" />
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/DouBanFMBase;component/Style/ListboxItemStyle.xaml"/>
                 <ResourceDictionary Source="/DouBanFMBase;component/Style/ListboxItemStyle1.xaml"/>
@@ -74,7 +86,39 @@
             <Border BorderBrush="AntiqueWhite" BorderThickness="3" Margin="377,14,0,13" HorizontalAlignment="Left"   Height="40" Width="40" CornerRadius="60"  >
                 <CB:ChangeButton x:Name="ToggleBtn" DefaultImage="/Images/moon.png" SeletedImage="/Images/sun.png" VerticalAlignment="Top" IsChecked="{Binding ThemeMode,Mode=TwoWay}" ></CB:ChangeButton>
             </Border>
-            <phone:Pivot Grid.Row="1" x:Name="MainPiovt" Foreground="Black" SelectedIndex="1">
+            <phone:Pivot Grid.Row="1" x:Name="MainPiovt" Foreground="Black" >
+               
+                <phone:PivotItem Margin="0">
+                    <phone:PivotItem.Header>
+                        <TextBlock Text="{Binding Path=LocalizedResources.AllHz,Source={StaticResource LocalizedStrings}}" Width="350"  FontSize="60"></TextBlock>
+                    </phone:PivotItem.Header>
+                    <Grid>
+                        <ListBox x:Name="AllChannels" SelectionChanged="All_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" x:Name="ChannelsText" Margin="10,0,0,0" FontSize="30" Text="{Binding ShowName}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="LoadChannelGrid" Tap="LoadChannelGrid_Tap" Visibility="Collapsed">
+                            <Image Opacity=".5" Source="/Images/reload1.png" Height="100" Width="100" VerticalAlignment="Center"></Image>
+                            <TextBlock x:Name="LoadChannelsBtn" Text="{Binding Path=LocalizedResources.LoadChannelTip,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
+                        </Grid>
+                    </Grid>
+
+                </phone:PivotItem>
+                <phone:PivotItem Margin="0">
+                    <phone:PivotItem.Header>
+                        <TextBlock Text="{Binding Path=LocalizedResources.CollectHz,Source={StaticResource LocalizedStrings}}" Width="350"  FontSize="60"></TextBlock>
+                    </phone:PivotItem.Header>
+                    <ListBox x:Name="CollectChannels" SelectionChanged="Collect_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30" Text="{Binding ShowName}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </phone:PivotItem>
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>
                         <TextBlock Text="{Binding Path=LocalizedResources.MyHz,Source={StaticResource LocalizedStrings}}" Width="350" FontSize="60"></TextBlock>
@@ -107,37 +151,6 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
-                </phone:PivotItem>
-                <phone:PivotItem Margin="0">
-                    <phone:PivotItem.Header>
-                        <TextBlock Text="{Binding Path=LocalizedResources.AllHz,Source={StaticResource LocalizedStrings}}" Width="350"  FontSize="60"></TextBlock>
-                    </phone:PivotItem.Header>
-                    <Grid>
-                        <ListBox x:Name="AllChannels" SelectionChanged="All_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock VerticalAlignment="Center" x:Name="ChannelsText" Margin="10,0,0,0" FontSize="30" Text="{Binding ShowName}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="LoadChannelGrid" Tap="LoadChannelGrid_Tap" Visibility="Collapsed">
-                            <Image Opacity=".5" Source="/Images/reload1.png" Height="100" Width="100" VerticalAlignment="Center"></Image>
-                            <TextBlock x:Name="LoadChannelsBtn" Text="{Binding Path=LocalizedResources.LoadChannelTip,Source={StaticResource LocalizedStrings}}" Foreground="Black" VerticalAlignment="Center"></TextBlock>
-                        </Grid>
-                    </Grid>
-
-                </phone:PivotItem>
-                <phone:PivotItem Margin="0">
-                    <phone:PivotItem.Header>
-                        <TextBlock Text="{Binding Path=LocalizedResources.CollectHz,Source={StaticResource LocalizedStrings}}" Width="350"  FontSize="60"></TextBlock>
-                    </phone:PivotItem.Header>
-                    <ListBox x:Name="CollectChannels" SelectionChanged="Collect_SelectionChanged" ItemContainerStyle="{StaticResource ListBoxItemStyle}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="30" Text="{Binding ShowName}"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
                 </phone:PivotItem>
                 <phone:PivotItem Margin="0">
                     <phone:PivotItem.Header>
@@ -302,8 +315,8 @@
                                              Foreground="White">
                                                 <Grid>
                                                     <Canvas>
-                                                        <Image 
-	        		                        Stretch="None" Source="{Binding CustomThemeImg}"
+                                                        <Image x:Name="AboutImg"
+	        		                        Stretch="None" Source="{Binding BackgroundImg}"
                                             CacheMode="BitmapCache">
                                                             <Image.RenderTransform>
                                                                 <CompositeTransform />

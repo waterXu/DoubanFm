@@ -396,6 +396,7 @@ namespace DouBanFMBase
                 else
                 {
                     LoadSongLyrGrid.Visibility = System.Windows.Visibility.Visible;
+                    App.ShowToast(AppResources.LrcLoadFail);
                 }
 
             });

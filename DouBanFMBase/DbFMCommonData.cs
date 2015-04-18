@@ -32,9 +32,13 @@ namespace DouBanFMBase
         /// </summary>
         public static string ChannelSongsUrl { get { return "http://www.douban.com/j/app/radio/people"; } }
         /// <summary>
-        /// 获取歌词url的url地址
+        /// 获取歌词迷歌词url的url地址
         /// </summary>
         public static string LyricUrl { get { return "http://geci.me/api/lyric/"; } }
+        /// <summary>
+        /// 获取百度歌词url的url地址
+        /// </summary>
+        public static string BaiduLyricUrl { get { return "http://tingapi.ting.baidu.com/v1/restserver/ting?from=android&version=4.9.2.0&method=baidu.ting.search.merge&format=json&query="; } }
         /// <summary>
         /// 主页地址
         /// </summary>

@@ -279,7 +279,7 @@
     <value>关于此应用</value>
   </data>
   <data name="AboutAppTip" xml:space="preserve">
-    <value>掌上豆瓣FM是一款第三方的豆瓣FM应用，应用版权归开发者所有</value>
+    <value>DouBanFM是一款第三方的豆瓣FM应用，应用版权归开发者所有</value>
   </data>
   <data name="Feedback" xml:space="preserve">
     <value>意见反馈</value>
@@ -319,5 +319,8 @@
   </data>
   <data name="CaptchaTip" xml:space="preserve">
     <value>请输入验证码</value>
+  </data>
+  <data name="LrcLoadFail" xml:space="preserve">
+    <value>抱歉，没搜索到歌词</value>
   </data>
 </root>
