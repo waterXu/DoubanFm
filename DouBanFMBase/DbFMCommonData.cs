@@ -40,8 +40,7 @@ namespace DouBanFMBase
         /// </summary>
         public static string BaiduLyricUrl { get { return "http://tingapi.ting.baidu.com/v1/restserver/ting?from=android&version=4.9.2.0&method=baidu.ting.search.merge&format=json&query="; } }
 
-        //public static string BaiduLyricUrl { get { return "http://mp3.baidu.com/dev/api/?tn=getinfo&ct=0&word=%E6%B5%81%E6%B5%AA%E8%AE%B0&ie=utf-8&format=json"; } }
-
+       
         public static string BaiduMp3Host { get { return "http://ting.baidu.com"; } }
         public static string GetBaiduSongForId { get { return "/data/music/links?"; } }
         /// <summary>
@@ -67,7 +66,7 @@ namespace DouBanFMBase
         /// <summary>
         /// 默认白天主题路径
         /// </summary>
-        public static string DefaultDayTheme { get { return "/Images/theme/theme3.jpg"; } }
+        public static string DefaultDayTheme { get { return "/Images/theme/theme11.jpg"; } }
         /// <summary>
         /// 默认夜间主题路径
         /// </summary>

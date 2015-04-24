@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
-  <DefaultLanguage xmlns="" code="zh-CN" />
+  <DefaultLanguage xmlns="" code="en" />
   <Languages xmlns="">
     <Language code="en" />
     <Language code="zh-Hant" />
@@ -14,7 +14,7 @@
     <Language code="zh-CHS" />
     <Language code="zh-SG" />
   </Languages>
-  <App xmlns="" ProductID="{572dc2aa-91a4-4e59-85d5-38f3fd14ec65}" Title="DouBanFM" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="xuyanlan" Description="&#xD;&#xA;" Publisher="xuyanlan" PublisherID="{cbd6d1a3-c541-4933-bd5d-7b7339aacf76}" HubType="1">
+  <App xmlns="" ProductID="{572dc2aa-91a4-4e59-85d5-38f3fd14ec65}" Title="DouBanFM" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="xuyanlan" Description="&#xD;&#xA;" Publisher="xuyanlan" PublisherID="{cbd6d1a3-c541-4933-bd5d-7b7339aacf76}" HubType="1">
     <IconPath IsRelative="true" IsResource="false">logo1.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -34,9 +34,9 @@
     <Tokens>
       <PrimaryToken TokenID="DouBanFMBaseToken" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">logo1.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">citie.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">citiemid.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">citie.png</BackgroundImageURI>
           <Title>豆瓣FM</Title>
           <BackContent>
           </BackContent>
