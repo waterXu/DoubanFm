@@ -125,6 +125,7 @@ namespace DouBanAudioAgent
             switch (action)
             {
                 case UserAction.Play:
+                    //判断是否要播放本地歌曲
                     if (WpStorage.isoFile.FileExists("SongFormDown.dat"))
                     {
                         string sid = WpStorage.ReadIsolatedStorageFile("SongFormDown.dat");
@@ -358,6 +359,10 @@ namespace DouBanAudioAgent
                     {
                         LoadPlayListFromIsolatedStorage();
                     }
+                    else 
+                    {
+                        ReFreshSongList();
+                    }
                     currentSongIndex = 0;
                 }
                 else if (currentSongIndex == 1)
@@ -488,7 +493,7 @@ namespace DouBanAudioAgent
                 {
                     wc.CancelAsync();
                 }
-                catch (Exception e)
+                catch
                 {
 
                 }

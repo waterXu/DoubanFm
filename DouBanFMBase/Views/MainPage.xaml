@@ -292,11 +292,11 @@
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
                                         <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Path=LocalizedResources.ExitStopMusicTip,Source={StaticResource LocalizedStrings}}" FontSize="25" HorizontalAlignment="Left" TextWrapping="Wrap"  VerticalAlignment="Center"/>
-                                        <tool:ToggleSwitch Grid.Column="1" Grid.Row="0"  IsChecked="{Binding ExitStopMusic,Mode=TwoWay}" HorizontalAlignment="Right"  VerticalAlignment="Center"></tool:ToggleSwitch>
-                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Path=LocalizedResources.AutoDownSongInWifi,Source={StaticResource LocalizedStrings}}" FontSize="25" HorizontalAlignment="Left" TextWrapping="Wrap"   VerticalAlignment="Center"/>
-                                        <tool:ToggleSwitch Grid.Column="1" Grid.Row="1"  IsChecked="{Binding AutoDownLoveSongInWifi,Mode=TwoWay}" HorizontalAlignment="Right"  VerticalAlignment="Center"></tool:ToggleSwitch>
+                                        <tool:ToggleSwitch Grid.Column="1" Grid.Row="0"  IsChecked="{Binding ExitStopMusic,Mode=TwoWay}" Background="AliceBlue" Foreground="Black"  VerticalAlignment="Center"  HorizontalAlignment="Right"  ></tool:ToggleSwitch>
+                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Path=LocalizedResources.AutoDownSongInWifi,Source={StaticResource LocalizedStrings}}" FontSize="25" HorizontalAlignment="Left" Foreground="Black" TextWrapping="Wrap"   VerticalAlignment="Center"/>
+                                        <tool:ToggleSwitch Grid.Column="1" Grid.Row="1"  IsChecked="{Binding AutoDownLoveSongInWifi,Mode=TwoWay}" Background="AliceBlue" Foreground="Black"  HorizontalAlignment="Right"  VerticalAlignment="Center"></tool:ToggleSwitch>
                                         <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding Path=LocalizedResources.OffExitTip,Source={StaticResource LocalizedStrings}}" FontSize="25" HorizontalAlignment="Left" TextWrapping="Wrap"   VerticalAlignment="Center"/>
-                                        <tool:ToggleSwitch Grid.Column="1" Grid.Row="2" IsChecked="{Binding OffExitTip,Mode=TwoWay}" HorizontalAlignment="Right"  VerticalAlignment="Center"></tool:ToggleSwitch>
+                                        <tool:ToggleSwitch Grid.Column="1" Grid.Row="2" IsChecked="{Binding OffExitTip,Mode=TwoWay}" Background="AliceBlue" Foreground="Black" HorizontalAlignment="Right"  VerticalAlignment="Center"></tool:ToggleSwitch>
                                 </Grid>
                                     <Grid Background="#FFB0DBE3" Opacity=".7">
                                         <TextBlock Text="{Binding Path=LocalizedResources.About,Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" FontSize="30" Margin="10,0,0,0"></TextBlock>

@@ -44,4 +44,19 @@ namespace DouBanFMBase
         public string lrclink { get; set; }
         public string song_id { get; set; }
     }
+
+    public class BaiduMp3Result 
+    {
+        public string errorCode { get; set; }
+        public BaiduMp3Data data { get; set; }
+
+    }
+    public class BaiduMp3Data 
+    {
+        public List<BaiduMp3Song> songList { get; set; }
+    }
+    public class BaiduMp3Song 
+    {
+        public string lrcLink { get; set; }
+    }
 }

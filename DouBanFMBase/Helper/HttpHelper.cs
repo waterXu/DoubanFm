@@ -72,8 +72,17 @@ namespace DouBanFMBase
                 {
                     return false;
                 }
-                LoginResult loginresult = JsonConvert.DeserializeObject<LoginResult>(result);
-                if (loginresult.r == 0)
+                LoginResult loginresult = null;
+                try 
+                {
+                     loginresult = JsonConvert.DeserializeObject<LoginResult>(result);
+
+                }
+                catch
+                {
+                    return false;
+                }
+                if (loginresult != null && loginresult.r == 0)
                 {
                     //保存登录token
                     DbFMCommonData.Token = loginresult.token;
@@ -114,7 +123,15 @@ namespace DouBanFMBase
                     string result = SyncResultTostring(ar);
                     if (!string.IsNullOrEmpty(result))
                     {
-                        DbFMCommonData.ChannelList = JsonConvert.DeserializeObject<ChannelList>(result);
+                        try
+                        {
+                            DbFMCommonData.ChannelList = JsonConvert.DeserializeObject<ChannelList>(result);
+                        }
+                        catch
+                        {
+                            return ;
+                        }
+                        
                         DbFMCommonData.DownLoadSuccess = true;
                         App.ViewModel.LoadData();
                     }
@@ -184,8 +201,16 @@ namespace DouBanFMBase
                         //标识新列表请求已经返回
                         WpStorage.CreateFile("SongsLoaded");
                         WpStorage.SaveStringToIsoStore("CurrentSongs.dat", result);
-                        SongResult songresult = JsonConvert.DeserializeObject<SongResult>(result);
-                        if (songresult.r == 0)
+                        SongResult songresult = null;
+                        try
+                        {
+                            songresult = JsonConvert.DeserializeObject<SongResult>(result);
+                        }
+                        catch
+                        {
+                            return;
+                        }
+                        if (songresult!=null && songresult.r == 0)
                         {
                             DbFMCommonData.PlayingSongs = songresult.song;
                             loadSuccess = true;
@@ -222,7 +247,14 @@ namespace DouBanFMBase
                     string result = SyncResultTostring(ar);
                     if (!string.IsNullOrEmpty(result))
                     {
-                        DbFMCommonData.ChannelList = JsonConvert.DeserializeObject<ChannelList>(result);
+                        try
+                        {
+                            DbFMCommonData.ChannelList = JsonConvert.DeserializeObject<ChannelList>(result);
+                        }
+                        catch
+                        {
+                            return;
+                        }
                     }
                 }));
             }
@@ -268,12 +300,104 @@ namespace DouBanFMBase
                         DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongBack, downLoadSuccess);
                     }
                 }));
-            }catch(Exception e)
+            }
+            catch(Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("DownLoadMusic ex" + e.Message);
                 DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongBack, downLoadSuccess);
             }
         }
+        /// <summary>
+        /// 下载歌词
+        /// </summary>
+        /// <param name="song"></param>
+        //public static void DownLoadSongLyr(SongInfo song, bool fromDownSong = false)
+        //{
+        //    bool downLoadSuccess = false;
+        //    try
+        //    {
+        //        string loadLycUrl = DbFMCommonData.LyricUrl + song.title + "/" + song.artist;
+        //        //string loadLycUrl = DbFMCommonData.LyricUrl +"天路/韩红";
+        //        System.Diagnostics.Debug.WriteLine("歌词地址请求： " + loadLycUrl);
+        //        HttpHelper.httpGet(loadLycUrl, new AsyncCallback((ar) =>
+        //        {
+        //            string result = SyncResultTostring(ar);
+        //            if (result != null)
+        //            {
+        //                LyricResult lyric = null;
+
+        //                try 
+        //                {
+        //                    lyric = JsonConvert.DeserializeObject<LyricResult>(result);
+        //                }
+        //                catch
+        //                {
+        //                    return;
+        //                }
+        //                if (lyric!= null && lyric.code == "0")
+        //                {
+        //                    if (lyric.result != null && lyric.result.Count > 0)
+        //                    {
+        //                        System.Diagnostics.Debug.WriteLine("歌词请求： " + lyric.result[0].lrc);
+        //                        HttpHelper.httpGet(lyric.result[0].lrc, new AsyncCallback((lyricAr) =>
+        //                        {
+        //                            string lyricData = SyncResultTostring(lyricAr);
+        //                            if (lyricData != null)
+        //                            {
+        //                                downLoadSuccess = true;
+        //                                if (!fromDownSong)
+        //                                {
+        //                                    App.MusicViewModel.Lrc = lyricData;
+        //                                }
+        //                                else
+        //                                {
+        //                                    string lycUrl = DbFMCommonData.DownSongsIsoName + song.sid + ".lrc";
+        //                                    WpStorage.SaveStringToIsoStore(lycUrl, lyricData);
+        //                                }
+
+        //                            }
+        //                            if (!fromDownSong)
+        //                            {
+        //                                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+        //                            }
+
+        //                        }));
+        //                    }
+        //                    else
+        //                    {
+        //                        if (!fromDownSong)
+        //                        {
+        //                            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+        //                        }
+        //                    }
+
+        //                }
+        //                else
+        //                {
+        //                    if (!fromDownSong)
+        //                    {
+        //                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (!fromDownSong)
+        //                {
+        //                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+        //                }
+        //            }
+        //        }));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("DownLoadMusic ex" + e.Message);
+        //        if (!fromDownSong)
+        //        {
+        //            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+        //        }
+        //    }
+        //}
         /// <summary>
         /// 下载歌词
         /// </summary>
@@ -291,141 +415,69 @@ namespace DouBanFMBase
                     string result = SyncResultTostring(ar);
                     if (result != null)
                     {
-                        LyricResult lyric = JsonConvert.DeserializeObject<LyricResult>(result);
+                        LyricResult lyric = null;
+                        try 
+                        {
+                            lyric = JsonConvert.DeserializeObject<LyricResult>(result);
+                        }
+                        catch 
+                        {
+                            DownLoadBaiduSongLyr(song, fromDownSong);
+                            return;
+                        }
                         if (lyric.code == "0")
                         {
                             if (lyric.result != null && lyric.result.Count > 0)
                             {
-                                System.Diagnostics.Debug.WriteLine("歌词请求： " + lyric.result[0].lrc);
-                                HttpHelper.httpGet(lyric.result[0].lrc, new AsyncCallback((lyricAr) =>
+                                string lyricUrl = lyric.result[0].lrc;
+                                System.Diagnostics.Debug.WriteLine("歌词请求： " + lyricUrl);
+                                HttpHelper.httpGet(lyricUrl, new AsyncCallback((lyricAr) =>
                                 {
-                                    string lyricData = SyncResultTostring(lyricAr);
-                                    if (lyricData != null)
+                                    string lyricInfo = SyncResultTostring(lyricAr);
+                                    if (lyricInfo != null)
                                     {
-                                        downLoadSuccess = true;
                                         if (!fromDownSong)
                                         {
-                                            App.MusicViewModel.Lrc = lyricData;
+                                            App.MusicViewModel.Lrc = lyricInfo;
+                                            downLoadSuccess = true;
+                                            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
                                         }
                                         else
                                         {
                                             string lycUrl = DbFMCommonData.DownSongsIsoName + song.sid + ".lrc";
-                                            WpStorage.SaveStringToIsoStore(lycUrl, lyricData);
+                                            WpStorage.SaveStringToIsoStore(lycUrl, lyricInfo);
                                         }
 
                                     }
-                                    if (!fromDownSong)
+                                    else
                                     {
-                                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                                        DownLoadBaiduSongLyr(song, fromDownSong);
                                     }
-
                                 }));
                             }
                             else
                             {
-                                if (!fromDownSong)
-                                {
-                                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
-                                }
+                                DownLoadBaiduSongLyr(song, fromDownSong);
                             }
 
                         }
                         else
                         {
-                            if (!fromDownSong)
-                            {
-                                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
-                            }
+                            DownLoadBaiduSongLyr(song, fromDownSong);
                         }
                     }
                     else
                     {
-                        if (!fromDownSong)
-                        {
-                            DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
-                        }
+                        DownLoadBaiduSongLyr(song, fromDownSong);
                     }
                 }));
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("DownLoadMusic ex" + e.Message);
-                if (!fromDownSong)
-                {
-                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
-                }
+                DownLoadBaiduSongLyr(song, fromDownSong);
             }
         }
-        /// <summary>
-        /// 下载歌词
-        /// </summary>
-        /// <param name="song"></param>
-        //public static void DownLoadSongLyr(SongInfo song,bool fromDownSong = false)
-        //{
-        //    bool downLoadSuccess = false;
-        //    try
-        //    {
-        //        string loadLycUrl = DbFMCommonData.LyricUrl + song.title + "/" + song.artist;
-        //        //string loadLycUrl = DbFMCommonData.LyricUrl +"天路/韩红";
-        //        System.Diagnostics.Debug.WriteLine("歌词地址请求： " + loadLycUrl);
-        //        HttpHelper.httpGet(loadLycUrl, new AsyncCallback((ar) =>
-        //        {
-        //            string result = SyncResultTostring(ar);
-        //            if (result != null)
-        //            {
-        //                LyricResult lyric = JsonConvert.DeserializeObject<LyricResult>(result);
-        //                if (lyric.code == "0")
-        //                {
-        //                    if(lyric.result != null && lyric.result.Count>0)
-        //                    {
-        //                        System.Diagnostics.Debug.WriteLine("歌词请求： " + lyric.result[0].lrc);
-        //                        HttpHelper.httpGet(lyric.result[0].lrc, new AsyncCallback((lyricAr) =>
-        //                        {
-        //                            string lyricInfo = SyncResultTostring(lyricAr);
-        //                            if (lyricInfo != null)
-        //                            {
-        //                                if (!fromDownSong)
-        //                                {
-        //                                    App.MusicViewModel.Lrc = lyricInfo;
-        //                                    downLoadSuccess = true;
-        //                                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
-        //                                }
-        //                                else
-        //                                {
-        //                                    string lycUrl = DbFMCommonData.DownSongsIsoName + song.sid + ".lrc";
-        //                                    WpStorage.SaveStringToIsoStore(lycUrl, lyricInfo);
-        //                                }
-
-        //                            }
-        //                            else 
-        //                            {
-        //                                DownLoadBaiduSongLyr(song, fromDownSong);
-        //                            }
-        //                        }));
-        //                    }
-        //                    else
-        //                    {
-        //                        DownLoadBaiduSongLyr(song, fromDownSong);
-        //                    }
-                          
-        //                }
-        //                else
-        //                {
-        //                    DownLoadBaiduSongLyr(song, fromDownSong);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                DownLoadBaiduSongLyr(song, fromDownSong);
-        //            }
-        //        }));
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine("DownLoadMusic ex" + e.Message);
-        //        DownLoadBaiduSongLyr(song,fromDownSong);
-        //    }
-        //}
 
         /// <summary>
         /// 下载百度音乐歌词
@@ -443,49 +495,74 @@ namespace DouBanFMBase
                     string result = SyncResultTostring(ar);
                     if (result != null)
                     {
-                        BaiduLyricResult lyric;
+                        BaiduLyricResult lyric = null;
                         try
                         {
                             lyric = JsonConvert.DeserializeObject<BaiduLyricResult>(result);
                         }
                         catch 
                         {
-                            return;
-                        }
-                        if (lyric != null && lyric.error_code !=null && lyric.error_code == "22000")
-                        {
-                            if (lyric.result != null && lyric.result.song_info != null && lyric.result.song_info.song_list != null && lyric.result.song_info.song_list.Count > 0 && lyric.result.song_info.song_list[0].lrclink != null)
+                            if (!fromDownSong)
                             {
-                                System.Diagnostics.Debug.WriteLine("歌词请求： " + lyric.result.song_info.song_list[0].lrclink);
+                                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                            }
+                        }
+                        if (lyric != null && lyric.error_code !=null && lyric.error_code == "22000" &&　lyric.result != null && lyric.result.song_info != null && lyric.result.song_info.song_list != null && lyric.result.song_info.song_list.Count > 0 && lyric.result.song_info.song_list[0].lrclink != null)
+                        {
                                 BaiduSongList songInfo = lyric.result.song_info.song_list[0];
-                                string lrcUrl = songInfo.lrclink;
-                                if(songInfo.song_id != null)
+                                if (songInfo != null && songInfo.song_id != null)
                                 {
-                                    //lrcUrl = lrcUrl.Replace()
-                                }
-                                lrcUrl = "http://box.zhangmen.baidu.com/bdlrc/256/25635.lrc ";
-                                HttpHelper.httpGet(lrcUrl, new AsyncCallback((lyricAr) =>
-                                {
-                                    string lyricData = SyncResultTostring(lyricAr);
-                                    if (lyricData != null)
+                                    string getSongUrl = DbFMCommonData.BaiduMp3Host + DbFMCommonData.GetBaiduSongForId + "songIds=" + songInfo.song_id;
+                                    HttpHelper.httpGet(getSongUrl, new AsyncCallback((songAr) =>
                                     {
-                                        downLoadSuccess = true;
-                                        if (!fromDownSong)
+                                        string songData = SyncResultTostring(songAr);
+                                        BaiduMp3Result songListResult = null;
+                                        try
                                         {
-                                            App.MusicViewModel.Lrc = lyricData;
+                                            songListResult = JsonConvert.DeserializeObject<BaiduMp3Result>(songData);
                                         }
-                                        else
+                                        catch 
                                         {
-                                            string lycUrl = DbFMCommonData.DownSongsIsoName + song.sid + ".lrc";
-                                            WpStorage.SaveStringToIsoStore(lycUrl, lyricData);
+                                            if (!fromDownSong)
+                                            {
+                                                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                                            }
                                         }
-
-                                    }
-                                    if (!fromDownSong)
-                                    {
-                                        DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
-                                    }
-                                }));
+                                        if (songListResult != null && songListResult.errorCode == "22000" && songListResult.data != null && songListResult.data.songList != null && songListResult.data.songList.Count >0)
+                                        {
+                                            string songLrc = DbFMCommonData.BaiduMp3Host + songListResult.data.songList[0].lrcLink;
+                                            //songLrc = "http://ting.baidu.com/data2/lrc/15265710/15265710.lrc";
+                                            System.Diagnostics.Debug.WriteLine("歌词请求： " + songLrc);
+                                            HttpHelper.httpGet(songLrc, new AsyncCallback((lyricAr) =>
+                                            {
+                                                string lyricData = SyncResultTostring(lyricAr);
+                                                if (lyricData != null)
+                                                {
+                                                    downLoadSuccess = true;
+                                                    if (!fromDownSong)
+                                                    {
+                                                        App.MusicViewModel.Lrc = lyricData;
+                                                    }
+                                                    else
+                                                    {
+                                                        string lycUrl = DbFMCommonData.DownSongsIsoName + song.sid + ".lrc";
+                                                        WpStorage.SaveStringToIsoStore(lycUrl, lyricData);
+                                                    }
+                                                }
+                                                if (!fromDownSong)
+                                                {
+                                                    DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                                                }
+                                            }));
+                                        }
+                                        else 
+                                        {
+                                            if (!fromDownSong)
+                                            {
+                                                DbFMCommonData.informCallback((int)DbFMCommonData.CallbackType.DownSongLyrBack, downLoadSuccess);
+                                            }
+                                        }                              
+                                    }));
                             }
                             else
                             {
