@@ -395,7 +395,7 @@ namespace DouBanFMBase.ViewModel
             {
                 return _selectUserPictrue ?? (_selectUserPictrue = new DelegateCommand(() =>
                 {
-                    PhotoChooserTask photoTask = new PhotoChooserTask();
+                    PhotoChooserTask photoTask = new PhotoChooserTask(); 
                     photoTask.Completed += new EventHandler<PhotoResult>(UserPhotoTask_Completed);
                     //是否显示拍照按钮
                     photoTask.ShowCamera = true;

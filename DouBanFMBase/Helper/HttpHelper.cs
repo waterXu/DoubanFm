@@ -133,7 +133,10 @@ namespace DouBanFMBase
                         }
                         
                         DbFMCommonData.DownLoadSuccess = true;
-                        App.ViewModel.LoadData();
+                        CallbackManager.currentPage.Dispatcher.BeginInvoke(() =>
+                        {
+                            App.ViewModel.LoadData();
+                        });
                     }
                     else
                     {

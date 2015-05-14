@@ -57,6 +57,7 @@ namespace DouBanFMBase
         {
             base.OnNavigatedTo(e);
             CallbackManager.musicPage = this;
+            CallbackManager.currentPage = this;
             isFirstComeHere = true;
             if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
             {
@@ -76,6 +77,7 @@ namespace DouBanFMBase
             dispatcherTimer.Tick -= new EventHandler(dispatcherTimer_Tick);
             BackgroundAudioPlayer.Instance.PlayStateChanged -= new EventHandler(Instance_PlayStateChanged);
             CallbackManager.musicPage = null;
+            CallbackManager.currentPage = null;
             MainPage.IsFromMusicPage = true;
             //当用户按win键 或者长按返回键时  不清空 datacontext  否则从墓碑模式返回时会丢失当前数据
             if (e.Content != null)

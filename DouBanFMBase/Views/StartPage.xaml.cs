@@ -31,6 +31,7 @@ namespace DouBanFMBase
         private void StartPage_Loaded(object sender, RoutedEventArgs e)
         {
             CallbackManager.Startpage = this;
+            CallbackManager.currentPage = this;
             if (WpStorage.GetIsoSetting(DbFMCommonData.IsFirstUse) == null)
             {
                 WpStorage.SetIsoSetting(DbFMCommonData.IsFirstUse, true);

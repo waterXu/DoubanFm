@@ -129,6 +129,7 @@ namespace DouBanFMBase
         {
             base.OnNavigatedTo(e);
             CallbackManager.Mainpage = this;
+            CallbackManager.currentPage = this;
             if (DbFMCommonData.DownLoadedSong)
             {
                 App.ViewModel.LocalSongs = DbFMCommonData.DownSongsList;
@@ -152,6 +153,7 @@ namespace DouBanFMBase
             DownSongList.ClearValue(ListBox.ItemsSourceProperty);
 
            CallbackManager.Mainpage = null;
+           CallbackManager.currentPage = null;
            IsFromMusicPage = false;
         }
        
