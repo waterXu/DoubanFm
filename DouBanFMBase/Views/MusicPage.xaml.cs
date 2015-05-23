@@ -464,5 +464,15 @@ namespace DouBanFMBase
             });
         }
         #endregion
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            if (BackgroundAudioPlayer.Instance != null)
+            {
+                BackgroundAudioPlayer.Instance.Stop();
+                BackgroundAudioPlayer.Instance.Track = null;
+            }
+            Application.Current.Terminate();
+        }
     }
 }

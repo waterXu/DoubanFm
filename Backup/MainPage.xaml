@@ -1,0 +1,70 @@
+﻿<phone:PhoneApplicationPage x:Class="Mangopollo.Sample.MainPage"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                            xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" d:DesignWidth="480"
+                            d:DesignHeight="768" FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                            FontSize="{StaticResource PhoneFontSizeNormal}" Foreground="{StaticResource PhoneForegroundBrush}"
+                            SupportedOrientations="Portrait" Orientation="Portrait" shell:SystemTray.IsVisible="True">
+    <phone:PhoneApplicationPage.Resources>
+        <Style x:Key="TitleTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="45" />
+            <Setter Property="FontFamily" Value="Segoe WP Light" />
+            <Setter Property="Margin" Value="12,0,0,0" />
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+
+        <!--ContentPanel - place additional content here-->
+
+        <!--ContentPanel - place additional content here-->
+        <StackPanel Margin="12,0,0,28" Orientation="Vertical">
+
+            <StackPanel Orientation="Horizontal" Margin="9,20,0,0">
+                <TextBlock Text="MANGO" FontSize="55" FontFamily="Segoe WP Black" />
+                <TextBlock Text="POLLO" Foreground="#FF009EDB" FontSize="55" FontFamily="Segoe WP Black" />
+            </StackPanel>
+            <TextBlock Text="This is a Windows Phone 7.5 app !" Style="{StaticResource TitleTextBlockStyle}"
+                       FontSize="24" FontFamily="Segoe WP SemiLight" Margin="12,-6,-2,0" Height="32"
+                       Foreground="{StaticResource PhoneForegroundBrush}" />
+        </StackPanel>
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <ScrollViewer>
+                <StackPanel>
+                    <TextBlock Text="Generic" Style="{StaticResource TitleTextBlockStyle}" />
+                    <Button Content="Test if WP8 device" Click="TestIfWP8_Click" />
+                    <Button Content="Test if can use new live tiles" Click="TestIfWP78_Click" />
+                    <TextBlock Text="Tiles" Style="{StaticResource TitleTextBlockStyle}" />
+                    <Button Content="Create Cycle tile" Click="CreateCycleTile_Click" />
+                    <Button Content="Create Iconic tile" Click="CreateIconicTile_Click" />
+                    <Button Content="Create Flip tile" Click="CreateFlipTile_Click" />
+                    <TextBlock Text="Wide Tiles" Style="{StaticResource TitleTextBlockStyle}" />
+                    <Button Content="Create Cycle tile" Click="CreateCycleTileWide_Click" />
+                    <Button Content="Create Iconic tile" Click="CreateIconicTileWide_Click" />
+                    <Button Content="Create Flip tile" Click="CreateFlipTileWide_Click" />
+                    <Button Content="Update Main tile" Click="UpdateMainTile_Click" />
+                    <TextBlock Text="Tasks" Style="{StaticResource TitleTextBlockStyle}" />
+                    <Button Content="Vectorial Map Task" Click="MapTask_Click" />
+                    <Button Content="Vectorial Map Direction Task" Click="MapDirectionTask_Click" />
+                    <Button Content="Save Appointment Task" Click="SaveAppointmentTask_Click" />
+                    <Button Content="Map Downloader Task" Click="MapDownloaderTask_Click" />
+                    <Button Content="Map Updater Task" Click="MapUpdaterTask_Click" />
+                </StackPanel>
+            </ScrollViewer>
+
+        </Grid>
+
+    </Grid>
+
+</phone:PhoneApplicationPage>

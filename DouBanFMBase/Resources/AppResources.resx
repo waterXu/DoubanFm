@@ -323,4 +323,10 @@
   <data name="LrcLoadFail" xml:space="preserve">
     <value>抱歉，没搜索到歌词</value>
   </data>
+  <data name="Tuijian" xml:space="preserve">
+    <value>推荐应用</value>
+  </data>
+  <data name="QuickQuit" xml:space="preserve">
+    <value>退出并停止音乐</value>
+  </data>
 </root>

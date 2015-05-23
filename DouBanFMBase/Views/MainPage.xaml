@@ -306,6 +306,7 @@
                                             <coding4fun:Tile Margin="5" Background="#FF70B3BF" Opacity=".7" Command="{Binding AppSettingCommand}" Height="90" Width="120"  CommandParameter="1" Title="{Binding Path=LocalizedResources.GradeForMe,Source={StaticResource LocalizedStrings}}"/>
                                             <coding4fun:Tile Margin="5" Background="#FF70B3BF" Opacity=".7" Command="{Binding AppSettingCommand}" Height="90" Width="120" CommandParameter="2" Title="{Binding Path=LocalizedResources.Feedback,Source={StaticResource LocalizedStrings}}"/>
                                             <coding4fun:Tile Margin="5" Background="#FF70B3BF" Opacity=".7" Command="{Binding AppSettingCommand}" Height="90" Width="120" CommandParameter="3" Title="{Binding Path=LocalizedResources.Weibo,Source={StaticResource LocalizedStrings}}"/>
+                                            <coding4fun:Tile Margin="5" Background="#FF70B3BF" Opacity=".7" Command="{Binding AppSettingCommand}" Height="90" Width="120" CommandParameter="4" Title="{Binding Path=LocalizedResources.Tuijian,Source={StaticResource LocalizedStrings}}"/>
                                             <coding4fun:Tile  CB:TiltEffect.IsTiltEnabled="true" Loaded="aboutTile_Loaded"
                                              HorizontalAlignment="Center"
                                              Margin="5"
@@ -353,5 +354,12 @@
             </Border>
         </Grid>
     </Grid>
-
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized">
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="退出并停止音乐" Click="Exit_Click"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    
 </phone:PhoneApplicationPage>

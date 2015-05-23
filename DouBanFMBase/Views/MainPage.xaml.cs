@@ -349,7 +349,12 @@ namespace DouBanFMBase
             }
 
             SongInfo playingSong = null;
+            List<SongInfo> deleteSongs = new List<SongInfo>();
             foreach (SongInfo song in DownSongList.SelectedItems)
+            {
+                deleteSongs.Add(song);
+            }
+            foreach (SongInfo song in deleteSongs)
             {
                 //判断是否正在播放下载歌曲
                 if (WpStorage.isoFile.FileExists(DbFMCommonData.SongFormDown))
@@ -569,6 +574,16 @@ namespace DouBanFMBase
             });
         }
         #endregion
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            if (BackgroundAudioPlayer.Instance != null)
+            {
+                BackgroundAudioPlayer.Instance.Stop();
+                BackgroundAudioPlayer.Instance.Track = null;
+            }
+            Application.Current.Terminate();
+        }
 
 
         // 用于生成本地化 ApplicationBar 的示例代码

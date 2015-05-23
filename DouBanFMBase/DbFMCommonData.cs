@@ -92,6 +92,10 @@ namespace DouBanFMBase
         /// </summary>
         public static string IsFirstUse { get { return "IsFirstUse"; } }
         /// <summary>
+        /// 是否第一次使用该App
+        /// </summary>
+        public static string IsRecommend { get { return "IsRecommendTip"; } }
+        /// <summary>
         /// 上次成功登陆用户名
         /// </summary>
         public static string UserName { get { return "UserName"; } }

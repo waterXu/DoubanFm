@@ -30,6 +30,12 @@ namespace DouBanFMBase
         }
         private void StartPage_Loaded(object sender, RoutedEventArgs e)
         {
+            if (WpStorage.GetIsoSetting(DbFMCommonData.IsRecommend) == null)
+            {
+                WpStorage.SetIsoSetting(DbFMCommonData.IsRecommend, true);
+                App.ShowToast("我的最新应用“芒果TV”已发布，可在个人中心的推荐应用中查看");
+            }
+
             CallbackManager.Startpage = this;
             CallbackManager.currentPage = this;
             if (WpStorage.GetIsoSetting(DbFMCommonData.IsFirstUse) == null)

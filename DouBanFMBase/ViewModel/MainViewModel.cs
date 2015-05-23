@@ -291,8 +291,18 @@ namespace DouBanFMBase.ViewModel
 
                             }
                             break;
-                        //关于
+                        //推荐
                         case "4":
+                            MarketplaceDetailTask marketplaceTask = new MarketplaceDetailTask();
+                            marketplaceTask.ContentIdentifier = "c700c407-1d91-4007-8474-b24271e25661";
+                            try
+                            {
+                                marketplaceTask.Show();
+                            }
+                            catch
+                            {
+
+                            }
                             break;
                         default:
                             break;

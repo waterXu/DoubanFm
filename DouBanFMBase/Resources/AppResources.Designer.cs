@@ -520,6 +520,15 @@ namespace DouBanFMBase.Resources {
         }
         
         /// <summary>
+        ///   查找类似 退出并停止音乐 的本地化字符串。
+        /// </summary>
+        public static string QuickQuit {
+            get {
+                return ResourceManager.GetString("QuickQuit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 注册新账号 的本地化字符串。
         /// </summary>
         public static string Register {
@@ -633,6 +642,15 @@ namespace DouBanFMBase.Resources {
         public static string ThemeSettingTip {
             get {
                 return ResourceManager.GetString("ThemeSettingTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 推荐应用 的本地化字符串。
+        /// </summary>
+        public static string Tuijian {
+            get {
+                return ResourceManager.GetString("Tuijian", resourceCulture);
             }
         }
         
